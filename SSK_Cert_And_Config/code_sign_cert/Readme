@@ -1,0 +1,7 @@
+If you want to use prebuild image(SBSFU_aws_OTA_demos.bin) to perform OTA
+at that time you can use this code signing certificate. and no need create
+new code signing certificate.
+
+->Use this certificates when create code signing profile on SEED Portal
+ecdsasigner.crt - ecdsa signing certificate
+ecdsasigner.key - ecdsa private key

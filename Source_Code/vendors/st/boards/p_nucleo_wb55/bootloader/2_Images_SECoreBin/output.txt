@@ -1,0 +1,5 @@
+prebuild.sh : started
+/home/einfochips/Desktop/rel_test/SSK_SUIT_EVAL_STM32WB55_Rel01/Source_Code/STM32_SSK_AWS_Rel01/projects/st/p_nucleo_wb55/STM32CubeIDE/STM32WB55RG_Nucleo_2_Images_SECoreBin/../../../../../vendors/st/boards/p_nucleo_wb55/bootloader/2_Images_SECoreBin/Binary/ECCKEY.txt
+prepareimage with python script
+python /home/einfochips/Desktop/rel_test/SSK_SUIT_EVAL_STM32WB55_Rel01/Source_Code/STM32_SSK_AWS_Rel01/vendors/st/STM32_Secure_Engine/Utilities/KeysAndImages/prepareimage.py
+SECBOOT_ECCDSA_WITHOUT_ENCRYPT_SHA256 selected

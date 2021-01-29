@@ -1,0 +1,1 @@
+"%BUILD_TOOLS_PATH%/sh" create_ota_job.sh

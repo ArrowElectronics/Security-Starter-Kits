@@ -1,0 +1,1 @@
+Copy here the cryptography libraries from STM32CubeWB firmware package (Middlewares\ST\WPAN\ble\cryptographic\Lib).

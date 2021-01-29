@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Release Notes for X-CUBE-AWS Package</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <link rel="stylesheet" href="_htmresc/mini-st_2020.css" />
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+  <link rel="icon" type="image/x-icon" href="_htmresc/favicon.png" />
+</head>
+<body>
+<div class="row">
+<div class="col-sm-12 col-lg-4">
+<center>
+<h1 id="release-notes-for-x-cube-aws-cube-logo">Release Notes for <mark>X-CUBE-AWS</mark> <a href="https://www.st.com/en/ecosystems/stm32cube-expansion-software.html" class="logo"><img src="_htmresc/Label_STM32CubeExpansion.png" alt="Cube logo" /></a></h1>
+<p>Copyright © 2018 STMicroelectronics<br />
+Microcontrollers Division - Application Team</p>
+<a href="https://www.st.com" class="logo"><img src="_htmresc/st_logo_2020.png" alt="ST logo" /></a>
+</center>
+<h1 id="license">License</h1>
+<p>This software package is licensed under ST license SLA0078 (the “License”). You may not use this package except in compliance with the License. You may obtain a copy of the License at: <a href="SLA0078_license_evaluation.pdf">SLA0078 Software license agreement</a>.</p>
+<h1 id="purpose">Purpose</h1>
+<p>The <mark>X-CUBE-AWS</mark> (STM32 AWS IoT software expansion for STM32Cube) provides a port of the <a href="https://docs.aws.amazon.com/freertos/latest/userguide/what-is-freertos.html">Amazon FreeRTOS</a> operating system to <a href="https://www.st.com/content/st_com/en/products/evaluation-tools/product-evaluation-tools/stm32-nucleo-expansion-boards/p-nucleo-wb55.html">STM32WB55.Nucleo</a> board.</p>
+<p>It uses <a href="https://docs.aws.amazon.com/freertos/latest/userguide/freertos-ble-library.html">Amazon FreeRTOS support for BLE</a> and relies on a <a href="https://docs.aws.amazon.com/freertos/latest/userguide/freertos-ble-mobile.html">mobile phone application</a> as a proxy to AWS services (via mobile network or WiFi).</p>
+<p>Both the <em>aws_demos</em> and the <em>aws_tests</em> reference applications of FreeRTOS are provided.</p>
+<ul>
+<li>List of references to user documents
+<ul>
+<li><a href="https://www.st.com/content/st_com/en/search.html#q=UM2262%20-t=resources-page=1">UM2262</a> - Getting started with the <mark>X-CUBE-SBSFU</mark> STM32Cube Expansion Package</li>
+</ul></li>
+</ul>
+</div>
+<div class="col-sm-12 col-lg-8">
+<h1 id="update-history">Update History</h1>
+<div class="collapse">
+<input type="checkbox" id="collapse-section9" checked aria-hidden="true"> <label for="collapse-section9" aria-hidden="true">V2.1.0.ALPHA4 / 21-August-2020</label>
+<div>
+<h2 id="main-changes">Main Changes</h2>
+<h3 id="bug-fixes">Bug fixes</h3>
+<ul>
+<li>Correct include path for PKCS11 in aws_tests STM32CubeIDE project file.</li>
+</ul>
+<h2 id="contents">Contents</h2>
+<p><small>The components flagged by “<span class="icon-info"></span>” have changed since the previous release. “<span class="icon-cart"></span>” are new.</small></p>
+<p>Drivers</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">BSP Component</th>
+<th style="text-align: left;">Version</th>
+<th></th>
+<th style="text-align: left;">License</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">BSP STM32WB55</td>
+<td style="text-align: left;"><a href="vendors/st/p_nucleo_wb55/BSP/P-NUCLEO-WB55.Nucleo">V1.1.6</a></td>
+<td></td>
+<td style="text-align: left;"><a href="https://opensource.org/licenses/BSD-3-Clause">BSD-3-Clause</a></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">BSP Common</td>
+<td style="text-align: left;"><a href="vendors/st/p_nucleo_wb55/BSP/Components/Common/Release_Notes.html">V5.0.0</a></td>
+<td></td>
+<td style="text-align: left;"><a href="https://opensource.org/licenses/BSD-3-Clause">BSD-3-Clause</a></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Component</th>
+<th style="text-align: left;">Version</th>
+<th></th>
+<th style="text-align: left;">License</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">CMSIS</td>
+<td style="text-align: left;"><a href="vendors/st/CMSIS/README.md">V5.4.0</a></td>
+<td></td>
+<td style="text-align: left;"><a href="Drivers/CMSIS/LICENSE.txt">Apache 2.0</a></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">CMSIS STM32WBxx</td>
+<td style="text-align: left;"><a href="vendors/st/CMSIS/Device/ST/STM32WBxx/Release_Notes.html">V1.3.0</a></td>
+<td></td>
+<td style="text-align: left;"><a href="https://opensource.org/licenses/BSD-3-Clause">BSD-3-Clause</a></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">STM32WBxx_HAL_Driver HAL</td>
+<td style="text-align: left;"><a href="vendors/st/p_nucleo_wb55/STM32WBxx_HAL_Driver/Release_Notes.html">V1.3.0</a></td>
+<td></td>
+<td style="text-align: left;"><a href="https://opensource.org/licenses/BSD-3-Clause">BSD-3-Clause</a></td>
+</tr>
+</tbody>
+</table>
+<p>Middleware</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Component</th>
+<th style="text-align: left;">Version</th>
+<th style="text-align: left;">ST modified</th>
+<th style="text-align: left;">License</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">FreeRTOS</td>
+<td style="text-align: left;"><a href="CHANGELOG.md">201912.00</a></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><a href="https://opensource.org/licenses/MIT">MIT</a></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">FreeRTOS kernel</td>
+<td style="text-align: left;"><a href="freertos_kernel/readme.txt">V10.2.1</a></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><a href="Middlewares/Third_Party/amazon-freertos/freertos-kernel/License/license.txt">MIT</a></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">FreeRTOS 3rd parties</td>
+<td style="text-align: left;">201912.00 (http_parser, jsmn, lwip, lwip_osal, mbedTLS, pkcs11, tinycbor, tinycrypt, unity)</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><a href="https://opensource.org/licenses/MIT">MIT</a>, <a href="https://opensource.org/licenses/Apache-2.0">Apache-2.0</a>, <a href="https://opensource.org/licenses/BSD">BSD</a></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">STM32_Secure_Engine</td>
+<td style="text-align: left;"><a href="vendors/st/STM32_Secure_Engine/Release_Notes.html">v2.0.0</a></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><a href="https://www.st.com/resource/en/license_agreement/dm00216740.pdf">SLA0044</a></td>
+</tr>
+</tbody>
+</table>
+<p>Applications</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Application</th>
+<th style="text-align: left;">Version</th>
+<th></th>
+<th style="text-align: left;">License</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">SBSBU bootloader</td>
+<td style="text-align: left;">AWS_V2.1.0</td>
+<td></td>
+<td style="text-align: left;"><a href="https://www.st.com/resource/en/license_agreement/dm00216740.pdf">SLA0044</a></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">SECoreBin secure engine</td>
+<td style="text-align: left;">AWS_V2.1.0</td>
+<td></td>
+<td style="text-align: left;"><a href="https://www.st.com/resource/en/license_agreement/dm00216740.pdf">SLA0044</a></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">FreeRTOS reference applications: <code>aws_demos</code> (OTA demo), <code>aws_tests</code></td>
+<td style="text-align: left;">AWS_V2.1.0</td>
+<td></td>
+<td style="text-align: left;"><a href="https://www.st.com/resource/en/license_agreement/dm00216740.pdf">SLA0044</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="known-limitations">Known Limitations</h2>
+<ul>
+<li><p>The compilation warnings of the bootloader applications are due to the disabled security features.</p></li>
+<li><p>The compilation warnings of the user applications are due to the FreeRTOS code or to to its dependencies</p></li>
+<li><p>Programming the STM32WB55.Nucleo board with STM32CubeIDE does not work. After compiling with CubeIDE it is needed to use STM32CubeProgrammer to flash the firmware.</p></li>
+</ul>
+<h2 id="development-toolchains-and-compilers">Development Toolchains and Compilers</h2>
+<ul>
+<li><em>STM32CubeIDE</em>, version 1.3.0</li>
+<li>cmake (version &gt;= 3.13) using arm-gcc compiler delivered with STM32CubeIDE.</li>
+</ul>
+<h2 id="supported-devices-and-boards">Supported Devices and Boards</h2>
+<ul>
+<li>STM32WB55.Nucleo board</li>
+</ul>
+<h2 id="dependencies">Dependencies</h2>
+<ul>
+<li><p>The cryptographic libraries V3.0.0 used in STM32_WPAN V1.5.0 middleware are not delivered in this package. They must be installed separately in vendors/st/STM32_WPAN/ble/cryptographic/Lib. Use STM32CubeWB version <a href="https://github.com/STMicroelectronics/STM32CubeWB/tree/v1.7.0/Middlewares/ST/STM32_WPAN/ble/cryptographic">V1.7.0</a> or earlier to have correct version of cryptographic library.</p></li>
+<li><p><em>STM32CubeProgrammer</em> version 2.4.0 is required as a post-link processor.</p></li>
+<li><p>This release is pre-integrated with slight adaptations and updates, with the following STM32Cube expansion packages:</p></li>
+</ul>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Package</th>
+<th style="text-align: left;">Version</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><a href="https://www.st.com/en/embedded-software/x-cube-sbsfu.html">X-CUBE-SBSFU</a></td>
+<td style="text-align: left;">V2.2</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="collapse">
+<input type="checkbox" id="collapse-section8" aria-hidden="true"> <label for="collapse-section8" aria-hidden="true">V2.1.0.ALPHA3 / 31-July-2020</label>
+<div>
+<h2 id="main-changes-1">Main Changes</h2>
+<h3 id="bug-fixes-1">Bug fixes</h3>
+<ul>
+<li>Check and resolve differences with AFR 201912.00.</li>
+<li>Correct SBSFU buffer alignment to avoid random hard fault during OTA update.</li>
+<li>correct cmake file to be compliant for CMakeBuildSystem IDT test.</li>
+</ul>
+<h3 id="minor-changes">Minor changes</h3>
+<ul>
+<li>remove unneeded files (python *.pyc files, CubeIDE preference files)</li>
+</ul>
+<h2 id="contents-1">Contents</h2>
+<p><small>The components flagged by “<span class="icon-info"></span>” have changed since the previous release. “<span class="icon-cart"></span>” are new.</small></p>
+<p>Drivers</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">BSP Component</th>
+<th style="text-align: left;">Version</th>
+<th></th>
+<th style="text-align: left;">License</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">BSP STM32WB55</td>
+<td style="text-align: left;"><a href="vendors/st/p_nucleo_wb55/BSP/P-NUCLEO-WB55.Nucleo">V1.1.6</a></td>
+<td></td>
+<td style="text-align: left;"><a href="https://opensource.org/licenses/BSD-3-Clause">BSD-3-Clause</a></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">BSP Common</td>
+<td style="text-align: left;"><a href="vendors/st/p_nucleo_wb55/BSP/Components/Common/Release_Notes.html">V5.0.0</a></td>
+<td></td>
+<td style="text-align: left;"><a href="https://opensource.org/licenses/BSD-3-Clause">BSD-3-Clause</a></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Component</th>
+<th style="text-align: left;">Version</th>
+<th></th>
+<th style="text-align: left;">License</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">CMSIS</td>
+<td style="text-align: left;"><a href="vendors/st/CMSIS/README.md">V5.4.0</a></td>
+<td></td>
+<td style="text-align: left;"><a href="Drivers/CMSIS/LICENSE.txt">Apache 2.0</a></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">CMSIS STM32WBxx</td>
+<td style="text-align: left;"><a href="vendors/st/CMSIS/Device/ST/STM32WBxx/Release_Notes.html">V1.3.0</a></td>
+<td></td>
+<td style="text-align: left;"><a href="https://opensource.org/licenses/BSD-3-Clause">BSD-3-Clause</a></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">STM32WBxx_HAL_Driver HAL</td>
+<td style="text-align: left;"><a href="vendors/st/p_nucleo_wb55/STM32WBxx_HAL_Driver/Release_Notes.html">V1.3.0</a></td>
+<td></td>
+<td style="text-align: left;"><a href="https://opensource.org/licenses/BSD-3-Clause">BSD-3-Clause</a></td>
+</tr>
+</tbody>
+</table>
+<p>Middleware</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Component</th>
+<th style="text-align: left;">Version</th>
+<th style="text-align: left;">ST modified</th>
+<th style="text-align: left;">License</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">FreeRTOS</td>
+<td style="text-align: left;"><a href="CHANGELOG.md">201912.00</a></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><a href="https://opensource.org/licenses/MIT">MIT</a></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">FreeRTOS kernel</td>
+<td style="text-align: left;"><a href="freertos_kernel/readme.txt">V10.2.1</a></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><a href="Middlewares/Third_Party/amazon-freertos/freertos-kernel/License/license.txt">MIT</a></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">FreeRTOS 3rd parties</td>
+<td style="text-align: left;">201912.00 (http_parser, jsmn, lwip, lwip_osal, mbedTLS, pkcs11, tinycbor, tinycrypt, unity)</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><a href="https://opensource.org/licenses/MIT">MIT</a>, <a href="https://opensource.org/licenses/Apache-2.0">Apache-2.0</a>, <a href="https://opensource.org/licenses/BSD">BSD</a></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">STM32_Secure_Engine</td>
+<td style="text-align: left;"><a href="vendors/st/STM32_Secure_Engine/Release_Notes.html">v2.0.0</a></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><a href="https://www.st.com/resource/en/license_agreement/dm00216740.pdf">SLA0044</a></td>
+</tr>
+</tbody>
+</table>
+<p>Applications</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Application</th>
+<th style="text-align: left;">Version</th>
+<th></th>
+<th style="text-align: left;">License</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">SBSBU bootloader</td>
+<td style="text-align: left;">AWS_V2.1.0</td>
+<td></td>
+<td style="text-align: left;"><a href="https://www.st.com/resource/en/license_agreement/dm00216740.pdf">SLA0044</a></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">SECoreBin secure engine</td>
+<td style="text-align: left;">AWS_V2.1.0</td>
+<td></td>
+<td style="text-align: left;"><a href="https://www.st.com/resource/en/license_agreement/dm00216740.pdf">SLA0044</a></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">FreeRTOS reference applications: <code>aws_demos</code> (OTA demo), <code>aws_tests</code></td>
+<td style="text-align: left;">AWS_V2.1.0</td>
+<td></td>
+<td style="text-align: left;"><a href="https://www.st.com/resource/en/license_agreement/dm00216740.pdf">SLA0044</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="known-limitations-1">Known Limitations</h2>
+<ul>
+<li><p>The compilation warnings of the bootloader applications are due to the disabled security features.</p></li>
+<li><p>The compilation warnings of the user applications are due to the FreeRTOS code or to to its dependencies</p></li>
+<li><p>Programming the STM32WB55.Nucleo board with STM32CubeIDE does not work. After compiling with CubeIDE it is needed to use STM32CubeProgrammer to flash the firmware.</p></li>
+</ul>
+<h2 id="development-toolchains-and-compilers-1">Development Toolchains and Compilers</h2>
+<ul>
+<li><em>STM32CubeIDE</em>, version 1.3.0</li>
+<li>cmake (version &gt;= 3.13) using arm-gcc compiler delivered with STM32CubeIDE.</li>
+</ul>
+<h2 id="supported-devices-and-boards-1">Supported Devices and Boards</h2>
+<ul>
+<li>STM32WB55.Nucleo board</li>
+</ul>
+<h2 id="dependencies-1">Dependencies</h2>
+<ul>
+<li><p>The cryptographic libraries from STM32_WPAN V1.5.0 middleware (from <a href="https://www.st.com/content/st_com/en/products/embedded-software/mcu-mpu-embedded-software/stm32-embedded-software/stm32cube-mcu-mpu-packages/stm32cubewb.html">CubeWB Firmware package</a> ) must be installed separately in vendors/st/STM32_WPAN/ble/cryptographic/Lib.</p></li>
+<li><p><em>STM32CubeProgrammer</em> version 2.4.0 is required as a post-link processor.</p></li>
+<li><p>This release is pre-integrated with slight adaptations and updates, with the following STM32Cube expansion packages:</p></li>
+</ul>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Package</th>
+<th style="text-align: left;">Version</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><a href="https://www.st.com/en/embedded-software/x-cube-sbsfu.html">X-CUBE-SBSFU</a></td>
+<td style="text-align: left;">V2.2</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="collapse">
+<input type="checkbox" id="collapse-section7" aria-hidden="true"> <label for="collapse-section7" aria-hidden="true">V2.1.0.ALPHA2 / 17-July-2020</label>
+<div>
+<h2 id="main-changes-2">Main Changes</h2>
+<h3 id="minor-changes-1">Minor changes</h3>
+<ul>
+<li>BLE MTU size changed to 200 bytes to comply with IDT BLE test.</li>
+<li>Minor changes in cmake files</li>
+<li>correct compiler optimization level in STM32CubeIDE project files</li>
+</ul>
+<h2 id="contents-2">Contents</h2>
+<p><small>The components flagged by “<span class="icon-info"></span>” have changed since the previous release. “<span class="icon-cart"></span>” are new.</small></p>
+<p>Drivers</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">BSP Component</th>
+<th style="text-align: left;">Version</th>
+<th></th>
+<th style="text-align: left;">License</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">BSP STM32WB55</td>
+<td style="text-align: left;"><a href="vendors/st/p_nucleo_wb55/BSP/P-NUCLEO-WB55.Nucleo">V1.1.6</a></td>
+<td></td>
+<td style="text-align: left;"><a href="https://opensource.org/licenses/BSD-3-Clause">BSD-3-Clause</a></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">BSP Common</td>
+<td style="text-align: left;"><a href="vendors/st/p_nucleo_wb55/BSP/Components/Common/Release_Notes.html">V5.0.0</a></td>
+<td></td>
+<td style="text-align: left;"><a href="https://opensource.org/licenses/BSD-3-Clause">BSD-3-Clause</a></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Component</th>
+<th style="text-align: left;">Version</th>
+<th></th>
+<th style="text-align: left;">License</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">CMSIS</td>
+<td style="text-align: left;"><a href="vendors/st/CMSIS/README.md">V5.4.0</a></td>
+<td></td>
+<td style="text-align: left;"><a href="Drivers/CMSIS/LICENSE.txt">Apache 2.0</a></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">CMSIS STM32WBxx</td>
+<td style="text-align: left;"><a href="vendors/st/CMSIS/Device/ST/STM32WBxx/Release_Notes.html">V1.3.0</a></td>
+<td></td>
+<td style="text-align: left;"><a href="https://opensource.org/licenses/BSD-3-Clause">BSD-3-Clause</a></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">STM32WBxx_HAL_Driver HAL</td>
+<td style="text-align: left;"><a href="vendors/st/p_nucleo_wb55/STM32WBxx_HAL_Driver/Release_Notes.html">V1.3.0</a></td>
+<td></td>
+<td style="text-align: left;"><a href="https://opensource.org/licenses/BSD-3-Clause">BSD-3-Clause</a></td>
+</tr>
+</tbody>
+</table>
+<p>Middleware</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Component</th>
+<th style="text-align: left;">Version</th>
+<th style="text-align: left;">ST modified</th>
+<th style="text-align: left;">License</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">FreeRTOS</td>
+<td style="text-align: left;"><a href="CHANGELOG.md">201912.00</a></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><a href="https://opensource.org/licenses/MIT">MIT</a></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">FreeRTOS kernel</td>
+<td style="text-align: left;"><a href="freertos_kernel/readme.txt">V10.2.1</a></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><a href="Middlewares/Third_Party/amazon-freertos/freertos-kernel/License/license.txt">MIT</a></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">FreeRTOS 3rd parties</td>
+<td style="text-align: left;">201912.00 (http_parser, jsmn, lwip, lwip_osal, mbedTLS, pkcs11, tinycbor, tinycrypt, unity)</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><a href="https://opensource.org/licenses/MIT">MIT</a>, <a href="https://opensource.org/licenses/Apache-2.0">Apache-2.0</a>, <a href="https://opensource.org/licenses/BSD">BSD</a></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">STM32_Secure_Engine</td>
+<td style="text-align: left;"><a href="vendors/st/STM32_Secure_Engine/Release_Notes.html">v2.0.0</a></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><a href="https://www.st.com/resource/en/license_agreement/dm00216740.pdf">SLA0044</a></td>
+</tr>
+</tbody>
+</table>
+<p>Applications</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Application</th>
+<th style="text-align: left;">Version</th>
+<th></th>
+<th style="text-align: left;">License</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">SBSBU bootloader</td>
+<td style="text-align: left;">AWS_V2.1.0</td>
+<td></td>
+<td style="text-align: left;"><a href="https://www.st.com/resource/en/license_agreement/dm00216740.pdf">SLA0044</a></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">SECoreBin secure engine</td>
+<td style="text-align: left;">AWS_V2.1.0</td>
+<td></td>
+<td style="text-align: left;"><a href="https://www.st.com/resource/en/license_agreement/dm00216740.pdf">SLA0044</a></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">FreeRTOS reference applications: <code>aws_demos</code> (OTA demo), <code>aws_tests</code></td>
+<td style="text-align: left;">AWS_V2.1.0</td>
+<td></td>
+<td style="text-align: left;"><a href="https://www.st.com/resource/en/license_agreement/dm00216740.pdf">SLA0044</a></td>
+</tr>
+</tbody>
+</table>
+<p>The FreeRTOS applications are enabled by those ported abstractions:</p>
+<ul>
+<li>configPRINT_STRING()</li>
+<li>BLE</li>
+<li>TCP/IP</li>
+<li>Secure Sockets</li>
+<li>PKCS#11</li>
+<li>TLS</li>
+<li>MQTT</li>
+<li>HTTPS</li>
+<li>Over-the-Air (OTA) Updates</li>
+</ul>
+<h2 id="known-limitations-2">Known Limitations</h2>
+<ul>
+<li><p>The compilation warnings of the bootloader applications are due to the disabled security features.</p></li>
+<li><p>The compilation warnings of the user applications are due to the FreeRTOS code or to to its dependencies</p></li>
+<li><p>Programming the STM32WB55.Nucleo board with STM32CubeIDE does not work. After compiling with CubeIDE it is needed to use STM32CubeProgrammer to flash the firmware.</p></li>
+</ul>
+<h2 id="development-toolchains-and-compilers-2">Development Toolchains and Compilers</h2>
+<ul>
+<li><em>STM32CubeIDE</em>, version 1.3.0</li>
+<li>cmake using arm-gcc compiler delivered with STM32CubeIDE.</li>
+</ul>
+<h2 id="supported-devices-and-boards-2">Supported Devices and Boards</h2>
+<ul>
+<li>STM32WB55.Nucleo board</li>
+</ul>
+<h2 id="dependencies-2">Dependencies</h2>
+<ul>
+<li><p>The cryptographic libraries from STM32_WPAN V1.5.0 middleware (from <a href="https://www.st.com/content/st_com/en/products/embedded-software/mcu-mpu-embedded-software/stm32-embedded-software/stm32cube-mcu-mpu-packages/stm32cubewb.html">CubeWB Firmware package</a> ) must be installed separately in vendors/st/STM32_WPAN/ble/cryptographic/Lib.</p></li>
+<li><p><em>STM32CubeProgrammer</em> version 2.4.0 is required as a post-link processor.</p></li>
+<li><p>This release is pre-integrated with slight adaptations and updates, with the following STM32Cube expansion packages:</p></li>
+</ul>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Package</th>
+<th style="text-align: left;">Version</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><a href="https://www.st.com/en/embedded-software/x-cube-sbsfu.html">X-CUBE-SBSFU</a></td>
+<td style="text-align: left;">V2.2</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="collapse">
+<input type="checkbox" id="collapse-section6" aria-hidden="true"> <label for="collapse-section6" aria-hidden="true">V2.1.0.ALPHA1 / 08-June-2020</label>
+<div>
+<h2 id="main-changes-3">Main Changes</h2>
+<h3 id="ble-support">BLE support</h3>
+<ul>
+<li>Support the <a href="https://www.st.com/content/st_com/en/products/evaluation-tools/product-evaluation-tools/stm32-nucleo-expansion-boards/p-nucleo-wb55.html">STM32WB55.Nucleo</a> board.</li>
+<li>development environment: <a href="https://www.st.com/content/st_com/en/products/development-tools/software-development-tools/stm32-software-development-tools/stm32-ides/stm32cubeide.html">STM32CubeIDE</a> and cmake GCC toolchain.</li>
+</ul>
+<h2 id="contents-3">Contents</h2>
+<p><small>The components flagged by “<span class="icon-info"></span>” have changed since the previous release. “<span class="icon-cart"></span>” are new.</small></p>
+<p>Drivers</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">BSP Component</th>
+<th style="text-align: left;">Version</th>
+<th></th>
+<th style="text-align: left;">License</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">BSP STM32WB55</td>
+<td style="text-align: left;"><a href="vendors/st/p_nucleo_wb55/BSP/P-NUCLEO-WB55.Nucleo">V1.1.6</a> <span class="icon-cart"></span></td>
+<td></td>
+<td style="text-align: left;"><a href="https://opensource.org/licenses/BSD-3-Clause">BSD-3-Clause</a></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">BSP Common</td>
+<td style="text-align: left;"><a href="vendors/st/p_nucleo_wb55/BSP/Components/Common/Release_Notes.html">V5.0.0</a> <span class="icon-cart"></span></td>
+<td></td>
+<td style="text-align: left;"><a href="https://opensource.org/licenses/BSD-3-Clause">BSD-3-Clause</a></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Component</th>
+<th style="text-align: left;">Version</th>
+<th></th>
+<th style="text-align: left;">License</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">CMSIS</td>
+<td style="text-align: left;"><a href="vendors/st/CMSIS/README.md">V5.4.0</a> <span class="icon-cart"></span></td>
+<td></td>
+<td style="text-align: left;"><a href="Drivers/CMSIS/LICENSE.txt">Apache 2.0</a></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">CMSIS STM32WBxx</td>
+<td style="text-align: left;"><a href="vendors/st/CMSIS/Device/ST/STM32WBxx/Release_Notes.html">V1.3.0</a> <span class="icon-cart"></span></td>
+<td></td>
+<td style="text-align: left;"><a href="https://opensource.org/licenses/BSD-3-Clause">BSD-3-Clause</a></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">STM32WBxx_HAL_Driver HAL</td>
+<td style="text-align: left;"><a href="vendors/st/p_nucleo_wb55/STM32WBxx_HAL_Driver/Release_Notes.html">V1.3.0</a> <span class="icon-cart"></span></td>
+<td></td>
+<td style="text-align: left;"><a href="https://opensource.org/licenses/BSD-3-Clause">BSD-3-Clause</a></td>
+</tr>
+</tbody>
+</table>
+<p>Middleware</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Component</th>
+<th style="text-align: left;">Version</th>
+<th style="text-align: left;">ST modified</th>
+<th style="text-align: left;">License</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">FreeRTOS</td>
+<td style="text-align: left;"><a href="CHANGELOG.md">201912.00</a> <span class="icon-cart"></span></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><a href="https://opensource.org/licenses/MIT">MIT</a></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">FreeRTOS kernel</td>
+<td style="text-align: left;"><a href="freertos_kernel/readme.txt">V10.2.1</a> <span class="icon-cart"></span></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><a href="Middlewares/Third_Party/amazon-freertos/freertos-kernel/License/license.txt">MIT</a></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">FreeRTOS 3rd parties</td>
+<td style="text-align: left;">201912.00 (http_parser, jsmn, lwip, lwip_osal, mbedTLS, pkcs11, tinycbor, tinycrypt, unity)</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><a href="https://opensource.org/licenses/MIT">MIT</a>, <a href="https://opensource.org/licenses/Apache-2.0">Apache-2.0</a>, <a href="https://opensource.org/licenses/BSD">BSD</a></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">STM32_Secure_Engine</td>
+<td style="text-align: left;"><a href="vendors/st/STM32_Secure_Engine/Release_Notes.html">v2.0.0</a> <span class="icon-cart"></span></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><a href="https://www.st.com/resource/en/license_agreement/dm00216740.pdf">SLA0044</a></td>
+</tr>
+</tbody>
+</table>
+<p>Applications</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Application</th>
+<th style="text-align: left;">Version</th>
+<th></th>
+<th style="text-align: left;">License</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">SBSBU bootloader</td>
+<td style="text-align: left;">AWS_V2.1.0</td>
+<td></td>
+<td style="text-align: left;"><a href="https://www.st.com/resource/en/license_agreement/dm00216740.pdf">SLA0044</a></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">SECoreBin secure engine</td>
+<td style="text-align: left;">AWS_V2.1.0</td>
+<td></td>
+<td style="text-align: left;"><a href="https://www.st.com/resource/en/license_agreement/dm00216740.pdf">SLA0044</a></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">FreeRTOS reference applications: <code>aws_demos</code> (OTA demo), <code>aws_tests</code></td>
+<td style="text-align: left;">AWS_V2.1.0</td>
+<td></td>
+<td style="text-align: left;"><a href="https://www.st.com/resource/en/license_agreement/dm00216740.pdf">SLA0044</a></td>
+</tr>
+</tbody>
+</table>
+<p>The FreeRTOS applications are enabled by those ported abstractions:</p>
+<ul>
+<li>configPRINT_STRING()</li>
+<li>BLE</li>
+<li>TCP/IP</li>
+<li>Secure Sockets</li>
+<li>PKCS#11</li>
+<li>TLS</li>
+<li>MQTT</li>
+<li>HTTPS</li>
+<li>Over-the-Air (OTA) Updates</li>
+</ul>
+<h2 id="known-limitations-3">Known Limitations</h2>
+<ul>
+<li><p>The compilation warnings of the bootloader applications are due to the disabled security features.</p></li>
+<li><p>The compilation warnings of the user applications are due to the FreeRTOS code or to to its dependencies</p></li>
+<li><p>Programming the STM32WB55.Nucleo board with STM32CubeIDE does not work. After compiling with CubeIDE it is needed to use STM32CubeProgrammer to flash the firmware.</p></li>
+</ul>
+<h2 id="development-toolchains-and-compilers-3">Development Toolchains and Compilers</h2>
+<ul>
+<li><em>STM32CubeIDE</em>, version 1.3.0</li>
+<li>cmake using arm-gcc</li>
+</ul>
+<h2 id="supported-devices-and-boards-3">Supported Devices and Boards</h2>
+<ul>
+<li>STM32WB55.Nucleo board</li>
+</ul>
+<h2 id="dependencies-3">Dependencies</h2>
+<ul>
+<li><p>The cryptographic libraries from STM32_WPAN V1.5.0 middleware (from <a href="https://www.st.com/content/st_com/en/products/embedded-software/mcu-mpu-embedded-software/stm32-embedded-software/stm32cube-mcu-mpu-packages/stm32cubewb.html">CubeWB Firmware package</a> ) must be installed separately in vendors/st/STM32_WPAN/ble/cryptographic/Lib.</p></li>
+<li><p><em>STM32CubeProgrammer</em>, version 2.4.0 as a post-link processor, required for debugging a single elf file containing both the bootloader and the user application.</p></li>
+<li><p>This release is pre-integrated with slight adaptations and updates, with the following STM32Cube expansion packages:</p></li>
+</ul>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Package</th>
+<th style="text-align: left;">Version</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><a href="https://www.st.com/en/embedded-software/x-cube-sbsfu.html">X-CUBE-SBSFU</a></td>
+<td style="text-align: left;">V2.2</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+<footer class="sticky">
+For complete documentation on <mark>STM32</mark> microcontrollers please visit <a href="http://www.st.com/stm32" class="uri">http://www.st.com/stm32</a>
+</footer>
+</body>
+</html>

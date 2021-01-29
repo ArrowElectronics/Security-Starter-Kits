@@ -1,0 +1,1634 @@
+python /home/einfochips/project/afr_p_nucleo_wb55/vendors/st/STM32_Secure_Engine/Utilities/KeysAndImages/prepareimage.py
+python /home/einfochips/project/afr_p_nucleo_wb55/vendors/st/STM32_Secure_Engine/Utilities/KeysAndImages/prepareimage.py sha256 aws_demos.bin /home/einfochips/project/afr_p_nucleo_wb55/projects/st/p_nucleo_wb55/STM32CubeIDE/STM32WB55RG_Nucleo_AFR_demo/../../../../../build/aws_demos.sign : failed
+python /home/einfochips/project/afr_p_nucleo_wb55/vendors/st/STM32_Secure_Engine/Utilities/KeysAndImages/prepareimage.py
+No FW signing leaf cert
+No leaf cert
+No FW signing leaf cert
+No leaf cert
+number of segment :8
+0x8010400
+0x8033428
+0x8033c2a
+0x8033c38
+0x8033c46
+0x8033c50
+0x8033c50
+number of segment :6
+0x8000140
+0x8002518
+0x8003968
+0x800ac98
+0x800adb0
+Merging
+SBSFU Base = 0x8000000
+Writing header = 0x8010000
+APPLI Base = 0x8010200
+Writing to /home/einfochips/project/afr_p_nucleo_wb55/projects/st/p_nucleo_wb55/STM32CubeIDE/STM32WB55RG_Nucleo_AFR_demo/../../../../../build/SBSFU_aws_demos.bin 212048
+python /home/einfochips/project/afr_p_nucleo_wb55/vendors/st/STM32_Secure_Engine/Utilities/KeysAndImages/prepareimage.py
+No FW signing leaf cert
+No leaf cert
+No FW signing leaf cert
+No leaf cert
+number of segment :8
+0x8010400
+0x802c938
+0x802cd62
+0x802cd70
+0x802cd7e
+0x802cd80
+0x802cd80
+number of segment :6
+0x8000140
+0x8002518
+0x8003968
+0x800ac98
+0x800adb0
+Merging
+SBSFU Base = 0x8000000
+Writing header = 0x8010000
+APPLI Base = 0x8010200
+Writing to /home/einfochips/project/afr_p_nucleo_wb55/projects/st/p_nucleo_wb55/STM32CubeIDE/STM32WB55RG_Nucleo_AFR_demo/../../../../../build/SBSFU_aws_demos.bin 183680
+python /home/einfochips/project/afr_p_nucleo_wb55/vendors/st/STM32_Secure_Engine/Utilities/KeysAndImages/prepareimage.py
+No FW signing leaf cert
+No leaf cert
+No FW signing leaf cert
+No leaf cert
+number of segment :8
+0x8010400
+0x802c938
+0x802cd62
+0x802cd70
+0x802cd7e
+0x802cd80
+0x802cd80
+number of segment :6
+0x8000140
+0x8002518
+0x8003968
+0x800ac98
+0x800adb0
+Merging
+SBSFU Base = 0x8000000
+Writing header = 0x8010000
+APPLI Base = 0x8010200
+Writing to /home/einfochips/project/afr_p_nucleo_wb55/projects/st/p_nucleo_wb55/STM32CubeIDE/STM32WB55RG_Nucleo_AFR_demo/../../../../../build/SBSFU_aws_demos.bin 183680
+python /home/einfochips/project/afr_p_nucleo_wb55/vendors/st/STM32_Secure_Engine/Utilities/KeysAndImages/prepareimage.py
+No FW signing leaf cert
+No leaf cert
+No FW signing leaf cert
+No leaf cert
+number of segment :8
+0x8010400
+0x8033790
+0x803401a
+0x8034028
+0x8034036
+0x8034040
+0x8034040
+number of segment :6
+0x8000140
+0x8002518
+0x8003968
+0x800ac98
+0x800adb0
+Merging
+SBSFU Base = 0x8000000
+Writing header = 0x8010000
+APPLI Base = 0x8010200
+Writing to /home/einfochips/project/afr_p_nucleo_wb55/projects/st/p_nucleo_wb55/STM32CubeIDE/STM32WB55RG_Nucleo_AFR_demo/../../../../../build/SBSFU_aws_demos.bin 213056
+python /home/einfochips/project/afr_p_nucleo_wb55/vendors/st/STM32_Secure_Engine/Utilities/KeysAndImages/prepareimage.py
+No FW signing leaf cert
+No leaf cert
+No FW signing leaf cert
+No leaf cert
+number of segment :8
+0x8010400
+0x80451e0
+0x8045fa9
+0x8045fb7
+0x8045fc8
+0x8045fd0
+0x8045fd0
+number of segment :6
+0x8000140
+0x8002518
+0x8003968
+0x800ac98
+0x800adb0
+Merging
+SBSFU Base = 0x8000000
+Writing header = 0x8010000
+APPLI Base = 0x8010200
+Writing to /home/einfochips/project/afr_p_nucleo_wb55/projects/st/p_nucleo_wb55/STM32CubeIDE/STM32WB55RG_Nucleo_AFR_demo/../../../../../build/SBSFU_aws_demos.bin 286672
+python /home/einfochips/project/afr_p_nucleo_wb55/vendors/st/STM32_Secure_Engine/Utilities/KeysAndImages/prepareimage.py
+No FW signing leaf cert
+No leaf cert
+No FW signing leaf cert
+No leaf cert
+number of segment :8
+0x8010400
+0x80451e0
+0x8045fa9
+0x8045fb7
+0x8045fc8
+0x8045fd0
+0x8045fd0
+number of segment :6
+0x8000140
+0x8002518
+0x8003968
+0x800ac98
+0x800adb0
+Merging
+SBSFU Base = 0x8000000
+Writing header = 0x8010000
+APPLI Base = 0x8010200
+Writing to /home/einfochips/project/afr_p_nucleo_wb55/projects/st/p_nucleo_wb55/STM32CubeIDE/STM32WB55RG_Nucleo_AFR_demo/../../../../../build/SBSFU_aws_demos.bin 286672
+python /home/einfochips/project/afr_p_nucleo_wb55/vendors/st/STM32_Secure_Engine/Utilities/KeysAndImages/prepareimage.py
+No FW signing leaf cert
+No leaf cert
+No FW signing leaf cert
+No leaf cert
+number of segment :8
+0x8010400
+0x80451d8
+0x8045fa1
+0x8045faf
+0x8045fc0
+0x8045fd0
+0x8045fd0
+number of segment :6
+0x8000140
+0x8002518
+0x8003968
+0x800ac98
+0x800adb0
+Merging
+SBSFU Base = 0x8000000
+Writing header = 0x8010000
+APPLI Base = 0x8010200
+Writing to /home/einfochips/project/afr_p_nucleo_wb55/projects/st/p_nucleo_wb55/STM32CubeIDE/STM32WB55RG_Nucleo_AFR_demo/../../../../../build/SBSFU_aws_demos.bin 286672
+python /home/einfochips/project/afr_p_nucleo_wb55/vendors/st/STM32_Secure_Engine/Utilities/KeysAndImages/prepareimage.py
+No FW signing leaf cert
+No leaf cert
+No FW signing leaf cert
+No leaf cert
+number of segment :8
+0x8010400
+0x80451c8
+0x8045f91
+0x8045f9f
+0x8045fb0
+0x8045fc0
+0x8045fc0
+number of segment :6
+0x8000140
+0x8002518
+0x8003968
+0x800ac98
+0x800adb0
+Merging
+SBSFU Base = 0x8000000
+Writing header = 0x8010000
+APPLI Base = 0x8010200
+Writing to /home/einfochips/project/afr_p_nucleo_wb55/projects/st/p_nucleo_wb55/STM32CubeIDE/STM32WB55RG_Nucleo_AFR_demo/../../../../../build/SBSFU_aws_demos.bin 286656
+python /home/einfochips/project/afr_p_nucleo_wb55/vendors/st/STM32_Secure_Engine/Utilities/KeysAndImages/prepareimage.py
+No FW signing leaf cert
+No leaf cert
+No FW signing leaf cert
+No leaf cert
+number of segment :8
+0x8010400
+0x8046240
+0x8047009
+0x8047017
+0x8047028
+0x8047030
+0x8047030
+number of segment :6
+0x8000140
+0x8002518
+0x8003968
+0x800ac98
+0x800adb0
+Merging
+SBSFU Base = 0x8000000
+Writing header = 0x8010000
+APPLI Base = 0x8010200
+Writing to /home/einfochips/project/afr_p_nucleo_wb55/projects/st/p_nucleo_wb55/STM32CubeIDE/STM32WB55RG_Nucleo_AFR_demo/../../../../../build/SBSFU_aws_demos.bin 290864
+python /home/einfochips/project/afr_p_nucleo_wb55/vendors/st/STM32_Secure_Engine/Utilities/KeysAndImages/prepareimage.py
+No FW signing leaf cert
+No leaf cert
+No FW signing leaf cert
+No leaf cert
+number of segment :8
+0x8010400
+0x8045388
+0x8046151
+0x804615f
+0x8046170
+0x8046180
+0x8046180
+number of segment :6
+0x8000140
+0x8002518
+0x8003968
+0x800ac98
+0x800adb0
+Merging
+SBSFU Base = 0x8000000
+Writing header = 0x8010000
+APPLI Base = 0x8010200
+Writing to /home/einfochips/project/afr_p_nucleo_wb55/projects/st/p_nucleo_wb55/STM32CubeIDE/STM32WB55RG_Nucleo_AFR_demo/../../../../../build/SBSFU_aws_demos.bin 287104
+python /home/einfochips/project/afr_p_nucleo_wb55/vendors/st/STM32_Secure_Engine/Utilities/KeysAndImages/prepareimage.py
+No FW signing leaf cert
+No leaf cert
+No FW signing leaf cert
+No leaf cert
+number of segment :8
+0x8010400
+0x8045378
+0x8046141
+0x804614f
+0x8046160
+0x8046170
+0x8046170
+number of segment :6
+0x8000140
+0x8002518
+0x8003968
+0x800ac98
+0x800adb0
+Merging
+SBSFU Base = 0x8000000
+Writing header = 0x8010000
+APPLI Base = 0x8010200
+Writing to /home/einfochips/project/afr_p_nucleo_wb55/projects/st/p_nucleo_wb55/STM32CubeIDE/STM32WB55RG_Nucleo_AFR_demo/../../../../../build/SBSFU_aws_demos.bin 287088
+python /home/einfochips/project/afr_p_nucleo_wb55/vendors/st/STM32_Secure_Engine/Utilities/KeysAndImages/prepareimage.py
+No FW signing leaf cert
+No leaf cert
+No FW signing leaf cert
+No leaf cert
+number of segment :8
+0x8010400
+0x8045570
+0x8046339
+0x8046347
+0x8046358
+0x8046360
+0x8046360
+number of segment :6
+0x8000140
+0x8002518
+0x8003968
+0x800ac98
+0x800adb0
+Merging
+SBSFU Base = 0x8000000
+Writing header = 0x8010000
+APPLI Base = 0x8010200
+Writing to /home/einfochips/project/afr_p_nucleo_wb55/projects/st/p_nucleo_wb55/STM32CubeIDE/STM32WB55RG_Nucleo_AFR_demo/../../../../../build/SBSFU_aws_demos.bin 287584
+python /home/einfochips/project/afr_p_nucleo_wb55/vendors/st/STM32_Secure_Engine/Utilities/KeysAndImages/prepareimage.py
+No FW signing leaf cert
+No leaf cert
+No FW signing leaf cert
+No leaf cert
+number of segment :8
+0x8010400
+0x8045570
+0x8046339
+0x8046347
+0x8046358
+0x8046360
+0x8046360
+number of segment :6
+0x8000140
+0x8002518
+0x8003968
+0x800ac90
+0x800ada8
+Merging
+SBSFU Base = 0x8000000
+Writing header = 0x8010000
+APPLI Base = 0x8010200
+Writing to /home/einfochips/project/afr_p_nucleo_wb55/projects/st/p_nucleo_wb55/STM32CubeIDE/STM32WB55RG_Nucleo_AFR_demo/../../../../../build/SBSFU_aws_demos.bin 287584
+python /home/einfochips/project/afr_p_nucleo_wb55/vendors/st/STM32_Secure_Engine/Utilities/KeysAndImages/prepareimage.py
+No FW signing leaf cert
+No leaf cert
+No FW signing leaf cert
+No leaf cert
+number of segment :8
+0x8010400
+0x8045570
+0x8046339
+0x8046347
+0x8046358
+0x8046360
+0x8046360
+number of segment :6
+0x8000140
+0x8002518
+0x8003968
+0x800ac90
+0x800ada8
+Merging
+SBSFU Base = 0x8000000
+Writing header = 0x8010000
+APPLI Base = 0x8010200
+Writing to /home/einfochips/project/afr_p_nucleo_wb55/projects/st/p_nucleo_wb55/STM32CubeIDE/STM32WB55RG_Nucleo_AFR_demo/../../../../../build/SBSFU_aws_demos.bin 287584
+python /home/einfochips/project/afr_p_nucleo_wb55/vendors/st/STM32_Secure_Engine/Utilities/KeysAndImages/prepareimage.py
+No FW signing leaf cert
+No leaf cert
+No FW signing leaf cert
+No leaf cert
+number of segment :8
+0x8010400
+0x803ff10
+0x8040901
+0x804090f
+0x8040920
+0x8040930
+0x8040930
+number of segment :6
+0x8000140
+0x8002518
+0x8003968
+0x800ac90
+0x800ada8
+Merging
+SBSFU Base = 0x8000000
+Writing header = 0x8010000
+APPLI Base = 0x8010200
+Writing to /home/einfochips/project/afr_p_nucleo_wb55/projects/st/p_nucleo_wb55/STM32CubeIDE/STM32WB55RG_Nucleo_AFR_demo/../../../../../build/SBSFU_aws_demos.bin 264496
+python /home/einfochips/project/afr_p_nucleo_wb55/vendors/st/STM32_Secure_Engine/Utilities/KeysAndImages/prepareimage.py
+No FW signing leaf cert
+No leaf cert
+No FW signing leaf cert
+No leaf cert
+number of segment :8
+0x8010400
+0x803ffe0
+0x80409d1
+0x80409df
+0x80409f0
+0x8040a00
+0x8040a00
+number of segment :6
+0x8000140
+0x8002518
+0x8003968
+0x800ac90
+0x800ada8
+Merging
+SBSFU Base = 0x8000000
+Writing header = 0x8010000
+APPLI Base = 0x8010200
+Writing to /home/einfochips/project/afr_p_nucleo_wb55/projects/st/p_nucleo_wb55/STM32CubeIDE/STM32WB55RG_Nucleo_AFR_demo/../../../../../build/SBSFU_aws_demos.bin 264704
+python /home/einfochips/project/afr_p_nucleo_wb55/vendors/st/STM32_Secure_Engine/Utilities/KeysAndImages/prepareimage.py
+No FW signing leaf cert
+No leaf cert
+No FW signing leaf cert
+No leaf cert
+number of segment :8
+0x8010400
+0x803ffe8
+0x80409d9
+0x80409e7
+0x80409f8
+0x8040a00
+0x8040a00
+number of segment :6
+0x8000140
+0x8002518
+0x8003968
+0x800ac90
+0x800ada8
+Merging
+SBSFU Base = 0x8000000
+Writing header = 0x8010000
+APPLI Base = 0x8010200
+Writing to /home/einfochips/project/afr_p_nucleo_wb55/projects/st/p_nucleo_wb55/STM32CubeIDE/STM32WB55RG_Nucleo_AFR_demo/../../../../../build/SBSFU_aws_demos.bin 264704
+python /home/einfochips/project/afr_p_nucleo_wb55/vendors/st/STM32_Secure_Engine/Utilities/KeysAndImages/prepareimage.py
+No FW signing leaf cert
+No leaf cert
+No FW signing leaf cert
+No leaf cert
+number of segment :8
+0x8010400
+0x803ffe8
+0x80409d9
+0x80409e7
+0x80409f8
+0x8040a00
+0x8040a00
+number of segment :6
+0x8000140
+0x8002518
+0x8003968
+0x800ac90
+0x800ada8
+Merging
+SBSFU Base = 0x8000000
+Writing header = 0x8010000
+APPLI Base = 0x8010200
+Writing to /home/einfochips/project/afr_p_nucleo_wb55/projects/st/p_nucleo_wb55/STM32CubeIDE/STM32WB55RG_Nucleo_AFR_demo/../../../../../build/SBSFU_aws_demos.bin 264704
+python /home/einfochips/project/afr_p_nucleo_wb55/vendors/st/STM32_Secure_Engine/Utilities/KeysAndImages/prepareimage.py
+No FW signing leaf cert
+No leaf cert
+No FW signing leaf cert
+No leaf cert
+number of segment :8
+0x8010400
+0x803fff0
+0x80409e1
+0x80409ef
+0x8040a00
+0x8040a10
+0x8040a10
+number of segment :6
+0x8000140
+0x8002518
+0x8003968
+0x800ac90
+0x800ada8
+Merging
+SBSFU Base = 0x8000000
+Writing header = 0x8010000
+APPLI Base = 0x8010200
+Writing to /home/einfochips/project/afr_p_nucleo_wb55/projects/st/p_nucleo_wb55/STM32CubeIDE/STM32WB55RG_Nucleo_AFR_demo/../../../../../build/SBSFU_aws_demos.bin 264720
+python /home/einfochips/project/afr_p_nucleo_wb55/vendors/st/STM32_Secure_Engine/Utilities/KeysAndImages/prepareimage.py
+No FW signing leaf cert
+No leaf cert
+No FW signing leaf cert
+No leaf cert
+number of segment :8
+0x8010400
+0x8040000
+0x80409f1
+0x80409ff
+0x8040a10
+0x8040a20
+0x8040a20
+number of segment :6
+0x8000140
+0x8002518
+0x8003968
+0x800ac90
+0x800ada8
+Merging
+SBSFU Base = 0x8000000
+Writing header = 0x8010000
+APPLI Base = 0x8010200
+Writing to /home/einfochips/project/afr_p_nucleo_wb55/projects/st/p_nucleo_wb55/STM32CubeIDE/STM32WB55RG_Nucleo_AFR_demo/../../../../../build/SBSFU_aws_demos.bin 264736
+python /home/einfochips/project/afr_p_nucleo_wb55/vendors/st/STM32_Secure_Engine/Utilities/KeysAndImages/prepareimage.py
+No FW signing leaf cert
+No leaf cert
+No FW signing leaf cert
+No leaf cert
+number of segment :8
+0x8010400
+0x8040000
+0x80409f1
+0x80409ff
+0x8040a10
+0x8040a20
+0x8040a20
+number of segment :6
+0x8000140
+0x8002518
+0x8003968
+0x800ac90
+0x800ada8
+Merging
+SBSFU Base = 0x8000000
+Writing header = 0x8010000
+APPLI Base = 0x8010200
+Writing to /home/einfochips/project/afr_p_nucleo_wb55/projects/st/p_nucleo_wb55/STM32CubeIDE/STM32WB55RG_Nucleo_AFR_demo/../../../../../build/SBSFU_aws_demos.bin 264736
+python /home/einfochips/project/afr_p_nucleo_wb55/vendors/st/STM32_Secure_Engine/Utilities/KeysAndImages/prepareimage.py
+No FW signing leaf cert
+No leaf cert
+No FW signing leaf cert
+No leaf cert
+number of segment :8
+0x8010400
+0x8040000
+0x80409f1
+0x80409ff
+0x8040a10
+0x8040a20
+0x8040a20
+number of segment :6
+0x8000140
+0x8002518
+0x8003968
+0x800ac90
+0x800ada8
+Merging
+SBSFU Base = 0x8000000
+Writing header = 0x8010000
+APPLI Base = 0x8010200
+Writing to /home/einfochips/project/afr_p_nucleo_wb55/projects/st/p_nucleo_wb55/STM32CubeIDE/STM32WB55RG_Nucleo_AFR_demo/../../../../../build/SBSFU_aws_demos.bin 264736
+python /home/einfochips/project/afr_p_nucleo_wb55/vendors/st/STM32_Secure_Engine/Utilities/KeysAndImages/prepareimage.py
+No FW signing leaf cert
+No leaf cert
+No FW signing leaf cert
+No leaf cert
+number of segment :8
+0x8010400
+0x8040038
+0x8040a29
+0x8040a37
+0x8040a48
+0x8040a50
+0x8040a50
+number of segment :6
+0x8000140
+0x8002518
+0x8003968
+0x800ac90
+0x800ada8
+Merging
+SBSFU Base = 0x8000000
+Writing header = 0x8010000
+APPLI Base = 0x8010200
+Writing to /home/einfochips/project/afr_p_nucleo_wb55/projects/st/p_nucleo_wb55/STM32CubeIDE/STM32WB55RG_Nucleo_AFR_demo/../../../../../build/SBSFU_aws_demos.bin 264784
+python /home/einfochips/project/afr_p_nucleo_wb55/vendors/st/STM32_Secure_Engine/Utilities/KeysAndImages/prepareimage.py
+No FW signing leaf cert
+No leaf cert
+No FW signing leaf cert
+No leaf cert
+number of segment :8
+0x8010400
+0x8040038
+0x8040a29
+0x8040a37
+0x8040a48
+0x8040a50
+0x8040a50
+number of segment :6
+0x8000140
+0x8002518
+0x8003968
+0x800ac90
+0x800ada8
+Merging
+SBSFU Base = 0x8000000
+Writing header = 0x8010000
+APPLI Base = 0x8010200
+Writing to /home/einfochips/project/afr_p_nucleo_wb55/projects/st/p_nucleo_wb55/STM32CubeIDE/STM32WB55RG_Nucleo_AFR_demo/../../../../../build/SBSFU_aws_demos.bin 264784
+python /home/einfochips/project/afr_p_nucleo_wb55/vendors/st/STM32_Secure_Engine/Utilities/KeysAndImages/prepareimage.py
+No FW signing leaf cert
+No leaf cert
+No FW signing leaf cert
+No leaf cert
+number of segment :8
+0x8010400
+0x8040038
+0x8040a29
+0x8040a37
+0x8040a48
+0x8040a50
+0x8040a50
+number of segment :6
+0x8000140
+0x8002518
+0x8003968
+0x800ac90
+0x800ada8
+Merging
+SBSFU Base = 0x8000000
+Writing header = 0x8010000
+APPLI Base = 0x8010200
+Writing to /home/einfochips/project/afr_p_nucleo_wb55/projects/st/p_nucleo_wb55/STM32CubeIDE/STM32WB55RG_Nucleo_AFR_demo/../../../../../build/SBSFU_aws_demos.bin 264784
+python /home/einfochips/project/afr_p_nucleo_wb55/vendors/st/STM32_Secure_Engine/Utilities/KeysAndImages/prepareimage.py
+No FW signing leaf cert
+No leaf cert
+No FW signing leaf cert
+No leaf cert
+number of segment :8
+0x8010400
+0x8040038
+0x8040a29
+0x8040a37
+0x8040a48
+0x8040a50
+0x8040a50
+number of segment :6
+0x8000140
+0x8002518
+0x8003968
+0x800ac90
+0x800ada8
+Merging
+SBSFU Base = 0x8000000
+Writing header = 0x8010000
+APPLI Base = 0x8010200
+Writing to /home/einfochips/project/afr_p_nucleo_wb55/projects/st/p_nucleo_wb55/STM32CubeIDE/STM32WB55RG_Nucleo_AFR_demo/../../../../../build/SBSFU_aws_demos.bin 264784
+python /home/einfochips/project/afr_p_nucleo_wb55/vendors/st/STM32_Secure_Engine/Utilities/KeysAndImages/prepareimage.py
+No FW signing leaf cert
+No leaf cert
+No FW signing leaf cert
+No leaf cert
+number of segment :8
+0x8010400
+0x80400f0
+0x8040ae1
+0x8040aef
+0x8040b00
+0x8040b10
+0x8040b10
+number of segment :6
+0x8000140
+0x8002518
+0x8003968
+0x800ac90
+0x800ada8
+Merging
+SBSFU Base = 0x8000000
+Writing header = 0x8010000
+APPLI Base = 0x8010200
+Writing to /home/einfochips/project/afr_p_nucleo_wb55/projects/st/p_nucleo_wb55/STM32CubeIDE/STM32WB55RG_Nucleo_AFR_demo/../../../../../build/SBSFU_aws_demos.bin 264976
+python /home/einfochips/project/afr_p_nucleo_wb55/vendors/st/STM32_Secure_Engine/Utilities/KeysAndImages/prepareimage.py
+No FW signing leaf cert
+No leaf cert
+No FW signing leaf cert
+No leaf cert
+number of segment :8
+0x8010400
+0x8045708
+0x80464d1
+0x80464df
+0x80464f0
+0x8046500
+0x8046500
+number of segment :6
+0x8000140
+0x8002518
+0x8003968
+0x800ac90
+0x800ada8
+Merging
+SBSFU Base = 0x8000000
+Writing header = 0x8010000
+APPLI Base = 0x8010200
+Writing to /home/einfochips/project/afr_p_nucleo_wb55/projects/st/p_nucleo_wb55/STM32CubeIDE/STM32WB55RG_Nucleo_AFR_demo/../../../../../build/SBSFU_aws_demos.bin 288000
+python /home/einfochips/project/afr_p_nucleo_wb55/vendors/st/STM32_Secure_Engine/Utilities/KeysAndImages/prepareimage.py
+No FW signing leaf cert
+No leaf cert
+No FW signing leaf cert
+No leaf cert
+number of segment :8
+0x8010400
+0x80400f0
+0x8040ae1
+0x8040aef
+0x8040b00
+0x8040b10
+0x8040b10
+number of segment :6
+0x8000140
+0x8002518
+0x8003968
+0x800ac90
+0x800ada8
+Merging
+SBSFU Base = 0x8000000
+Writing header = 0x8010000
+APPLI Base = 0x8010200
+Writing to /home/einfochips/project/afr_p_nucleo_wb55/projects/st/p_nucleo_wb55/STM32CubeIDE/STM32WB55RG_Nucleo_AFR_demo/../../../../../build/SBSFU_aws_demos.bin 264976
+python /home/einfochips/project/afr_p_nucleo_wb55/vendors/st/STM32_Secure_Engine/Utilities/KeysAndImages/prepareimage.py
+No FW signing leaf cert
+No leaf cert
+No FW signing leaf cert
+No leaf cert
+number of segment :8
+0x8010400
+0x8045708
+0x80464d1
+0x80464df
+0x80464f0
+0x8046500
+0x8046500
+number of segment :6
+0x8000140
+0x8002518
+0x8003968
+0x800ac90
+0x800ada8
+Merging
+SBSFU Base = 0x8000000
+Writing header = 0x8010000
+APPLI Base = 0x8010200
+Writing to /home/einfochips/project/afr_p_nucleo_wb55/projects/st/p_nucleo_wb55/STM32CubeIDE/STM32WB55RG_Nucleo_AFR_demo/../../../../../build/SBSFU_aws_demos.bin 288000
+python /home/einfochips/project/afr_p_nucleo_wb55/vendors/st/STM32_Secure_Engine/Utilities/KeysAndImages/prepareimage.py
+No FW signing leaf cert
+No leaf cert
+No FW signing leaf cert
+No leaf cert
+number of segment :8
+0x8010400
+0x8045708
+0x80464d1
+0x80464df
+0x80464f0
+0x8046500
+0x8046500
+number of segment :6
+0x8000140
+0x8002518
+0x8003968
+0x800ac90
+0x800ada8
+Merging
+SBSFU Base = 0x8000000
+Writing header = 0x8010000
+APPLI Base = 0x8010200
+Writing to /home/einfochips/project/afr_p_nucleo_wb55/projects/st/p_nucleo_wb55/STM32CubeIDE/STM32WB55RG_Nucleo_AFR_demo/../../../../../build/SBSFU_aws_demos.bin 288000
+python /home/einfochips/project/afr_p_nucleo_wb55/vendors/st/STM32_Secure_Engine/Utilities/KeysAndImages/prepareimage.py
+No FW signing leaf cert
+No leaf cert
+No FW signing leaf cert
+No leaf cert
+number of segment :8
+0x8010400
+0x80400f0
+0x8040ae1
+0x8040aef
+0x8040b00
+0x8040b10
+0x8040b10
+number of segment :6
+0x8000140
+0x8002518
+0x8003968
+0x800ac90
+0x800ada8
+Merging
+SBSFU Base = 0x8000000
+Writing header = 0x8010000
+APPLI Base = 0x8010200
+Writing to /home/einfochips/project/afr_p_nucleo_wb55/projects/st/p_nucleo_wb55/STM32CubeIDE/STM32WB55RG_Nucleo_AFR_demo/../../../../../build/SBSFU_aws_demos.bin 264976
+python /home/einfochips/project/afr_p_nucleo_wb55/vendors/st/STM32_Secure_Engine/Utilities/KeysAndImages/prepareimage.py
+No FW signing leaf cert
+No leaf cert
+No FW signing leaf cert
+No leaf cert
+number of segment :8
+0x8010400
+0x80400f0
+0x8040ae1
+0x8040aef
+0x8040b00
+0x8040b10
+0x8040b10
+number of segment :6
+0x8000140
+0x8002518
+0x8003968
+0x800ac90
+0x800ada8
+Merging
+SBSFU Base = 0x8000000
+Writing header = 0x8010000
+APPLI Base = 0x8010200
+Writing to /home/einfochips/project/afr_p_nucleo_wb55/projects/st/p_nucleo_wb55/STM32CubeIDE/STM32WB55RG_Nucleo_AFR_demo/../../../../../build/SBSFU_aws_demos.bin 264976
+python /home/einfochips/project/afr_p_nucleo_wb55/vendors/st/STM32_Secure_Engine/Utilities/KeysAndImages/prepareimage.py
+No FW signing leaf cert
+No leaf cert
+No FW signing leaf cert
+No leaf cert
+number of segment :8
+0x8010400
+0x8040130
+0x8040b21
+0x8040b2f
+0x8040b40
+0x8040b50
+0x8040b50
+number of segment :6
+0x8000140
+0x8002518
+0x8003968
+0x800ac90
+0x800ada8
+Merging
+SBSFU Base = 0x8000000
+Writing header = 0x8010000
+APPLI Base = 0x8010200
+Writing to /home/einfochips/project/afr_p_nucleo_wb55/projects/st/p_nucleo_wb55/STM32CubeIDE/STM32WB55RG_Nucleo_AFR_demo/../../../../../build/SBSFU_aws_demos.bin 265040
+python /home/einfochips/project/afr_p_nucleo_wb55/vendors/st/STM32_Secure_Engine/Utilities/KeysAndImages/prepareimage.py
+No FW signing leaf cert
+No leaf cert
+No FW signing leaf cert
+No leaf cert
+number of segment :8
+0x8010400
+0x8045748
+0x8046511
+0x804651f
+0x8046530
+0x8046540
+0x8046540
+number of segment :6
+0x8000140
+0x8002518
+0x8003968
+0x800ac90
+0x800ada8
+Merging
+SBSFU Base = 0x8000000
+Writing header = 0x8010000
+APPLI Base = 0x8010200
+Writing to /home/einfochips/project/afr_p_nucleo_wb55/projects/st/p_nucleo_wb55/STM32CubeIDE/STM32WB55RG_Nucleo_AFR_demo/../../../../../build/SBSFU_aws_demos.bin 288064
+python /home/einfochips/project/afr_p_nucleo_wb55/vendors/st/STM32_Secure_Engine/Utilities/KeysAndImages/prepareimage.py
+No FW signing leaf cert
+No leaf cert
+No FW signing leaf cert
+No leaf cert
+number of segment :8
+0x8010400
+0x8045768
+0x8046531
+0x804653f
+0x8046550
+0x8046560
+0x8046560
+number of segment :6
+0x8000140
+0x8002518
+0x8003968
+0x800ac90
+0x800ada8
+Merging
+SBSFU Base = 0x8000000
+Writing header = 0x8010000
+APPLI Base = 0x8010200
+Writing to /home/einfochips/project/afr_p_nucleo_wb55/projects/st/p_nucleo_wb55/STM32CubeIDE/STM32WB55RG_Nucleo_AFR_demo/../../../../../build/SBSFU_aws_demos.bin 288096
+python /home/einfochips/project/afr_p_nucleo_wb55/vendors/st/STM32_Secure_Engine/Utilities/KeysAndImages/prepareimage.py
+No FW signing leaf cert
+No leaf cert
+No FW signing leaf cert
+No leaf cert
+number of segment :8
+0x8010400
+0x8045798
+0x8046561
+0x804656f
+0x8046580
+0x8046590
+0x8046590
+number of segment :6
+0x8000140
+0x8002518
+0x8003968
+0x800ac90
+0x800ada8
+Merging
+SBSFU Base = 0x8000000
+Writing header = 0x8010000
+APPLI Base = 0x8010200
+Writing to /home/einfochips/project/afr_p_nucleo_wb55/projects/st/p_nucleo_wb55/STM32CubeIDE/STM32WB55RG_Nucleo_AFR_demo/../../../../../build/SBSFU_aws_demos.bin 288144
+python /home/einfochips/project/STM32_SSK_AWS_Rel01/vendors/st/STM32_Secure_Engine/Utilities/KeysAndImages/prepareimage.py
+No FW signing leaf cert
+No leaf cert
+No FW signing leaf cert
+No leaf cert
+number of segment :8
+0x8010400
+0x8045798
+0x8046561
+0x804656f
+0x8046580
+0x8046590
+0x8046590
+number of segment :6
+0x8000140
+0x8002518
+0x8003968
+0x800ac90
+0x800ada8
+Merging
+SBSFU Base = 0x8000000
+Writing header = 0x8010000
+APPLI Base = 0x8010200
+Writing to /home/einfochips/project/STM32_SSK_AWS_Rel01/projects/st/p_nucleo_wb55/STM32CubeIDE/STM32WB55RG_Nucleo_AFR_demo/../../../../../build/SBSFU_aws_demos.bin 288144
+python /home/einfochips/project/STM32_SSK_AWS_Rel01/vendors/st/STM32_Secure_Engine/Utilities/KeysAndImages/prepareimage.py
+No FW signing leaf cert
+No leaf cert
+No FW signing leaf cert
+No leaf cert
+number of segment :8
+0x8010400
+0x8045758
+0x8046521
+0x804652f
+0x8046540
+0x8046550
+0x8046550
+number of segment :6
+0x8000140
+0x8002518
+0x8003968
+0x800ac90
+0x800ada8
+Merging
+SBSFU Base = 0x8000000
+Writing header = 0x8010000
+APPLI Base = 0x8010200
+Writing to /home/einfochips/project/STM32_SSK_AWS_Rel01/projects/st/p_nucleo_wb55/STM32CubeIDE/STM32WB55RG_Nucleo_AFR_demo/../../../../../build/SBSFU_aws_demos.bin 288080
+python /home/einfochips/project/STM32_SSK_AWS_Rel01/vendors/st/STM32_Secure_Engine/Utilities/KeysAndImages/prepareimage.py
+No FW signing leaf cert
+No leaf cert
+No FW signing leaf cert
+No leaf cert
+number of segment :8
+0x8010400
+0x8045770
+0x8046539
+0x8046547
+0x8046558
+0x8046560
+0x8046560
+number of segment :6
+0x8000140
+0x8002518
+0x8003968
+0x800ac90
+0x800ada8
+Merging
+SBSFU Base = 0x8000000
+Writing header = 0x8010000
+APPLI Base = 0x8010200
+Writing to /home/einfochips/project/STM32_SSK_AWS_Rel01/projects/st/p_nucleo_wb55/STM32CubeIDE/STM32WB55RG_Nucleo_AFR_demo/../../../../../build/SBSFU_aws_demos.bin 288096
+python /home/einfochips/project/STM32_SSK_AWS_Rel01/vendors/st/STM32_Secure_Engine/Utilities/KeysAndImages/prepareimage.py
+No FW signing leaf cert
+No leaf cert
+No FW signing leaf cert
+No leaf cert
+number of segment :8
+0x8010400
+0x8045770
+0x8046539
+0x8046547
+0x8046558
+0x8046560
+0x8046560
+number of segment :6
+0x8000140
+0x8002518
+0x8003968
+0x800ac90
+0x800ada8
+Merging
+SBSFU Base = 0x8000000
+Writing header = 0x8010000
+APPLI Base = 0x8010200
+Writing to /home/einfochips/project/STM32_SSK_AWS_Rel01/projects/st/p_nucleo_wb55/STM32CubeIDE/STM32WB55RG_Nucleo_AFR_demo/../../../../../build/SBSFU_aws_demos.bin 288096
+python /home/einfochips/project/STM32_SSK_AWS_Rel01/vendors/st/STM32_Secure_Engine/Utilities/KeysAndImages/prepareimage.py
+No FW signing leaf cert
+No leaf cert
+No FW signing leaf cert
+No leaf cert
+number of segment :8
+0x8010400
+0x803a9b0
+0x803b761
+0x803b76f
+0x803b780
+0x803b790
+0x803b790
+number of segment :6
+0x8000140
+0x8002518
+0x8003968
+0x800ac90
+0x800ada8
+Merging
+SBSFU Base = 0x8000000
+Writing header = 0x8010000
+APPLI Base = 0x8010200
+Writing to /home/einfochips/project/STM32_SSK_AWS_Rel01/projects/st/p_nucleo_wb55/STM32CubeIDE/STM32WB55RG_Nucleo_AFR_demo/../../../../../build/SBSFU_aws_demos.bin 243600
+python /home/einfochips/project/STM32_SSK_AWS_Rel01/vendors/st/STM32_Secure_Engine/Utilities/KeysAndImages/prepareimage.py
+No FW signing leaf cert
+No leaf cert
+No FW signing leaf cert
+No leaf cert
+number of segment :8
+0x8010400
+0x8045770
+0x8046539
+0x8046547
+0x8046558
+0x8046560
+0x8046560
+number of segment :6
+0x8000140
+0x8002518
+0x8003968
+0x800ac90
+0x800ada8
+Merging
+SBSFU Base = 0x8000000
+Writing header = 0x8010000
+APPLI Base = 0x8010200
+Writing to /home/einfochips/project/STM32_SSK_AWS_Rel01/projects/st/p_nucleo_wb55/STM32CubeIDE/STM32WB55RG_Nucleo_AFR_demo/../../../../../build/SBSFU_aws_demos.bin 288096
+python /home/einfochips/project/STM32_SSK_AWS_Rel01/vendors/st/STM32_Secure_Engine/Utilities/KeysAndImages/prepareimage.py
+No FW signing leaf cert
+No leaf cert
+No FW signing leaf cert
+No leaf cert
+number of segment :8
+0x8010400
+0x8045770
+0x8046539
+0x8046547
+0x8046558
+0x8046560
+0x8046560
+number of segment :6
+0x8000140
+0x8002518
+0x8003968
+0x800ac90
+0x800ada8
+Merging
+SBSFU Base = 0x8000000
+Writing header = 0x8010000
+APPLI Base = 0x8010200
+Writing to /home/einfochips/project/STM32_SSK_AWS_Rel01/projects/st/p_nucleo_wb55/STM32CubeIDE/STM32WB55RG_Nucleo_AFR_demo/../../../../../build/SBSFU_aws_demos.bin 288096
+python /home/einfochips/project/STM32_SSK_AWS_Rel01/vendors/st/STM32_Secure_Engine/Utilities/KeysAndImages/prepareimage.py
+No FW signing leaf cert
+No leaf cert
+No FW signing leaf cert
+No leaf cert
+number of segment :8
+0x8010400
+0x8045770
+0x8046539
+0x8046547
+0x8046558
+0x8046560
+0x8046560
+number of segment :6
+0x8000140
+0x8002518
+0x8003968
+0x800ac90
+0x800ada8
+Merging
+SBSFU Base = 0x8000000
+Writing header = 0x8010000
+APPLI Base = 0x8010200
+Writing to /home/einfochips/project/STM32_SSK_AWS_Rel01/projects/st/p_nucleo_wb55/STM32CubeIDE/STM32WB55RG_Nucleo_AFR_demo/../../../../../build/SBSFU_aws_demos.bin 288096
+python /home/einfochips/project/STM32_SSK_AWS_Rel01/vendors/st/STM32_Secure_Engine/Utilities/KeysAndImages/prepareimage.py
+No FW signing leaf cert
+No leaf cert
+No FW signing leaf cert
+No leaf cert
+number of segment :8
+0x8010400
+0x8045700
+0x80464c9
+0x80464d7
+0x80464e8
+0x80464f0
+0x80464f0
+number of segment :6
+0x8000140
+0x8002518
+0x8003968
+0x800ac90
+0x800ada8
+Merging
+SBSFU Base = 0x8000000
+Writing header = 0x8010000
+APPLI Base = 0x8010200
+Writing to /home/einfochips/project/STM32_SSK_AWS_Rel01/projects/st/p_nucleo_wb55/STM32CubeIDE/STM32WB55RG_Nucleo_AFR_demo/../../../../../build/SBSFU_aws_demos.bin 287984
+python /home/einfochips/project/STM32_SSK_AWS_Rel01/vendors/st/STM32_Secure_Engine/Utilities/KeysAndImages/prepareimage.py
+No FW signing leaf cert
+No leaf cert
+No FW signing leaf cert
+No leaf cert
+number of segment :8
+0x8010400
+0x80400e8
+0x8040ad9
+0x8040ae7
+0x8040af8
+0x8040b00
+0x8040b00
+number of segment :6
+0x8000140
+0x8002518
+0x8003968
+0x800ac90
+0x800ada8
+Merging
+SBSFU Base = 0x8000000
+Writing header = 0x8010000
+APPLI Base = 0x8010200
+Writing to /home/einfochips/project/STM32_SSK_AWS_Rel01/projects/st/p_nucleo_wb55/STM32CubeIDE/STM32WB55RG_Nucleo_AFR_demo/../../../../../build/SBSFU_aws_demos.bin 264960
+python /home/einfochips/project/STM32_SSK_AWS_Rel01/vendors/st/STM32_Secure_Engine/Utilities/KeysAndImages/prepareimage.py
+No FW signing leaf cert
+No leaf cert
+No FW signing leaf cert
+No leaf cert
+number of segment :8
+0x8010400
+0x80400e8
+0x8040ad9
+0x8040ae7
+0x8040af8
+0x8040b00
+0x8040b00
+number of segment :6
+0x8000140
+0x8002518
+0x8003968
+0x800ac90
+0x800ada8
+Merging
+SBSFU Base = 0x8000000
+Writing header = 0x8010000
+APPLI Base = 0x8010200
+Writing to /home/einfochips/project/STM32_SSK_AWS_Rel01/projects/st/p_nucleo_wb55/STM32CubeIDE/STM32WB55RG_Nucleo_AFR_demo/../../../../../build/SBSFU_aws_demos.bin 264960
+python /home/einfochips/project/STM32_SSK_AWS_Rel01/vendors/st/STM32_Secure_Engine/Utilities/KeysAndImages/prepareimage.py
+No FW signing leaf cert
+No leaf cert
+No FW signing leaf cert
+No leaf cert
+number of segment :8
+0x8010400
+0x80400e8
+0x8040ad9
+0x8040ae7
+0x8040af8
+0x8040b00
+0x8040b00
+number of segment :6
+0x8000140
+0x8002518
+0x8003968
+0x800ac90
+0x800ada8
+Merging
+SBSFU Base = 0x8000000
+Writing header = 0x8010000
+APPLI Base = 0x8010200
+Writing to /home/einfochips/project/STM32_SSK_AWS_Rel01/projects/st/p_nucleo_wb55/STM32CubeIDE/STM32WB55RG_Nucleo_AFR_demo/../../../../../build/SBSFU_aws_demos.bin 264960
+python /home/einfochips/project/STM32_SSK_AWS_Rel01/vendors/st/STM32_Secure_Engine/Utilities/KeysAndImages/prepareimage.py
+No FW signing leaf cert
+No leaf cert
+No FW signing leaf cert
+No leaf cert
+number of segment :8
+0x8010400
+0x80400e8
+0x8040ad9
+0x8040ae7
+0x8040af8
+0x8040b00
+0x8040b00
+number of segment :6
+0x8000140
+0x8002518
+0x8003968
+0x800ac90
+0x800ada8
+Merging
+SBSFU Base = 0x8000000
+Writing header = 0x8010000
+APPLI Base = 0x8010200
+Writing to /home/einfochips/project/STM32_SSK_AWS_Rel01/projects/st/p_nucleo_wb55/STM32CubeIDE/STM32WB55RG_Nucleo_AFR_demo/../../../../../build/SBSFU_aws_demos.bin 264960
+python /home/einfochips/project/STM32_SSK_AWS_Rel01/vendors/st/STM32_Secure_Engine/Utilities/KeysAndImages/prepareimage.py
+No FW signing leaf cert
+No leaf cert
+No FW signing leaf cert
+No leaf cert
+number of segment :8
+0x8010400
+0x80400e8
+0x8040ad9
+0x8040ae7
+0x8040af8
+0x8040b00
+0x8040b00
+number of segment :6
+0x8000140
+0x8002518
+0x8003968
+0x800ac90
+0x800ada8
+Merging
+SBSFU Base = 0x8000000
+Writing header = 0x8010000
+APPLI Base = 0x8010200
+Writing to /home/einfochips/project/STM32_SSK_AWS_Rel01/projects/st/p_nucleo_wb55/STM32CubeIDE/STM32WB55RG_Nucleo_AFR_demo/../../../../../build/SBSFU_aws_demos.bin 264960
+python /home/einfochips/project/STM32_SSK_AWS_Rel01/vendors/st/STM32_Secure_Engine/Utilities/KeysAndImages/prepareimage.py
+No FW signing leaf cert
+No leaf cert
+No FW signing leaf cert
+No leaf cert
+number of segment :8
+0x8010400
+0x80400e8
+0x8040ad9
+0x8040ae7
+0x8040af8
+0x8040b00
+0x8040b00
+number of segment :6
+0x8000140
+0x8002518
+0x8003968
+0x800ac90
+0x800ada8
+Merging
+SBSFU Base = 0x8000000
+Writing header = 0x8010000
+APPLI Base = 0x8010200
+Writing to /home/einfochips/project/STM32_SSK_AWS_Rel01/projects/st/p_nucleo_wb55/STM32CubeIDE/STM32WB55RG_Nucleo_AFR_demo/../../../../../build/SBSFU_aws_demos.bin 264960
+python /home/einfochips/project/STM32_SSK_AWS_Rel01/vendors/st/STM32_Secure_Engine/Utilities/KeysAndImages/prepareimage.py
+No FW signing leaf cert
+No leaf cert
+No FW signing leaf cert
+No leaf cert
+number of segment :8
+0x8010400
+0x80400e8
+0x8040ad9
+0x8040ae7
+0x8040af8
+0x8040b00
+0x8040b00
+number of segment :6
+0x8000140
+0x8002518
+0x8003968
+0x800ac90
+0x800ada8
+Merging
+SBSFU Base = 0x8000000
+Writing header = 0x8010000
+APPLI Base = 0x8010200
+Writing to /home/einfochips/project/STM32_SSK_AWS_Rel01/projects/st/p_nucleo_wb55/STM32CubeIDE/STM32WB55RG_Nucleo_AFR_demo/../../../../../build/SBSFU_aws_demos.bin 264960
+python /home/einfochips/project/STM32_SSK_AWS_Rel01/vendors/st/STM32_Secure_Engine/Utilities/KeysAndImages/prepareimage.py
+No FW signing leaf cert
+No leaf cert
+No FW signing leaf cert
+No leaf cert
+number of segment :8
+0x8010400
+0x8045700
+0x80464c9
+0x80464d7
+0x80464e8
+0x80464f0
+0x80464f0
+number of segment :6
+0x8000140
+0x8002518
+0x8003968
+0x800ac90
+0x800ada8
+Merging
+SBSFU Base = 0x8000000
+Writing header = 0x8010000
+APPLI Base = 0x8010200
+Writing to /home/einfochips/project/STM32_SSK_AWS_Rel01/projects/st/p_nucleo_wb55/STM32CubeIDE/STM32WB55RG_Nucleo_AFR_demo/../../../../../build/SBSFU_aws_demos.bin 287984
+python /home/einfochips/project/STM32_SSK_AWS_Rel01/vendors/st/STM32_Secure_Engine/Utilities/KeysAndImages/prepareimage.py
+No FW signing leaf cert
+No leaf cert
+No FW signing leaf cert
+No leaf cert
+number of segment :8
+0x8010400
+0x8045700
+0x80464c9
+0x80464d7
+0x80464e8
+0x80464f0
+0x80464f0
+number of segment :6
+0x8000140
+0x8002518
+0x8003968
+0x800ac90
+0x800ada8
+Merging
+SBSFU Base = 0x8000000
+Writing header = 0x8010000
+APPLI Base = 0x8010200
+Writing to /home/einfochips/project/STM32_SSK_AWS_Rel01/projects/st/p_nucleo_wb55/STM32CubeIDE/STM32WB55RG_Nucleo_AFR_demo/../../../../../build/SBSFU_aws_demos.bin 287984
+python /home/einfochips/Desktop/rel_01/SSK_SUIT_EVAL_STM32WB55_Rel01/Source_Code/STM32_SSK_AWS_Rel01/vendors/st/STM32_Secure_Engine/Utilities/KeysAndImages/prepareimage.py
+No FW signing leaf cert
+No leaf cert
+No FW signing leaf cert
+No leaf cert
+number of segment :8
+0x8010400
+0x8045760
+0x8046529
+0x8046537
+0x8046548
+0x8046550
+0x8046550
+number of segment :6
+0x8000140
+0x8002518
+0x8003968
+0x800acf0
+0x800ae08
+Merging
+SBSFU Base = 0x8000000
+Writing header = 0x8010000
+APPLI Base = 0x8010200
+Writing to /home/einfochips/Desktop/rel_01/SSK_SUIT_EVAL_STM32WB55_Rel01/Source_Code/STM32_SSK_AWS_Rel01/projects/st/p_nucleo_wb55/STM32CubeIDE/STM32WB55RG_Nucleo_AFR_demo/../../../../../build/SBSFU_aws_demos.bin 288080
+python /home/einfochips/Desktop/rel_01/SSK_SUIT_EVAL_STM32WB55_Rel01/Source_Code/STM32_SSK_AWS_Rel01/vendors/st/STM32_Secure_Engine/Utilities/KeysAndImages/prepareimage.py
+No FW signing leaf cert
+No leaf cert
+No FW signing leaf cert
+No leaf cert
+number of segment :8
+0x8010400
+0x8045760
+0x8046529
+0x8046537
+0x8046548
+0x8046550
+0x8046550
+number of segment :6
+0x8000140
+0x8002518
+0x8003968
+0x800acf0
+0x800ae08
+Merging
+SBSFU Base = 0x8000000
+Writing header = 0x8010000
+APPLI Base = 0x8010200
+Writing to /home/einfochips/Desktop/rel_01/SSK_SUIT_EVAL_STM32WB55_Rel01/Source_Code/STM32_SSK_AWS_Rel01/projects/st/p_nucleo_wb55/STM32CubeIDE/STM32WB55RG_Nucleo_AFR_demo/../../../../../build/SBSFU_aws_demos.bin 288080
+python /home/einfochips/Desktop/rel_01/SSK_SUIT_EVAL_STM32WB55_Rel01/Source_Code/STM32_SSK_AWS_Rel01/vendors/st/STM32_Secure_Engine/Utilities/KeysAndImages/prepareimage.py
+No FW signing leaf cert
+No leaf cert
+No FW signing leaf cert
+No leaf cert
+number of segment :8
+0x8010400
+0x8030ed8
+0x8031412
+0x8031420
+0x803142e
+0x8031430
+0x8031430
+number of segment :6
+0x8000140
+0x8002518
+0x8003968
+0x800acf0
+0x800ae08
+Merging
+SBSFU Base = 0x8000000
+Writing header = 0x8010000
+APPLI Base = 0x8010200
+Writing to /home/einfochips/Desktop/rel_01/SSK_SUIT_EVAL_STM32WB55_Rel01/Source_Code/STM32_SSK_AWS_Rel01/projects/st/p_nucleo_wb55/STM32CubeIDE/STM32WB55RG_Nucleo_AFR_tests/../../../../../build/SBSFU_aws_tests.bin 201776
+python /home/einfochips/Desktop/rel_01/SSK_SUIT_EVAL_STM32WB55_Rel01/Source_Code/STM32_SSK_AWS_Rel01/vendors/st/STM32_Secure_Engine/Utilities/KeysAndImages/prepareimage.py
+No FW signing leaf cert
+No leaf cert
+No FW signing leaf cert
+No leaf cert
+number of segment :8
+0x8010400
+0x8045760
+0x8046529
+0x8046537
+0x8046548
+0x8046550
+0x8046550
+number of segment :6
+0x8000140
+0x8002518
+0x8003968
+0x800acf0
+0x800ae08
+Merging
+SBSFU Base = 0x8000000
+Writing header = 0x8010000
+APPLI Base = 0x8010200
+Writing to /home/einfochips/Desktop/rel_01/SSK_SUIT_EVAL_STM32WB55_Rel01/Source_Code/STM32_SSK_AWS_Rel01/projects/st/p_nucleo_wb55/STM32CubeIDE/STM32WB55RG_Nucleo_AFR_demo/../../../../../build/SBSFU_aws_demos.bin 288080
+python /home/einfochips/Desktop/rel_01/SSK_SUIT_EVAL_STM32WB55_Rel01/Source_Code/STM32_SSK_AWS_Rel01/vendors/st/STM32_Secure_Engine/Utilities/KeysAndImages/prepareimage.py
+No FW signing leaf cert
+No leaf cert
+No FW signing leaf cert
+No leaf cert
+number of segment :8
+0x8010400
+0x8045760
+0x8046529
+0x8046537
+0x8046548
+0x8046550
+0x8046550
+number of segment :6
+0x8000140
+0x8002518
+0x8003968
+0x800acf0
+0x800ae08
+Merging
+SBSFU Base = 0x8000000
+Writing header = 0x8010000
+APPLI Base = 0x8010200
+Writing to /home/einfochips/Desktop/rel_01/SSK_SUIT_EVAL_STM32WB55_Rel01/Source_Code/STM32_SSK_AWS_Rel01/projects/st/p_nucleo_wb55/STM32CubeIDE/STM32WB55RG_Nucleo_AFR_demo/../../../../../build/SBSFU_aws_demos.bin 288080
+python /home/einfochips/Desktop/rel_01/SSK_SUIT_EVAL_STM32WB55_Rel01/Source_Code/STM32_SSK_AWS_Rel01/vendors/st/STM32_Secure_Engine/Utilities/KeysAndImages/prepareimage.py
+No FW signing leaf cert
+No leaf cert
+No FW signing leaf cert
+No leaf cert
+number of segment :8
+0x8010400
+0x8030ed8
+0x8031412
+0x8031420
+0x803142e
+0x8031430
+0x8031430
+number of segment :6
+0x8000140
+0x8002518
+0x8003968
+0x800acf0
+0x800ae08
+Merging
+SBSFU Base = 0x8000000
+Writing header = 0x8010000
+APPLI Base = 0x8010200
+Writing to /home/einfochips/Desktop/rel_01/SSK_SUIT_EVAL_STM32WB55_Rel01/Source_Code/STM32_SSK_AWS_Rel01/projects/st/p_nucleo_wb55/STM32CubeIDE/STM32WB55RG_Nucleo_AFR_tests/../../../../../build/SBSFU_aws_tests.bin 201776
+python /home/einfochips/Desktop/rel_01/SSK_SUIT_EVAL_STM32WB55_Rel01/Source_Code/STM32_SSK_AWS_Rel01/vendors/st/STM32_Secure_Engine/Utilities/KeysAndImages/prepareimage.py
+No FW signing leaf cert
+No leaf cert
+No FW signing leaf cert
+No leaf cert
+number of segment :8
+0x8010400
+0x8045760
+0x8046529
+0x8046537
+0x8046548
+0x8046550
+0x8046550
+number of segment :6
+0x8000140
+0x8002518
+0x8003968
+0x800acf0
+0x800ae08
+Merging
+SBSFU Base = 0x8000000
+Writing header = 0x8010000
+APPLI Base = 0x8010200
+Writing to /home/einfochips/Desktop/rel_01/SSK_SUIT_EVAL_STM32WB55_Rel01/Source_Code/STM32_SSK_AWS_Rel01/projects/st/p_nucleo_wb55/STM32CubeIDE/STM32WB55RG_Nucleo_AFR_demo/../../../../../build/SBSFU_aws_demos.bin 288080
+python /home/einfochips/Desktop/rel_01/SSK_SUIT_EVAL_STM32WB55_Rel01/Source_Code/STM32_SSK_AWS_Rel01/vendors/st/STM32_Secure_Engine/Utilities/KeysAndImages/prepareimage.py
+No FW signing leaf cert
+No leaf cert
+No FW signing leaf cert
+No leaf cert
+number of segment :8
+0x8010400
+0x8030ed8
+0x8031412
+0x8031420
+0x803142e
+0x8031430
+0x8031430
+number of segment :6
+0x8000140
+0x8002518
+0x8003968
+0x800acf0
+0x800ae08
+Merging
+SBSFU Base = 0x8000000
+Writing header = 0x8010000
+APPLI Base = 0x8010200
+Writing to /home/einfochips/Desktop/rel_01/SSK_SUIT_EVAL_STM32WB55_Rel01/Source_Code/STM32_SSK_AWS_Rel01/projects/st/p_nucleo_wb55/STM32CubeIDE/STM32WB55RG_Nucleo_AFR_tests/../../../../../build/SBSFU_aws_tests.bin 201776
+python /home/einfochips/Desktop/rel_test/SSK_SUIT_EVAL_STM32WB55_Rel01/Source_Code/STM32_SSK_AWS_Rel01/vendors/st/STM32_Secure_Engine/Utilities/KeysAndImages/prepareimage.py
+No FW signing leaf cert
+No leaf cert
+No FW signing leaf cert
+No leaf cert
+number of segment :8
+0x8010400
+0x8045768
+0x8046531
+0x804653f
+0x8046550
+0x8046560
+0x8046560
+number of segment :6
+0x8000140
+0x8002518
+0x8003968
+0x800acf8
+0x800ae10
+Merging
+SBSFU Base = 0x8000000
+Writing header = 0x8010000
+APPLI Base = 0x8010200
+Writing to /home/einfochips/Desktop/rel_test/SSK_SUIT_EVAL_STM32WB55_Rel01/Source_Code/STM32_SSK_AWS_Rel01/projects/st/p_nucleo_wb55/STM32CubeIDE/STM32WB55RG_Nucleo_AFR_demo/../../../../../build/SBSFU_aws_demos.bin 288096
+python /home/einfochips/Desktop/rel_test/SSK_SUIT_EVAL_STM32WB55_Rel01/Source_Code/STM32_SSK_AWS_Rel01/vendors/st/STM32_Secure_Engine/Utilities/KeysAndImages/prepareimage.py
+No FW signing leaf cert
+No leaf cert
+No FW signing leaf cert
+No leaf cert
+number of segment :8
+0x8010400
+0x8030ee8
+0x8031422
+0x8031430
+0x803143e
+0x8031440
+0x8031440
+number of segment :6
+0x8000140
+0x8002518
+0x8003968
+0x800acf8
+0x800ae10
+Merging
+SBSFU Base = 0x8000000
+Writing header = 0x8010000
+APPLI Base = 0x8010200
+Writing to /home/einfochips/Desktop/rel_test/SSK_SUIT_EVAL_STM32WB55_Rel01/Source_Code/STM32_SSK_AWS_Rel01/projects/st/p_nucleo_wb55/STM32CubeIDE/STM32WB55RG_Nucleo_AFR_tests/../../../../../build/SBSFU_aws_tests.bin 201792
+python /home/einfochips/Desktop/rel_test/SSK_SUIT_EVAL_STM32WB55_Rel01/Source_Code/STM32_SSK_AWS_Rel01/vendors/st/STM32_Secure_Engine/Utilities/KeysAndImages/prepareimage.py
+No FW signing leaf cert
+No leaf cert
+No FW signing leaf cert
+No leaf cert
+number of segment :8
+0x8010400
+0x8045770
+0x8046539
+0x8046547
+0x8046558
+0x8046560
+0x8046560
+number of segment :6
+0x8000140
+0x8002518
+0x8003968
+0x800acf8
+0x800ae10
+Merging
+SBSFU Base = 0x8000000
+Writing header = 0x8010000
+APPLI Base = 0x8010200
+Writing to /home/einfochips/Desktop/rel_test/SSK_SUIT_EVAL_STM32WB55_Rel01/Source_Code/STM32_SSK_AWS_Rel01/projects/st/p_nucleo_wb55/STM32CubeIDE/STM32WB55RG_Nucleo_AFR_demo/../../../../../build/SBSFU_aws_demos.bin 288096
+python /home/einfochips/Desktop/rel_test/SSK_SUIT_EVAL_STM32WB55_Rel01/Source_Code/STM32_SSK_AWS_Rel01/vendors/st/STM32_Secure_Engine/Utilities/KeysAndImages/prepareimage.py
+No FW signing leaf cert
+No leaf cert
+No FW signing leaf cert
+No leaf cert
+number of segment :8
+0x8010400
+0x8040158
+0x8040b49
+0x8040b57
+0x8040b68
+0x8040b70
+0x8040b70
+number of segment :6
+0x8000140
+0x8002518
+0x8003968
+0x800acf8
+0x800ae10
+Merging
+SBSFU Base = 0x8000000
+Writing header = 0x8010000
+APPLI Base = 0x8010200
+Writing to /home/einfochips/Desktop/rel_test/SSK_SUIT_EVAL_STM32WB55_Rel01/Source_Code/STM32_SSK_AWS_Rel01/projects/st/p_nucleo_wb55/STM32CubeIDE/STM32WB55RG_Nucleo_AFR_demo/../../../../../build/SBSFU_aws_demos.bin 265072
+python /home/einfochips/Desktop/rel_test/SSK_SUIT_EVAL_STM32WB55_Rel01/Source_Code/STM32_SSK_AWS_Rel01/vendors/st/STM32_Secure_Engine/Utilities/KeysAndImages/prepareimage.py
+No FW signing leaf cert
+No leaf cert
+No FW signing leaf cert
+No leaf cert
+number of segment :8
+0x8010400
+0x8040158
+0x8040b49
+0x8040b57
+0x8040b68
+0x8040b70
+0x8040b70
+number of segment :6
+0x8000140
+0x8002518
+0x8003968
+0x800acf8
+0x800ae10
+Merging
+SBSFU Base = 0x8000000
+Writing header = 0x8010000
+APPLI Base = 0x8010200
+Writing to /home/einfochips/Desktop/rel_test/SSK_SUIT_EVAL_STM32WB55_Rel01/Source_Code/STM32_SSK_AWS_Rel01/projects/st/p_nucleo_wb55/STM32CubeIDE/STM32WB55RG_Nucleo_AFR_demo/../../../../../build/SBSFU_aws_demos.bin 265072

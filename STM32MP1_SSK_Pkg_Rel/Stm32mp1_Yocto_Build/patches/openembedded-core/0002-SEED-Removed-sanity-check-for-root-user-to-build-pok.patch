@@ -1,0 +1,23 @@
+From 90714c72a9318d7bbe482d18e3f4b6abca2a5e24 Mon Sep 17 00:00:00 2001
+From: SEED <seed@einfochips.com>
+Date: Wed, 9 Sep 2020 17:05:07 +0530
+Subject: [PATCH] SEED:Removed sanity check for root user to build poky
+
+---
+ meta/conf/sanity.conf | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/meta/conf/sanity.conf b/meta/conf/sanity.conf
+index 45e6752518..88b64fa49f 100644
+--- a/meta/conf/sanity.conf
++++ b/meta/conf/sanity.conf
+@@ -12,5 +12,5 @@ LOCALCONF_VERSION  ?= "1"
+ LAYER_CONF_VERSION ?= "7"
+ SITE_CONF_VERSION  ?= "1"
+ 
+-INHERIT += "sanity"
++#INHERIT += "sanity"
+ 
+-- 
+2.17.1
+

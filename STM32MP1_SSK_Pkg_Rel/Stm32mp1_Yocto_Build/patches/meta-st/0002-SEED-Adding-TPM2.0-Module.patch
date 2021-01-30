@@ -1,0 +1,26 @@
+From 1ce26a0c7b2ea5cdde5d9f04d4af133b7b30ed2f Mon Sep 17 00:00:00 2001
+From: SEED <seed@einfochips.com>
+Date: Wed, 9 Sep 2020 11:40:41 +0530
+Subject: [PATCH 2/2] SEED: Adding TPM2.0 Module
+
+-Adding TPM based SPI Driver inside Kernel Module
+---
+ recipes-kernel/linux/linux-stm32mp/4.19/fragment-05-modules.config | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/recipes-kernel/linux/linux-stm32mp/4.19/fragment-05-modules.config b/recipes-kernel/linux/linux-stm32mp/4.19/fragment-05-modules.config
+index e9b3cf5..e4b9e1c 100644
+--- a/recipes-kernel/linux/linux-stm32mp/4.19/fragment-05-modules.config
++++ b/recipes-kernel/linux/linux-stm32mp/4.19/fragment-05-modules.config
+@@ -10,4 +10,7 @@ CONFIG_HTS221=y
+ CONFIG_IIO_ST_PRESS=m
+ CONFIG_IIO_ST_LSM6DSX=m
+ CONFIG_IIO_ST_LSM6DSX_I2C=m
+-
++# Support of TPM
++CONFIG_SPI_LOOPBACK_TEST=m
++CONFIG_TCG_TIS_SPI=m
++CONFIG_TCG_TPM=m
+-- 
+2.7.4
+

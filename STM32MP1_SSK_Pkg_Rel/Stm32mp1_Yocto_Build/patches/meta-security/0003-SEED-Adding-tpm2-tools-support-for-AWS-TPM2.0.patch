@@ -1,0 +1,50 @@
+From 4f86186ec0ab53f124eed8ddeff0d0b2e3012ce5 Mon Sep 17 00:00:00 2001
+From: SEED <seed@einfochips.com>
+Date: Wed, 23 Sep 2020 14:44:36 +0530
+Subject: [PATCH] SEED:Adding tpm2-tools support for AWS-TPM2.0
+
+-Adding autoconf support in tpm2-tools
+-Modified branch checkout id to support TPM2-AWS Demo
+---
+ .../tpm2-tools/tpm2-tools_3.1.3.bb            | 19 ++++++++++++++++---
+ 1 file changed, 16 insertions(+), 3 deletions(-)
+
+diff --git a/meta-tpm/recipes-tpm2/tpm2-tools/tpm2-tools_3.1.3.bb b/meta-tpm/recipes-tpm2/tpm2-tools/tpm2-tools_3.1.3.bb
+index 1f1f5c6..e709203 100644
+--- a/meta-tpm/recipes-tpm2/tpm2-tools/tpm2-tools_3.1.3.bb
++++ b/meta-tpm/recipes-tpm2/tpm2-tools/tpm2-tools_3.1.3.bb
+@@ -1,15 +1,28 @@
+ SUMMARY = "Tools for TPM2."
+ DESCRIPTION = "tpm2-tools"
+ LICENSE = "BSD"
+-LIC_FILES_CHKSUM = "file://LICENSE;md5=91b7c548d73ea16537799e8060cea819"
++LIC_FILES_CHKSUM = "file://LICENSE;md5=99f008394f3e7e4e588cbc2ece4bdbe8"
+ SECTION = "tpm"
+ 
+ DEPENDS = "pkgconfig tpm2-tss openssl curl autoconf-archive"
+ 
+-SRCREV = "74ba065e5914bc5d713ca3709d62a5751b097369"
++SRCREV = "3e8847c9a52a6adc80bcd66dc1321210611654be"
+ 
+-SRC_URI = "git://github.com/tpm2-software/tpm2-tools.git;branch=3.X"
++SRC_URI = "git://github.com/tpm2-software/tpm2-tools.git \
++	   file://autoconf-archive-2019.01.06 \
++	"
+ 
+ S = "${WORKDIR}/git"
+ 
+ inherit autotools pkgconfig
++
++do_configure_prepend () {
++        currdir=`pwd`
++        cp -rf ${WORKDIR}/autoconf-archive-2019.01.06/m4/ ${S}/
++	cd ${S}
++	./bootstrap
++        cd $currdir
++
++}
++
++FILES_${PN} += "/usr/*"
+-- 
+2.17.1
+

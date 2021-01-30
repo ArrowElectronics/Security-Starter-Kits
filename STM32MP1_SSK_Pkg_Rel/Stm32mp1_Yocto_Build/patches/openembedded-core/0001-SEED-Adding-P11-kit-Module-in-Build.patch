@@ -1,0 +1,33 @@
+From b3ce6d916a6d9551945bbe82e221e1dffe5d0ac6 Mon Sep 17 00:00:00 2001
+From: SEED <seed@einfochips.com>
+Date: Wed, 9 Sep 2020 12:16:25 +0530
+Subject: [PATCH] SEED: Adding P11-kit Module in Build
+
+---
+ meta/recipes-support/gnutls/gnutls_3.6.4.bb | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/meta/recipes-support/gnutls/gnutls_3.6.4.bb b/meta/recipes-support/gnutls/gnutls_3.6.4.bb
+index 6d2a11d..0488a3c 100644
+--- a/meta/recipes-support/gnutls/gnutls_3.6.4.bb
++++ b/meta/recipes-support/gnutls/gnutls_3.6.4.bb
+@@ -14,6 +14,7 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=71391c8e0c1cfe68077e7fce3b586283 \
+ 
+ DEPENDS = "nettle gmp virtual/libiconv libunistring"
+ DEPENDS_append_libc-musl = " argp-standalone"
++DEPENDS_append_pn-gnutls += "p11-kit"
+ 
+ SHRT_VER = "${@d.getVar('PV').split('.')[0]}.${@d.getVar('PV').split('.')[1]}"
+ 
+@@ -33,7 +34,7 @@ PACKAGECONFIG ??= "libidn"
+ PACKAGECONFIG[seccomp] = "ac_cv_libseccomp=yes,ac_cv_libseccomp=no,libseccomp"
+ PACKAGECONFIG[libidn] = "--with-idn,--without-idn,libidn2"
+ PACKAGECONFIG[libtasn1] = "--with-included-libtasn1=no,--with-included-libtasn1,libtasn1"
+-PACKAGECONFIG[p11-kit] = "--with-p11-kit,--without-p11-kit,p11-kit"
++PACKAGECONFIG[p11-kit] = "--with-p11-kit"
+ PACKAGECONFIG[tpm] = "--with-tpm,--without-tpm,trousers"
+ 
+ EXTRA_OECONF = " \
+-- 
+2.7.4
+

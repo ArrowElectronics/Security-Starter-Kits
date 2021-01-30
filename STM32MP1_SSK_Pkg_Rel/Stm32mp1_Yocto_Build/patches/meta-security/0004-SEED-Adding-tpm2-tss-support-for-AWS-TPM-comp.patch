@@ -1,0 +1,40 @@
+From 40f1481c6d5cf763d90cf80288d905705fb93a91 Mon Sep 17 00:00:00 2001
+From: SEED <seed@einfochips.com>
+Date: Mon, 7 Sep 2020 13:07:19 +0530
+Subject: [PATCH 4/4] SEED:Adding tpm2-tss support for AWS-TPM comp
+
+-Adding autoconf support in tpm2-tss
+-Modified branch checkout id to support TPM2-AWS Demo
+---
+ meta-tpm/recipes-tpm2/tpm2-tss/tpm2-tss_2.2.1.bb | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/meta-tpm/recipes-tpm2/tpm2-tss/tpm2-tss_2.2.1.bb b/meta-tpm/recipes-tpm2/tpm2-tss/tpm2-tss_2.2.1.bb
+index 78bdeeb..608eef9 100644
+--- a/meta-tpm/recipes-tpm2/tpm2-tss/tpm2-tss_2.2.1.bb
++++ b/meta-tpm/recipes-tpm2/tpm2-tss/tpm2-tss_2.2.1.bb
+@@ -6,9 +6,11 @@ SECTION = "tpm"
+ 
+ DEPENDS = "autoconf-archive-native libgcrypt openssl"
+ 
+-SRCREV = "eb69e13559f20a0b49002a685c6f4a39be9503e2"
++SRCREV = "740653a12e203b214cba2f07b5395ffce74dfc03"
+ 
+-SRC_URI = "git://github.com/tpm2-software/tpm2-tss.git;branch=2.2.x"
++SRC_URI = "git://github.com/tpm2-software/tpm2-tss.git \
++	   file://autoconf-archive-2019.01.06 \
++	"
+ 
+ inherit autotools-brokensep pkgconfig systemd
+ 
+@@ -19,6 +21,7 @@ PACKAGECONFIG[oxygen] = ",--disable-doxygen-doc, "
+ 
+ do_configure_prepend () {
+        ./bootstrap
++       cp -rf ${WORKDIR}/autoconf-archive-2019.01.06/m4/* ${S}/m4/.
+ }
+ 
+ INHERIT += "extrausers"
+-- 
+2.7.4
+

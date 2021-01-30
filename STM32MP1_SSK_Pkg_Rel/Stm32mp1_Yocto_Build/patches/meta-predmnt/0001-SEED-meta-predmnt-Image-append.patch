@@ -1,0 +1,64 @@
+From 6820cf9246c38f269642717292077759c8a9ae7c Mon Sep 17 00:00:00 2001
+From: SEED <seed@einfochips.com>
+Date: Wed, 9 Sep 2020 11:56:27 +0530
+Subject: [PATCH 1/2] SEED: meta-predmnt Image append
+
+-Adding TPM Software Stack Binaries
+-Adding Greengrass Binaries
+---
+ conf/layer.conf | 30 ++++++++++++++++++++++++++++++
+ 1 file changed, 30 insertions(+)
+
+diff --git a/conf/layer.conf b/conf/layer.conf
+index b0a0e95..b6a82d7 100755
+--- a/conf/layer.conf
++++ b/conf/layer.conf
+@@ -28,10 +28,13 @@ IMAGE_INSTALL_append = "    \
+ 	python3-pip \
+ 	python3-dev \
+ 	python-enum34 \
++	python3-pyyaml \
+ 	python-futures \
+ 	python3-pyserial \
+ 	glib-2.0-dev \
++	cmake \
+ 	vim \
++	rsync \
+ 	git \
+ 	packagegroup-core-buildessential \
+ 	sqlite3 \
+@@ -41,4 +44,31 @@ IMAGE_INSTALL_append = "    \
+ 	unzip \
+ 	greengrass \
+ 	predmnt \
++	bluez5 \
++	python-pybluez \
++	python3-pybluez \
++	python-dbus \
++	python-pexpect \
++ 			\
++	bluez5-noinst-tools \
++	bluez5-testtools \
++	p11-kit \
++	gnutls \
++	gnutls-bin \
++	opensc \
++	libp11 \
++	libtss2 \
++	libtss2-tcti-device \
++	libtss2-tcti-mssim \
++	trousers \
++	tpm2-abrmd \
++	openssl-tpm-engine \
++	tpm2-tss \
++	tpm2-tools \
++	tpm2-pkcs11 \
++	tpm2-tss-engine \
++	ibmswtpm2 \
++	cryptsetup-tpm-incubator \
++	nodejs \
++	nodejs-npm \
+ "
+-- 
+2.7.4
+

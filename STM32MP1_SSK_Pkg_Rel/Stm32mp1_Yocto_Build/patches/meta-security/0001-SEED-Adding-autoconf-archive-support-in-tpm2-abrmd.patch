@@ -1,0 +1,36 @@
+From ceefb346c1288d30382f8c04816e8124fc2bd357 Mon Sep 17 00:00:00 2001
+From: SEED <seed@einfochips.com>
+Date: Mon, 7 Sep 2020 12:15:50 +0530
+Subject: [PATCH 1/4] SEED:Adding autoconf-archive support in tpm2-abrmd
+
+---
+ meta-tpm/recipes-tpm2/tpm2-abrmd/tpm2-abrmd_2.1.1.bb | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/meta-tpm/recipes-tpm2/tpm2-abrmd/tpm2-abrmd_2.1.1.bb b/meta-tpm/recipes-tpm2/tpm2-abrmd/tpm2-abrmd_2.1.1.bb
+index a4c6682..945f6c2 100644
+--- a/meta-tpm/recipes-tpm2/tpm2-abrmd/tpm2-abrmd_2.1.1.bb
++++ b/meta-tpm/recipes-tpm2/tpm2-abrmd/tpm2-abrmd_2.1.1.bb
+@@ -17,6 +17,7 @@ SRC_URI = "\
+     git://github.com/tpm2-software/tpm2-abrmd.git \
+     file://tpm2-abrmd-init.sh \
+     file://tpm2-abrmd.default \
++    file://autoconf-archive-2019.01.06 \
+ "
+ 
+ SRCREV = "06d9d433ba27159687255406baa37940db15465b"
+@@ -39,6 +40,11 @@ USERADD_PARAM_${PN} = "--system -M -d /var/lib/tpm -s /bin/false -g tss tss"
+ PACKAGECONFIG ?="${@bb.utils.contains('DISTRO_FEATURES','systemd','systemd', '', d)}"
+ PACKAGECONFIG[systemd] = "--with-systemdsystemunitdir=${systemd_system_unitdir}, --with-systemdsystemunitdir=no"
+ 
++do_configure_prepend () {
++       cp -rf ${WORKDIR}/autoconf-archive-2019.01.06/m4/* ${S}/m4/.
++
++}
++
+ do_install_append() {
+     install -d "${D}${sysconfdir}/init.d"
+     install -m 0755 "${WORKDIR}/tpm2-abrmd-init.sh" "${D}${sysconfdir}/init.d/tpm2-abrmd"
+-- 
+2.7.4
+

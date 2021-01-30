@@ -1,0 +1,27 @@
+From dc84ba31c90a940b717ddb5bf558e5b9b58ed6cd Mon Sep 17 00:00:00 2001
+From: SEED <seed@einfochips.com>
+Date: Wed, 9 Sep 2020 11:39:54 +0530
+Subject: [PATCH 1/2] SEED: Increased ROOTFS Size_2GB
+
+---
+ conf/machine/include/st-machine-common-stm32mp.inc | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/conf/machine/include/st-machine-common-stm32mp.inc b/conf/machine/include/st-machine-common-stm32mp.inc
+index 874539f..05241b3 100644
+--- a/conf/machine/include/st-machine-common-stm32mp.inc
++++ b/conf/machine/include/st-machine-common-stm32mp.inc
+@@ -107,8 +107,8 @@ BOOTFS_PARTITION_SIZE = "65536"
+ #   rootfs < Multivolume UBI - (uboot_config + uboot_config_r + bootfs + vendorfs + userfs + UBI Overhead + 4 * 9*eraseblocks)
+ #   rootfs < 1016.5MiB - (256KiB + 256KiB + 64MiB + 16MiB + 128MiB + 53360KiB + 4 * 9 * 256KiB)
+ #   rootfs < 746.8MiB
+-# Proposed value for rootfs is 746MiB
+-ROOTFS_PARTITION_SIZE = "763904"
++# Proposed value for rootfs is 2GB
++ROOTFS_PARTITION_SIZE = "2097152"
+ # Proposed value for userfs is 128MB (4*32MB)
+ USERFS_PARTITION_SIZE = "131072"
+ # Proposed value for vendorfs is 16MB
+-- 
+2.7.4
+

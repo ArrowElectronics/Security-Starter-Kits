@@ -1,0 +1,33 @@
+From e4393038e34e46b41dd8a7963952797372f594a3 Mon Sep 17 00:00:00 2001
+From: SEED <seed@einfochips.com>
+Date: Wed, 30 Sep 2020 16:08:11 +0530
+Subject: [PATCH 3/3] SEED:SD-card Size modify to 4GB in script
+
+-Modify the SD-card build ROOTFS size to 2GB extra
+---
+ .../sdcard-raw-tools/create_sdcard_from_flashlayout.sh    | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/recipes-devtools/sdcard-raw-tools/sdcard-raw-tools/create_sdcard_from_flashlayout.sh b/recipes-devtools/sdcard-raw-tools/sdcard-raw-tools/create_sdcard_from_flashlayout.sh
+index c446019..13e75b5 100755
+--- a/recipes-devtools/sdcard-raw-tools/sdcard-raw-tools/create_sdcard_from_flashlayout.sh
++++ b/recipes-devtools/sdcard-raw-tools/sdcard-raw-tools/create_sdcard_from_flashlayout.sh
+@@ -32,11 +32,11 @@ SDCARD_TOKEN=mmc0
+ 
+ # Size of 2GB
+ #DEFAULT_RAW_SIZE=2048
+-# Size of 1.5GB
+-DEFAULT_RAW_SIZE=1536
++# Size of 4GB
++DEFAULT_RAW_SIZE=4096
+ 
+-# size of 768MB
+-DEFAULT_ROOTFS_PARTITION_SIZE=768432
++# size of 2GB
++DEFAULT_ROOTFS_PARTITION_SIZE=2097152
+ # size of 1024MB
+ #DEFAULT_ROOTFS_PARTITION_SIZE=1232896
+ 
+-- 
+2.17.1
+

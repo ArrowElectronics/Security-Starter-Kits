@@ -1,0 +1,46 @@
+From 2bbc24dcaf0cce009932097c2b8403a088a21e33 Mon Sep 17 00:00:00 2001
+From: SEED <seed@einfochips.com>
+Date: Mon, 7 Sep 2020 12:25:36 +0530
+Subject: [PATCH 2/4] SEED:Enable install the adaptation of PKCS#11 for TPM2
+
+- Added autoconf support in tpm2_pkcs11 library.
+---
+ meta-tpm/recipes-tpm2/tpm2-pkcs11/tpm2-pkcs11_0.9.9.bb | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
+
+diff --git a/meta-tpm/recipes-tpm2/tpm2-pkcs11/tpm2-pkcs11_0.9.9.bb b/meta-tpm/recipes-tpm2/tpm2-pkcs11/tpm2-pkcs11_0.9.9.bb
+index 9031e63..437f8f8 100644
+--- a/meta-tpm/recipes-tpm2/tpm2-pkcs11/tpm2-pkcs11_0.9.9.bb
++++ b/meta-tpm/recipes-tpm2/tpm2-pkcs11/tpm2-pkcs11_0.9.9.bb
+@@ -8,9 +8,11 @@ DEPENDS = "autoconf-archive pkgconfig dstat sqlite3 openssl libtss2-dev tpm2-too
+ 
+ SRC_URI = "git://github.com/tpm2-software/tpm2-pkcs11.git \
+            file://bootstrap_fixup.patch \
++	   file://autoconf-archive-2019.01.06 \
+           "
++EXTRA_OECONF +=" --enable-esapi-session-manage-flags --with-storedir=/opt/tpm2-pkcs11 "
+ 
+-SRCREV = "3107d89b406ecd9c007884613733c9a344ef6d39"
++SRCREV = "a82d0709c97c88cc2e457ba111b6f51f21c22260"
+ 
+ S = "${WORKDIR}/git"
+ 
+@@ -18,4 +20,15 @@ inherit autotools-brokensep pkgconfig
+ 
+ do_configure_prepend () {
+     ${S}/bootstrap
++    cp -rf ${WORKDIR}/autoconf-archive-2019.01.06/m4/* ${S}/m4/.
+ }
++
++do_install_append() {
++         mkdir -p ${D}/opt/tpm2-pkcs11
++         chmod -R 777 ${D}/opt/tpm2-pkcs11
++}
++
++FILES_${PN} += "/opt/*"
++FILES_${PN} += "/usr/*"
++FILES_${PN} += "${libdir}/*.so*"
++INSANE_SKIP_${PN} = "dev-so"
+-- 
+2.7.4
+

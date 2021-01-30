@@ -1,0 +1,41 @@
+From fbed1424d205534f7381d2d768bcd63357da8f0e Mon Sep 17 00:00:00 2001
+From: SEED <seed@einfochips.com>
+Date: Wed, 23 Sep 2020 13:10:42 +0530
+Subject: [PATCH] SEED: Upgrade revision of python-setuptools
+
+-python-setuptools vesrion upgarded from 2.1.0 to 3.3.3
+-Upgardation done to remove build failure
+---
+ meta-python/recipes-devtools/python/python-setuptools-scm.inc | 4 ++--
+ ...setuptools-scm_2.1.0.bb => python-setuptools-scm_3.3.3.bb} | 0
+ ...etuptools-scm_2.1.0.bb => python3-setuptools-scm_3.3.3.bb} | 0
+ 3 files changed, 2 insertions(+), 2 deletions(-)
+ rename meta-python/recipes-devtools/python/{python-setuptools-scm_2.1.0.bb => python-setuptools-scm_3.3.3.bb} (100%)
+ rename meta-python/recipes-devtools/python/{python3-setuptools-scm_2.1.0.bb => python3-setuptools-scm_3.3.3.bb} (100%)
+
+diff --git a/meta-python/recipes-devtools/python/python-setuptools-scm.inc b/meta-python/recipes-devtools/python/python-setuptools-scm.inc
+index 98883ec39..a7e1bf6ad 100644
+--- a/meta-python/recipes-devtools/python/python-setuptools-scm.inc
++++ b/meta-python/recipes-devtools/python/python-setuptools-scm.inc
+@@ -2,8 +2,8 @@ SUMMARY = "the blessed package to manage your versions by scm tags"
+ LICENSE = "MIT"
+ LIC_FILES_CHKSUM = "file://PKG-INFO;beginline=8;endline=8;md5=8227180126797a0148f94f483f3e1489"
+ 
+-SRC_URI[md5sum] = "cfec5d2dbbd0a85c40066f79035b5878"
+-SRC_URI[sha256sum] = "a767141fecdab1c0b3c8e4c788ac912d7c94a0d6c452d40777ba84f918316379"
++SRC_URI[md5sum] = "50b2199082fe808d032ec1710c9d7415"
++SRC_URI[sha256sum] = "bd25e1fb5e4d603dcf490f1fde40fb4c595b357795674c3e5cb7f6217ab39ea5"
+ 
+ PYPI_PACKAGE = "setuptools_scm"
+ inherit pypi
+diff --git a/meta-python/recipes-devtools/python/python-setuptools-scm_2.1.0.bb b/meta-python/recipes-devtools/python/python-setuptools-scm_3.3.3.bb
+similarity index 100%
+rename from meta-python/recipes-devtools/python/python-setuptools-scm_2.1.0.bb
+rename to meta-python/recipes-devtools/python/python-setuptools-scm_3.3.3.bb
+diff --git a/meta-python/recipes-devtools/python/python3-setuptools-scm_2.1.0.bb b/meta-python/recipes-devtools/python/python3-setuptools-scm_3.3.3.bb
+similarity index 100%
+rename from meta-python/recipes-devtools/python/python3-setuptools-scm_2.1.0.bb
+rename to meta-python/recipes-devtools/python/python3-setuptools-scm_3.3.3.bb
+-- 
+2.17.1
+

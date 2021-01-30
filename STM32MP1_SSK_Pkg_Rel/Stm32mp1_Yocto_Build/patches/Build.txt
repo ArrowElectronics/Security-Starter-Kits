@@ -1,0 +1,8 @@
+#####################Avneger Build script################
+https://www.techoism.com/install-python-3-5-6-on-ubuntu/(requirements)
+cd Home_directory
+mkdir Avenger96
+
+
+sudo apt-get install chrpath
+sudo apt-get install texinfo

@@ -1,0 +1,29 @@
+{
+  "coreThing" : {
+    "thingArn" : "arn:aws:iot:ap-south-1:978423522010:thing/Gateway_Aiml_Core",
+    "iotHost" : "a3vwfgdm06d0xb-ats.iot.ap-south-1.amazonaws.com",
+    "ggHost" : "greengrass-ats.iot.ap-south-1.amazonaws.com",
+    "keepAlive" : 600
+  },
+  "runtime" : {
+    "cgroup" : {
+      "useSystemd" : "yes"
+    }
+  },
+  "managedRespawn" : false,
+  "crypto" : {
+    "PKCS11": {
+	"OpenSSLEngine": "/usr/lib/engines/pkcs11.so",
+	"P11Provider": "/usr/lib/pkcs11/libtpm2_pkcs11.so",
+	"SlotLabel": "greengrass",
+	"SlotUserPin": "1234"
+    },
+    "principals" : {
+      "IoTCertificate" : {
+        "privateKeyPath" : "pkcs11:model=SLB9670;manufacturer=Infineon;token=greengrass;object=greenkey;type=private;pin-value=1234",
+        "certificatePath" : "file:///greengrass/certs/aws_device_cert.pem"
+      }
+    },
+    "caPath" : "file:///greengrass/certs/root.ca.pem"
+  }
+}

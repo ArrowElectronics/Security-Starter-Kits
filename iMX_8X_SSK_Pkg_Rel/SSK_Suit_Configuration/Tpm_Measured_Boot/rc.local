@@ -1,0 +1,31 @@
+#!/bin/sh -e
+#
+# rc.local
+#
+# This script is executed at the end of each multiuser runlevel.
+# Make sure that the script will "exit 0" on success or any other
+# value on error.
+#
+# In order to enable or disable this script just change the execution
+# bits.
+#
+# By default this script does nothing.
+/etc/init.d/Measured_boot.sh
+
+echo 30000 >  /proc/sys/vm/min_free_kbytes
+
+if [ ! -e /swapfile ]
+then
+    dd if=/dev/zero of=/swapfile bs=1024 count=512000
+    sync
+    chmod 0600 /swapfile
+    chown root:root /swapfile
+    mkswap /swapfile
+fi
+
+swapon /swapfile
+
+export DISPLAY=:0
+
+exit 0
+

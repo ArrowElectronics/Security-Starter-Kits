@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/amazon-freertos-ble-android-sdk-master.iml" filepath="$PROJECT_DIR$/.idea/modules/amazon-freertos-ble-android-sdk-master.iml" group="amazon-freertos-ble-android-sdk-master" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/amazonfreertossdk/amazonfreertossdk.iml" filepath="$PROJECT_DIR$/.idea/modules/amazonfreertossdk/amazonfreertossdk.iml" group="amazon-freertos-ble-android-sdk-master/amazonfreertossdk" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/app.iml" group="amazon-freertos-ble-android-sdk-master/app" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ecdsa-java-master/ecdsa-java-master.iml" filepath="$PROJECT_DIR$/.idea/modules/ecdsa-java-master/ecdsa-java-master.iml" group="amazon-freertos-ble-android-sdk-master/ecdsa-java-master" />
+    </modules>
+  </component>
+</project>

@@ -1,0 +1,15 @@
+<component name="libraryTable">
+  <library name="Gradle: com.amazonaws:aws-android-sdk-auth-ui:2.13.6@aar">
+    <CLASSES>
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/72f769b585bfff1823d91ed732581332/aws-android-sdk-auth-ui-2.13.6/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/72f769b585bfff1823d91ed732581332/aws-android-sdk-auth-ui-2.13.6/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/72f769b585bfff1823d91ed732581332/aws-android-sdk-auth-ui-2.13.6/res" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-android-sdk-auth-ui/2.13.6/e56bc19a8e89126b7aa863bc30e3016e0cc8d334/aws-android-sdk-auth-ui-2.13.6-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-android-sdk-auth-ui/2.13.6/7f5a74ecab83a3f9ccedeca4bea30f20b84dc132/aws-android-sdk-auth-ui-2.13.6-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

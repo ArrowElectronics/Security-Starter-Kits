@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/btnCogniSkip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:onClick="SkipCognitoDetailsClick"
+            android:textStyle="bold"
+            android:text="Skip" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/btnBrowseForCognitoDetails"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:onClick="BrowseForCognitoDetailsClick"
+            android:textStyle="bold"
+            android:text="Browse for cognito details" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/linearlay1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:text="AWS Region*"
+            android:textStyle="bold"
+            />
+
+        <EditText
+            android:id="@+id/awsRegionEDT"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:background="@drawable/edittext_border"
+            android:singleLine="true"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:enabled="false"
+            android:textColor="@android:color/black"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearlay2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="10dp"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="AWS IOT Policy Name*"
+            android:layout_gravity="left"
+            android:textStyle="bold"
+
+            />
+        <EditText
+            android:id="@+id/awsIOTPolicyEDT"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:background="@drawable/edittext_border"
+            android:singleLine="true"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:enabled="false"
+            android:textColor="@android:color/black"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearlay3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:textStyle="bold"
+            android:text="AWS Cognito Identity PoolId*" />
+        <EditText
+            android:id="@+id/awsCogIdePoolIdEDT"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:background="@drawable/edittext_border"
+            android:singleLine="true"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:enabled="false"
+            android:textColor="@android:color/black"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearlay4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="AWS Cognito User PoolId*"
+            android:layout_gravity="left"
+            android:textStyle="bold"
+            />
+        <EditText
+            android:id="@+id/awsCogUserPoolIdEDT"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:background="@drawable/edittext_border"
+            android:singleLine="true"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:enabled="false"
+            android:textColor="@android:color/black"
+            />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/linearlay5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:textStyle="bold"
+            android:text="AWS Cognito User AppClientId*"
+            />
+        <EditText
+            android:id="@+id/awsCogUserAppClientIdEDT"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:background="@drawable/edittext_border"
+            android:singleLine="true"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:enabled="false"
+            android:textColor="@android:color/black"
+            />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/linearlay6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:textStyle="bold"
+            android:text="AWS Cognito User AppClientSecret*"
+            />
+        <EditText
+            android:id="@+id/awsCogUserAppClientSecretEDT"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:background="@drawable/edittext_border"
+            android:singleLine="true"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:enabled="false"
+            android:textColor="@android:color/black"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearlay7"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/btnCognitoSave"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:onClick="SaveCognitoDetailsClick"
+            android:textStyle="bold"
+            android:text="Save" />
+    </LinearLayout>
+
+</LinearLayout>

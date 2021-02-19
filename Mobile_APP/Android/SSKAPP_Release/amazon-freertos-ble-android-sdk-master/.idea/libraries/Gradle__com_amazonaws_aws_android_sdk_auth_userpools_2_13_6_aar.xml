@@ -1,0 +1,15 @@
+<component name="libraryTable">
+  <library name="Gradle: com.amazonaws:aws-android-sdk-auth-userpools:2.13.6@aar">
+    <CLASSES>
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/6175148d5cba1de35fafa62e69889dae/aws-android-sdk-auth-userpools-2.13.6/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/6175148d5cba1de35fafa62e69889dae/aws-android-sdk-auth-userpools-2.13.6/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/6175148d5cba1de35fafa62e69889dae/aws-android-sdk-auth-userpools-2.13.6/res" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-android-sdk-auth-userpools/2.13.6/41a00459ee253b8d98a2a95ea6eb5aecbc01677c/aws-android-sdk-auth-userpools-2.13.6-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-android-sdk-auth-userpools/2.13.6/6685c0c400135982906eae7d2477af0ec48140c/aws-android-sdk-auth-userpools-2.13.6-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

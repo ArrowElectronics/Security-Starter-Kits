@@ -1,0 +1,107 @@
+plugins {
+    id 'java'
+}
+
+group 'com.starkbank.ellipticcurve'
+version '1.0.0'
+
+sourceCompatibility = 1.7
+
+repositories {
+    mavenCentral()
+}
+dependencies {
+    implementation files('..\\libs\\bcpkix-jdk15on-166.jar')
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    testCompile group: 'org.mockito', name: 'mockito-core', version: '2.22.0'
+}
+
+apply plugin: 'maven'
+apply plugin: 'signing'
+
+archivesBaseName = "starkbank-ecdsa"
+
+
+task javadocJar(type: Jar) {
+    classifier = 'javadoc'
+    from javadoc
+}
+
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+artifacts {
+    archives javadocJar, sourcesJar
+}
+
+signing {
+    sign configurations.archives
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                authentication(
+                        userName: project.hasProperty('ossrhUsername') ? project.property('ossrhUsername') : 'username',
+                        password: project.hasProperty('ossrhPassword') ? project.property('ossrhPassword') : 'password'
+                )
+            }
+
+            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+                authentication(
+                        userName: project.hasProperty('ossrhUsername') ? project.property('ossrhUsername') : 'username',
+                        password: project.hasProperty('ossrhPassword') ? project.property('ossrhPassword') : 'password'
+                )
+            }
+
+            pom.project {
+                name 'StarkBank SDK Java'
+                packaging 'jar'
+                // optionally artifactId can be defined here
+                description 'SDK to facilitate Java integrations with the Stark Bank API'
+                url 'https://github.com/starkbank/sdk-java'
+
+                scm {
+                    connection 'scm:git:git://github.com/starkbank/sdk-java.git'
+                    developerConnection 'scm:git:ssh://github.com/starkbank/sdk-java.git'
+                    url 'https://github.com/starkbank/sdk-java/'
+                }
+
+                licenses {
+                    license {
+                        name 'MIT License'
+                        url 'https://github.com/starkbank/sdk-java/blob/master/LICENSE'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id 'rcmstark'
+                        name 'Rafael Stark'
+                        email 'rafael@starkbank.com'
+                    }
+                    developer {
+                        id 'daltonmenezes'
+                        name 'Dalton Menezes'
+                        email 'dalton.menezes@starkbank.com'
+                    }
+                    developer {
+                        id 'cdottori'
+                        name 'Caio Dottori'
+                        email 'caio.dottori@starkbank.com'
+                    }
+                    developer {
+                        id 'thalesmello'
+                        name 'Thales Mello'
+                        email 'thalesmello@gmail.com'
+                    }
+                }
+            }
+        }
+    }
+}

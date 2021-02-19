@@ -1,0 +1,6 @@
+framework module Pods_AmazonFreeRTOSDemo {
+  umbrella header "Pods-AmazonFreeRTOSDemo-umbrella.h"
+
+  export *
+  module * { export * }
+}

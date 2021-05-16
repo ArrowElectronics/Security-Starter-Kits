@@ -404,7 +404,7 @@ void SystemClock_Config(void)
 }
 
 /*-----------------------------------------------------------*/
-#define LENGTH_ENDPOINT 50
+#define LENGTH_ENDPOINT 80
 uint8_t Endpoint[LENGTH_ENDPOINT];
 uint16_t EndpointSize = LENGTH_ENDPOINT;
 volatile uint8_t Get_Endpoint = 0;

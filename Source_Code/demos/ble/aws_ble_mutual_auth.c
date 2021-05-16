@@ -42,6 +42,7 @@
 #include <iot_ble_numericComparison.h>
 #include <stm32wbxx_nucleo.h>
 #include "main.h"
+#include "aws_ota_codesigner_certificate.h"
 
 
 static BaseType_t vGattDemoSvcHook( void );
@@ -338,12 +339,16 @@ static void MUTUALAUTH_Receive_Data(IotBleWriteEventParams_t *pxWriteParam)
 				MUTUALAUTH_LOG_MESSAGE("RECEIVED: APP/GATEWAY CERTIFICATE");
 				MUTUALAUTH_DEBUG("--DEVICE_CERTIFICATE CRC matched\r\n");
 				memcpy(gateway_cert,frame.pPayload+2,data_length-4);
-#if 0
+#ifdef CONFIG_MQTT_DEMO_ENABLED
 				return_status = pal_crypt_verify_certificate(ca_certificate, sizeof(ca_certificate), gateway_cert, data_length-4);
 				if(OPTIGA_LIB_SUCCESS != return_status)
 				{
 					IotLogError("Error:certificate verification failed. (status=0x%x)\r\r\n", return_status);
 					break;
+				}
+				else
+				{
+					MUTUALAUTH_LOG_MESSAGE("RECEIVED: APP/GATEWAY CERTIFICATE verified");
 				}
 #endif
 				gw_status = (return_status == OPTIGA_LIB_SUCCESS) ? Certificate_Verify_Pass : Certificate_Verify_Fail;
@@ -1066,23 +1071,52 @@ int vGattDemoSvcInit( bool awsIotMqttMode,
 }
 #define LENGTH_ENDPOINT 50
 #define ENDPOINT_OID 0xF1D0
+#define OTA_OID 0xE0E8
 
 extern uint8_t Endpoint[LENGTH_ENDPOINT];
 extern uint16_t EndpointSize;
 extern volatile uint8_t Get_Endpoint;
+char signingcredentialSIGNING_CERTIFICATE_PEM[OTA_CERT_SIZE]={0};
 static BaseType_t vGattDemoSvcHook( void )
 {
     BaseType_t xRet = pdFALSE;
     BTStatus_t xStatus;
     IotBleEventsCallbacks_t xCallback;
     uint16_t oid = ENDPOINT_OID;
+    uint16_t ota_oid = OTA_OID;
     optiga_lib_status_t status;
     uint8_t *postfix="amazonaws.com";
     uint8_t *ret;
+    uint16_t otaSize = sizeof(ota_cert);
 
     /* Initialize Optiga turstM */
     //optiga_shell_init();
+#ifdef CONFIG_OTA_UPDATE_DEMO_ENABLED
+#if OTA_CERT_STORE
+    status = mutualauth_optiga_write(ota_oid,ota_cert,otaSize);
+    if (OPTIGA_LIB_SUCCESS != status)
+    {
+		IotLogError("Error: Failed to Write Code signing certificate\n");
+    }
+    else
+    {
+		IotLogInfo("OTA Cert write successfully Done \n");
+		IotLogInfo("Please Disable the \"OTA_CERT_STORE\" Macro and Flash again\n");
+		return status;
 
+    }
+#endif
+
+    status = mutualauth_optiga_read(ota_oid,signingcredentialSIGNING_CERTIFICATE_PEM,&otaSize);
+    if (OPTIGA_LIB_SUCCESS != status)
+    {
+		IotLogError("Error: Failed to Read Code signing certificate\n");
+    }
+    else
+    {
+       IotLogInfo("Certificate Read Successfully from the Optiga TrustM\n");
+    }
+#endif
     status = mutualauth_optiga_read(oid,Endpoint,&EndpointSize);
     if (OPTIGA_LIB_SUCCESS != status)
     {
@@ -1132,6 +1166,7 @@ static BaseType_t vGattDemoSvcHook( void )
     }
 
     return xRet;
+
 }
 
 /*-----------------------------------------------------------*/

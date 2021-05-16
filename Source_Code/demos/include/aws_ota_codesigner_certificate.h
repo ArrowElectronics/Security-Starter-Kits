@@ -34,7 +34,8 @@
  * "...base64 data...\n"
  * "-----END CERTIFICATE-----\n";
  */
-static const char signingcredentialSIGNING_CERTIFICATE_PEM[] =
+
+char ota_cert[] =
 "-----BEGIN CERTIFICATE-----\n"
 "MIIBVzCB/qADAgECAhRCduvStZY8Rv1fnFAZzhQ989rSnzAKBggqhkjOPQQDAjAZ\n"
 "MRcwFQYDVQQDDA5zZWVkQGFycm93LmNvbTAeFw0yMDA5MDYwNjQ5NDBaFw0zOTEx\n"
@@ -45,4 +46,9 @@ static const char signingcredentialSIGNING_CERTIFICATE_PEM[] =
 "hymVwTvvU+E1EfxlBQCGyrRBZ3iI2bKMAiEAgfiKwfTNQpZlRJnzwsa71yCy1KCZ\n"
 "xHTC6/Cd+XaQVnU=\n"
 "-----END CERTIFICATE-----\n";
+
+#define OTA_CERT_STORE 0
+#define OTA_CERT_SIZE 700
+extern char signingcredentialSIGNING_CERTIFICATE_PEM[OTA_CERT_SIZE];
+
 #endif

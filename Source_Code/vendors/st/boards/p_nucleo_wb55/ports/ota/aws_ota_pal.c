@@ -619,9 +619,9 @@ static uint8_t * prvPAL_ReadAndAssumeCertificate(  const uint8_t * const pucCert
     uint8_t * pucPublicKey = NULL;
     uint32_t ulPubKeyLength = 0;
 
-    *ulSignerCertSize = sizeof(signingcredentialSIGNING_CERTIFICATE_PEM);
+    *ulSignerCertSize = strlen((const char *)signingcredentialSIGNING_CERTIFICATE_PEM) + 1;
     /* Skip the "BEGIN CERTIFICATE" */
-    char* pucCertBegin = strstr (signingcredentialSIGNING_CERTIFICATE_PEM, pcOTA_PAL_CERT_BEGIN) ;
+    char* pucCertBegin = strstr ((const char *)signingcredentialSIGNING_CERTIFICATE_PEM, pcOTA_PAL_CERT_BEGIN) ;
 
     if (pucCertBegin == NULL)
     {

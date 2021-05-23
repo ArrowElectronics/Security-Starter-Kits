@@ -60,6 +60,7 @@
 #include "optiga/pal/pal_i2c.h"
 #include "optiga/optiga_util.h"
 #include "mutualauth_crypto.h"
+#include "aws_ota_codesigner_certificate.h"
 
 
 /* Private typedef -----------------------------------------------------------*/
@@ -94,7 +95,53 @@ static void Console_UART_Init( void );
 static void RF_Thread_Process(void const *argument);
 
 /* Functions Definition ------------------------------------------------------*/
+#define OTA_CERT_STORE 0
 
+#if (OTA_CERT_STORE == 1)
+
+volatile uint8_t Get_cert = 0;
+uint16_t CertSize = OTA_CERT_SIZE;
+#define OTA_OID 0xE0E8
+extern void optiga_shell_init();
+
+void getcertificateTask( void * pvParameters )
+{
+    optiga_lib_status_t status;
+    uint16_t ota_oid = OTA_OID;
+    int i=0;
+	configPRINT_STRING("\r\n\n\n========== Please Enter Your Code Signing Certificate ==========\r\n");
+
+	configPRINT_STRING("e.g- -----BEGIN CERTIFICATE-----\r\n");
+	configPRINT_STRING("     ...base64 data...\r\n");
+	configPRINT_STRING("     -----END CERTIFICATE-----\r\n");
+	configPRINT_STRING("========== To Exit Enter CTRL + @ ==========\r\n");
+
+	Get_cert = 1;
+	while (Get_cert);
+	for (i=0;i<=CertSize; i++)
+	{
+		if(signingcredentialSIGNING_CERTIFICATE_PEM[i] == '\r')
+			signingcredentialSIGNING_CERTIFICATE_PEM[i] = '\n';
+	}
+	signingcredentialSIGNING_CERTIFICATE_PEM[i] = '\n';
+
+	configPRINT_STRING("\r\n========== Below certificate you have entered ==========\r\n");
+	configPRINT_STRING((char *)signingcredentialSIGNING_CERTIFICATE_PEM);
+	configPRINT_STRING("\r\n");
+
+
+	optiga_shell_init();
+	status = mutualauth_optiga_write(ota_oid,(uint8_t *)signingcredentialSIGNING_CERTIFICATE_PEM,CertSize);
+	if (OPTIGA_LIB_SUCCESS != status)
+	{
+		configPRINT_STRING("Error: Failed to Write Code signing certificate\n");
+	}
+	else
+	{
+		configPRINT_STRING("\r\n[OTA]Code Signing Certificate write successfully in Optiga Trust M\n");
+	}
+}
+#endif
 /**
  * @brief  Main program
  * @param  None
@@ -122,6 +169,11 @@ int main( void )
   BUTTON_INIT();
 
   UARTqueue = xQueueCreate( 1, sizeof( INPUTMessage_t ) );
+#if (OTA_CERT_STORE == 1)
+  xTaskCreate( getcertificateTask, "GetcertTask", 2048, NULL, tskIDLE_PRIORITY, NULL );
+
+  vTaskStartScheduler();
+#else
 
   /* Create thread for processing hci and shci events */
   osThreadDef(RF_STACK, RF_Thread_Process, osPriorityNormal, 0, 2048);
@@ -136,7 +188,7 @@ int main( void )
    * including the WiFi initialization, is performed in the RTOS daemon task
    * startup hook. */
   vTaskStartScheduler();
-
+#endif
   /* We should never get here as control is now taken by the scheduler */
   for(;;);
 }
@@ -417,6 +469,7 @@ static void LogUartRxCallback(void)
     INPUTMessage_t xInputMessage;
     xInputMessage.pcData = (uint8_t *)&LogUartRxBuf;
     xInputMessage.xDataSize = sizeof(LogUartRxBuf);
+#if (OTA_CERT_STORE == 0)
 
 #if ( BLE_MUTUAL_AUTH_SERVICES == 1 )
 	static uint16_t offset=0;
@@ -445,6 +498,23 @@ static void LogUartRxCallback(void)
 			portYIELD_FROM_ISR(&xHigherPriorityTaskWoken);
 		}
 	}
+#else
+		static uint16_t cert_offset=0;
+		if (OTA_CERT_STORE)
+		{
+			HW_UART_Receive_IT(hw_uart1, LogUartRxBuf, sizeof(LogUartRxBuf), LogUartRxCallback);
+			if(LogUartRxBuf[0] != 0x00)
+			{
+				signingcredentialSIGNING_CERTIFICATE_PEM[cert_offset++] = LogUartRxBuf[0];
+			}
+			else
+			{
+				CertSize = cert_offset;
+				Get_cert = 0;
+				cert_offset = 0;
+			}
+		}
+#endif
 }
 
 /*-----------------------------------------------------------*/

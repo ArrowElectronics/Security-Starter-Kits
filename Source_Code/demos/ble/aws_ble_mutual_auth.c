@@ -1087,25 +1087,11 @@ static BaseType_t vGattDemoSvcHook( void )
     optiga_lib_status_t status;
     uint8_t *postfix="amazonaws.com";
     uint8_t *ret;
-    uint16_t otaSize = sizeof(ota_cert);
+    uint16_t otaSize = OTA_CERT_SIZE;
 
     /* Initialize Optiga turstM */
     //optiga_shell_init();
 #ifdef CONFIG_OTA_UPDATE_DEMO_ENABLED
-#if OTA_CERT_STORE
-    status = mutualauth_optiga_write(ota_oid,ota_cert,otaSize);
-    if (OPTIGA_LIB_SUCCESS != status)
-    {
-		IotLogError("Error: Failed to Write Code signing certificate\n");
-    }
-    else
-    {
-		IotLogInfo("OTA Cert write successfully Done \n");
-		IotLogInfo("Please Disable the \"OTA_CERT_STORE\" Macro and Flash again\n");
-		return status;
-
-    }
-#endif
 
     status = mutualauth_optiga_read(ota_oid,signingcredentialSIGNING_CERTIFICATE_PEM,&otaSize);
     if (OPTIGA_LIB_SUCCESS != status)

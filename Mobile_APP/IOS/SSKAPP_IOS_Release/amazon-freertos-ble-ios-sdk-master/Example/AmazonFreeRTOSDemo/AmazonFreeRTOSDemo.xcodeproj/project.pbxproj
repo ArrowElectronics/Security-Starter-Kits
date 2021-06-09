@@ -35,14 +35,14 @@
 		C41B2BAC63346EC6ADCF0F1020604CF2 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1153B8E39C5FACD77845D89841D7A54A /* Colors.xcassets */; };
 		C4354DB53C7207D8D3E95DA7B0E64985 /* AmazonConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BEB0DC2E5B235A2F20A025E75F5E16E /* AmazonConstants.swift */; };
 		CD4EE3D553D10CD4CFD438B4CED93305 /* DebugViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4893E35DA1A01C14DD53306375E56C4D /* DebugViewController.swift */; };
-		D15B38FC1D259203E8BB8B0CA1D8AF3B /* awsconfiguration2.json in Resources */ = {isa = PBXBuildFile; fileRef = 11A005061BF8D0A75B570470E96D89AA /* awsconfiguration2.json */; };
+		D15B38FC1D259203E8BB8B0CA1D8AF3B /* awsconfiguration.json in Resources */ = {isa = PBXBuildFile; fileRef = 11A005061BF8D0A75B570470E96D89AA /* awsconfiguration.json */; };
 		EB3FFA23062C5A72F748BAB356284A7B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 81F950CC86CEB778FAFE75CA417D3B1A /* Assets.xcassets */; };
 		F15082642529E85F00D5DC51 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F15082622529E85F00D5DC51 /* Main.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		1153B8E39C5FACD77845D89841D7A54A /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
-		11A005061BF8D0A75B570470E96D89AA /* awsconfiguration2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = awsconfiguration2.json; sourceTree = "<group>"; };
+		11A005061BF8D0A75B570470E96D89AA /* awsconfiguration.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = awsconfiguration.json; sourceTree = "<group>"; };
 		16402AC7CF431816CBB9FDF8ED03639E /* UIViewController+Amazon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Amazon.swift"; sourceTree = "<group>"; };
 		2075A45238BA0934245D4E9BA7E0DDDA /* DevicesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevicesViewController.swift; sourceTree = "<group>"; };
 		2F3C204B5F1E4D79CA85AD9F1846EC8A /* NetworkCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkCell.swift; sourceTree = "<group>"; };
@@ -180,7 +180,7 @@
 				1153B8E39C5FACD77845D89841D7A54A /* Colors.xcassets */,
 				5A77ED16DABA7E97CC8CC860E8832CDE /* Info.plist */,
 				98FE53C6F659FBE52AD3A99FDCE48AA6 /* Settings.bundle */,
-				11A005061BF8D0A75B570470E96D89AA /* awsconfiguration2.json */,
+				11A005061BF8D0A75B570470E96D89AA /* awsconfiguration.json */,
 			);
 			path = Support;
 			sourceTree = "<group>";
@@ -294,7 +294,7 @@
 				9BF5943024ED033E008CDE93 /* rootCACert.cer in Resources */,
 				9BF5942E24ED0330008CDE93 /* IOSAppCert.cer in Resources */,
 				4C53E551A6CA77BE597EE6A6293D96BC /* Settings.bundle in Resources */,
-				D15B38FC1D259203E8BB8B0CA1D8AF3B /* awsconfiguration2.json in Resources */,
+				D15B38FC1D259203E8BB8B0CA1D8AF3B /* awsconfiguration.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -436,8 +436,9 @@
 			baseConfigurationReference = 9CB2B6027ED26C9BB2BF6D1C /* Pods-AmazonFreeRTOSDemo.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = 65GLRX55BA;
 				INFOPLIST_FILE = "$(SRCROOT)/AmazonFreeRTOSDemo/Support/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
@@ -445,9 +446,10 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.eic.testphone;
+				MARKETING_VERSION = 1.0.2;
+				PRODUCT_BUNDLE_IDENTIFIER = com.eic.ssk.wb55;
 				PRODUCT_NAME = "SSK APP";
-				PROVISIONING_PROFILE_SPECIFIER = "eic test alpesh";
+				PROVISIONING_PROFILE_SPECIFIER = SSK_WB55;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -519,8 +521,9 @@
 			baseConfigurationReference = 905415FF211E4D233D4DA9DD /* Pods-AmazonFreeRTOSDemo.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = 65GLRX55BA;
 				INFOPLIST_FILE = "$(SRCROOT)/AmazonFreeRTOSDemo/Support/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
@@ -528,9 +531,10 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.eic.testphone;
+				MARKETING_VERSION = 1.0.2;
+				PRODUCT_BUNDLE_IDENTIFIER = com.eic.ssk.wb55;
 				PRODUCT_NAME = "SSK APP";
-				PROVISIONING_PROFILE_SPECIFIER = "eic test alpesh";
+				PROVISIONING_PROFILE_SPECIFIER = SSK_WB55;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

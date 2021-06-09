@@ -58,6 +58,8 @@ static NSDictionary<NSString *, id> * _userConfig = nil;
 
         if (_rootInfoDictionary) {
             NSString *userAgent = [self.rootInfoDictionary objectForKey:AWSInfoUserAgent];
+            //[self.rootInfoDictionary :AWSInfoUserAgent];
+
             if (userAgent) {
                 [AWSServiceConfiguration addGlobalUserAgentProductToken:userAgent];
             }
@@ -68,6 +70,13 @@ static NSDictionary<NSString *, id> * _userConfig = nil;
         NSDictionary <NSString *, id> *defaultCredentialsProviderDictionary = [[[_rootInfoDictionary objectForKey:AWSInfoCredentialsProvider] objectForKey:AWSInfoCognitoIdentity] objectForKey:AWSInfoDefault];
         NSString *cognitoIdentityPoolID = [defaultCredentialsProviderDictionary objectForKey:AWSInfoCognitoIdentityPoolId];
         AWSRegionType cognitoIdentityRegion =  [[defaultCredentialsProviderDictionary objectForKey:AWSInfoRegion] aws_regionTypeValue];
+        
+        //edited by alpesh
+//        NSString* strRegion = [[NSUserDefaults standardUserDefaults] stringForKey:@"cIRegion"];
+//        //cognitoIdentityRegion = [self getRegionName1:strRegion];
+//        cognitoIdentityRegion = AWSRegionAPSouth1;
+//        cognitoIdentityPoolID = [[NSUserDefaults standardUserDefaults] stringForKey:@"cIPoolId"];
+        
         if (cognitoIdentityPoolID && cognitoIdentityRegion != AWSRegionUnknown) {
             _defaultCognitoCredentialsProvider = [[AWSCognitoCredentialsProvider alloc] initWithRegionType:cognitoIdentityRegion
                                                                                             identityPoolId:cognitoIdentityPoolID];
@@ -80,38 +89,17 @@ static NSDictionary<NSString *, id> * _userConfig = nil;
 
 - (instancetype)init {
     NSDictionary<NSString *, id> *config;
-   // NSString *pathToAWSConfigJson1 = [[NSBundle mainBundle] pathForResource:@"awsconfiguration1" ofType:@"json"];
-    NSUserDefaults *preferences = [NSUserDefaults standardUserDefaults];
+    // read json file
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
 
-    NSString *currentLevelKey = @"cIPoolId";
-    NSString *pathToAWSConfigJson =@"";
-    if ([preferences objectForKey:currentLevelKey] != nil)
-    {
-        NSString *cIPoolId = [preferences stringForKey:@"cIPoolId"];
-        NSString *cIRegion = [preferences stringForKey:@"cIRegion"];
-        NSString *cUPPoolId = [preferences stringForKey:@"cUPPoolId"];
-        NSString *cUPAppClientId = [preferences stringForKey:@"cUPAppClientId"];
-        NSString *cUPAppClientSecret = [preferences stringForKey:@"cUPAppClientSecret"];
-        pathToAWSConfigJson=[NSString stringWithFormat:@"{\"UserAgent\":\"MobileHub/1.0\",\"Version\": \"1.0\",\"CredentialsProvider\": {\"CognitoIdentity\": {\"Default\": {\"PoolId\": \"%@\",\"Region\": \"%@\"}}},\"IdentityManager\": {\"Default\": {}},\"CognitoUserPool\": {\"Default\": {\"PoolId\": \"%@\",\"AppClientId\": \"%@\",\"AppClientSecret\": \"%@\",\"Region\": \"%@\"}}}",cIPoolId,cIRegion,cUPPoolId,cUPAppClientId,cUPAppClientSecret,cIRegion];
-    }
-    else
-    {
-        //  Get current level
-        //return [self initWithConfiguration:config];
-    }
-    
-    //NSString *cIPoolId = @"ap-south-1:ea502ec1-4b68-4684-9a24-d526b9745ef7";
-    //NSString *cIRegion = @"ap-south-1";
-    //NSString *cUPPoolId = @"ap-south-1_rEpe6QS4n";
-    //NSString *cUPAppClientId = @"73v1jsebhcva9cu8r0auckf1ag";
-    //NSString *cUPAppClientSecret = @"1u4alsj7phlj3um7mqvo20k71b9cfgj1eo1tc6odojso264o2fca";
+    NSString *pathToAWSConfigJson = [documentsDirectory stringByAppendingPathComponent:@"awsconfiguration.json"];
 
-    
-    
+//    NSString *pathToAWSConfigJson1 = [[NSBundle mainBundle] pathForResource:@"awsconfiguration"
+//                                                                    ofType:@"json"];
     if (pathToAWSConfigJson) {
-        NSData* data = [pathToAWSConfigJson dataUsingEncoding:NSUTF8StringEncoding];
-
-        //NSData *data = [NSData dataWithContentsOfFile:pathToAWSConfigJson];
+        NSData *data = [NSData dataWithContentsOfFile:pathToAWSConfigJson];
+        
         if (!data) {
             AWSDDLogError(@"Couldn't read the awsconfiguration.json file. Skipping load of awsconfiguration.json.");
         } else {
@@ -214,5 +202,59 @@ static NSDictionary<NSString *, id> * _userConfig = nil;
     
     return self;
 }
+- (AWSRegionType) getRegionName1:(NSString *)cIReg{
+    AWSRegionType reginSel;
+    if(cIReg == @"ca-central-1") {
+        reginSel = AWSRegionCACentral1;
+    } else if (cIReg == @"cn-north-1") {
+        reginSel = AWSRegionCNNorth1;
+    } else if (cIReg == @"sa-east-1") {
+        reginSel = AWSRegionSAEast1;
+    } else if (cIReg == @"ap-southeast-2") {
+        reginSel = AWSRegionAPSoutheast2;
+    } else if (cIReg == @"ap-northeast-2") {
+        reginSel = AWSRegionAPNortheast2;
+    } else if (cIReg == @"ap-northeast-1") {
+        reginSel = AWSRegionAPNortheast1;
+    } else if (cIReg == @"ap-southeast-1") {
+        reginSel = AWSRegionAPSoutheast1;
+    } else if (cIReg == @"eu-central-1") {
+        reginSel = AWSRegionEUCentral1;
+    } else if (cIReg == @"eu-west-2") {
+        reginSel = AWSRegionEUWest2;
+    } else if (cIReg == @"eu-west-1") {
+        reginSel = AWSRegionEUWest1;
+    } else if (cIReg == @"us-west-2") {
+        reginSel = AWSRegionUSWest2;
+    } else if (cIReg == @"us-west-1") {
+        reginSel = AWSRegionUSWest1;
+    } else if (cIReg == @"us-east-2") {
+        reginSel = AWSRegionUSEast2;
+    } else if (cIReg == @"us-east-1") {
+        reginSel = AWSRegionUSEast1;
+    } else if (cIReg == @"unknown") {
+        reginSel = AWSRegionUnknown;
+    } else if (cIReg == @"us-govwest-1") {
+        reginSel = AWSRegionUSGovWest1;
+    } else if (cIReg == @"eu-west-3") {
+        reginSel = AWSRegionEUWest3;
+    } else if (cIReg == @"cn-northwest-1") {
+        reginSel = AWSRegionCNNorthWest1;
+    } else if (cIReg == @"me-south-1") {
+        reginSel = AWSRegionMESouth1;
+    } else if (cIReg == @"ap-east-1") {
+        reginSel = AWSRegionAPEast1;
 
+    } else if (cIReg == @"eu-north-1") {
+        reginSel = AWSRegionEUNorth1;
+
+    } else if (cIReg == @"us-goveast-1") {
+        reginSel = AWSRegionUSGovEast1;
+    } else if (cIReg == @"ap-south-1") {
+        reginSel = AWSRegionAPSouth1;
+    } else if (cIReg == @"ap-east-1") {
+        reginSel = AWSRegionAPEast1;
+    }
+    return reginSel;
+}
 @end

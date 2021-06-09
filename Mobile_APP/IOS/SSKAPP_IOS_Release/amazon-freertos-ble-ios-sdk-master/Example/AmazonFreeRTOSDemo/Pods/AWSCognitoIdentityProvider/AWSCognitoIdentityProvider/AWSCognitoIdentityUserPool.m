@@ -69,6 +69,12 @@ static NSString *const AWSPinpointContextKeychainUniqueIdKey = @"com.amazonaws.A
         NSString *clientId = [serviceInfo.infoDictionary objectForKey:AWSCognitoUserPoolAppClientId] ?: [serviceInfo.infoDictionary objectForKey:AWSCognitoUserPoolAppClientIdLegacy];
         NSString *clientSecret = [serviceInfo.infoDictionary objectForKey:AWSCognitoUserPoolAppClientSecret] ?: [serviceInfo.infoDictionary objectForKey:AWSCognitoUserPoolAppClientSecretLegacy];
         NSString *pinpointAppId = [serviceInfo.infoDictionary objectForKey:AWSCognitoUserPoolPinpointAppId];
+        
+        //edited by alpesh
+//        poolId = [[NSUserDefaults standardUserDefaults] stringForKey:@"cUPPoolId"];
+//        clientSecret = [[NSUserDefaults standardUserDefaults] stringForKey:@"cUPAppClientSecret"];
+//        clientId = [[NSUserDefaults standardUserDefaults] stringForKey:@"cUPAppClientId"];
+        
         NSNumber *migrationEnabled = [serviceInfo.infoDictionary objectForKey:AWSCognitoUserPoolMigrationEnabled];
         BOOL migrationEnabledBoolean = NO;
         if (migrationEnabled != nil) {

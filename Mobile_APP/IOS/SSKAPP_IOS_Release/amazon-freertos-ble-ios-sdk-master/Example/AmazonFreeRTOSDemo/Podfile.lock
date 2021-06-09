@@ -1,5 +1,5 @@
 PODS:
-  - Alertift (4.1.1)
+  - Alertift (4.2.0)
   - AmazonFreeRTOS (1.1.0):
     - AWSIoT
   - AWSAuthCore (2.11.1):
@@ -20,9 +20,9 @@ PODS:
   - AWSUserPoolsSignIn (2.11.1):
     - AWSAuthCore (= 2.11.1)
     - AWSCognitoIdentityProvider (= 2.11.1)
-  - LicensePlist (2.16.0)
-  - SwiftFormat/CLI (0.46.3)
-  - SwiftLint (0.40.3)
+  - LicensePlist (3.0.5)
+  - SwiftFormat/CLI (0.47.12)
+  - SwiftLint (0.42.0)
 
 DEPENDENCIES:
   - Alertift
@@ -55,7 +55,7 @@ EXTERNAL SOURCES:
     :path: "../../"
 
 SPEC CHECKSUMS:
-  Alertift: 950483ca193717cc8bb508a7dbbe34f4af321daf
+  Alertift: 17b37be915cd28edeceabd438e4134d041ea825c
   AmazonFreeRTOS: f5facf4419113ff8c5af6054795cfc293acb933d
   AWSAuthCore: 23545c33485f2e92acde3e7458e6ee07410e7f28
   AWSAuthUI: 761f70d828a7c7ea7aa118ae237c0743e13b40fb
@@ -65,10 +65,10 @@ SPEC CHECKSUMS:
   AWSIoT: 3db9287c5722b84bec60d147063795d8ba62ed77
   AWSMobileClient: 1acbe6ae32ebe5899425ac33d89491e4608da393
   AWSUserPoolsSignIn: b6e339b139fdd310c50de2ca6b4e1a896e7be983
-  LicensePlist: 26afd3ef32fffcc649a15b31d96fef5eded65497
-  SwiftFormat: b639417da9e024b9e782f917bc9a080cf75bcb37
-  SwiftLint: dfd554ff0dff17288ee574814ccdd5cea85d76f7
+  LicensePlist: 11c638fa9dc22ddb5771cdf910242ae1ba2684da
+  SwiftFormat: 68cac6de69aafb44b60ae49a919600966b0dcabe
+  SwiftLint: 4fa9579c63416865179bc416f0a92d55f009600d
 
 PODFILE CHECKSUM: 4579661191dea3649786f942444ce44ac2b43f43
 
-COCOAPODS: 1.8.4
+COCOAPODS: 1.10.1

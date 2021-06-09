@@ -72,6 +72,8 @@ public class AmazonFreeRTOSManager: NSObject {
     public var dataIV:Data?
     public let ivStr:String? = "65696e666f63686970735f6172726f77"
     
+    public var readDevCertDataInStr:String?=""
+    public var totalDevCertSize:Int?
     
     /// Initializes a new FreeRTOS manager.
     ///
@@ -99,7 +101,9 @@ public class AmazonFreeRTOSManager: NSObject {
         UIApplication.shared.keyWindow?.rootViewController?.present(alertView, animated: true, completion: nil)
     }
     public func clearData(){
-        stateNum = 2
+        stateNum = 1
+        readDevCertDataInStr = ""
+        totalDevCertSize = 0
         readPublicKeyDataInStr=""
         readRandomNumDataInStr=""
         totalPublicKeySize=0
@@ -212,7 +216,6 @@ extension AmazonFreeRTOSManager: CBCentralManagerDelegate {
         NotificationCenter.default.post(name: .afrCentralManagerDidConnectDevice, object: nil, userInfo: ["identifier": peripheral.identifier])
         //debugPrint("[\(peripheral.identifier.uuidString)] afrCentralManagerDidConnectPeripheral")
         debugPrint("[BLE APP] : Connected BLE device")
-
     }
 
     /// CBCentralManagerDelegate
@@ -298,16 +301,16 @@ extension AmazonFreeRTOSManager: CBPeripheralDelegate {
                    return
                }else {
                     //debugPrint(" Write to Data indication")
-                    var value = "02"
-                    if state == 2 {
+                    var value = "01"
+                    if state == 1 {
+                        value = "01"
+                    }else if state == 2 {
                         value = "02"
                     }else if state == 3 {
                         value = "03"
-                    }
-                    else if state == 4 {
+                    }else if state == 4 {
                         value = "04"
-                    }
-                    else if state == 5 {
+                    }else if state == 5 {
                         value = "05"
                     }else if state == 6 {
                         value = "06"
@@ -327,8 +330,12 @@ extension AmazonFreeRTOSManager: CBPeripheralDelegate {
                    return
                }else {
                    //debugPrint("Write to Data param value")
-                
                     switch state {
+                    case 1:
+                        //public certificate send to BLE
+                        let dataPub =  DeviceCertificateCertData(devCertStr: "IOSAppCert")
+                        dataMain =  dataPub // Publish the device certificate
+                        break
                     case 2:
                         //public key send to BLE
                         privateKey = P256.Signing.PrivateKey()// Keep the private key safe
@@ -436,7 +443,7 @@ extension AmazonFreeRTOSManager: CBPeripheralDelegate {
                        let chunk = finData!.subdata(in: offset..<offset + thisChunkSize )
                        let chunkStr = chunk.hexEncodedString()
                        //debugPrint("[\(chunkStr)]  chunk data :[\(offset)] : current offset")
-
+                    
                        peripheral.writeValue(chunk, for: characteristicWriteDataParams!, type: .withResponse)
 
                        // update the offset
@@ -445,6 +452,10 @@ extension AmazonFreeRTOSManager: CBPeripheralDelegate {
                    } while (offset < length!);
                 
                    switch state {
+                   case 1:
+                       //device certificate send to BLE
+                       debugPrint("[Mutual Auth] : Send device certificate")
+                       break
                    case 2:
                        //public key send to BLE
                        debugPrint("[Mutual Auth] : Send public key")
@@ -505,14 +516,7 @@ extension AmazonFreeRTOSManager: CBPeripheralDelegate {
              serviceMain=service
                 if(stateNum != 8){
                     // for pubblic key send to ble device
-                    stateNum = 2
-
-                    /*let isVerifyCertificate=VerifyRootCaWithDeviceCert(caCertStr: "rootCACert", devCertStr: "IOSAppCert")
-                    if isVerifyCertificate{
-                        print("Certificate verification successful")
-                    }else{
-                        print("Certificate verification fail")
-                    }*/
+                    stateNum = 1
 
                     NotifyFromBle(peripheral:peripheral,service:service)
                     
@@ -776,6 +780,43 @@ public func NotifyFromBle(peripheral:CBPeripheral,service:CBService){
 }
 
 extension AmazonFreeRTOSManager {
+    public func state1Process(peripheral: CBPeripheral){
+        let crcStr = readDevCertDataInStr!.suffix(4)
+        let start = readDevCertDataInStr!.index(readDevCertDataInStr!.startIndex, offsetBy: 4)
+        let end = readDevCertDataInStr!.index(readDevCertDataInStr!.endIndex, offsetBy: -4)
+        let range = start..<end
+
+        let dataStr = readDevCertDataInStr![range]
+        let mainData = Data(hexString: String(dataStr))
+
+        let crc = crc16CCITTFalse(data:mainData!)
+        let crcHexStr=String(format: "%04X", crc)
+        if crcHexStr.caseInsensitiveCompare(crcStr) == ComparisonResult.orderedSame{
+            debugPrint("[Mutual Auth] : Device Certificate CRC Matched")
+            debugPrint("[Mutual Auth] : Received Device Certificate")
+
+            let start = dataStr.index(dataStr.startIndex, offsetBy: 2)
+            let end = dataStr.index(dataStr.endIndex, offsetBy: 0)
+            let range = start..<end
+            let dataStr1 = dataStr[range]
+            readDevCertDataInStr = String(dataStr1)
+            let isVerifyCertificate=CertVerifyWithRootCa(caCertStr: "rootCACert", devCertStr: "IOSAppCert")
+            if isVerifyCertificate{
+                debugPrint("[Mutual Auth] : Device Certificate Verified")
+                stateNum =  2
+                // for public key send to ble device
+                WriteToBle(peripheral:peripheral,service:serviceMain!, state:stateNum!)
+            }else{
+                debugPrint("[Mutual Auth] : Device Certificate Verified Fail")
+            }
+            //stateNum =  2
+            // for public key send to ble device
+            //WriteToBle(peripheral:peripheral,service:serviceMain!, state:stateNum!)
+        }else{
+            debugPrint("[Mutual Auth] : Device Certificate CRC not Matched")
+            PopUpMessage(title:"Error",message:"Mutual Authentication Fail : CRC not matched")
+        }
+    }
     public func state2Process(peripheral: CBPeripheral){
         let crcStr = readPublicKeyDataInStr!.suffix(4)
         let start = readPublicKeyDataInStr!.index(readPublicKeyDataInStr!.startIndex, offsetBy: 4)
@@ -1034,6 +1075,31 @@ extension AmazonFreeRTOSManager {
     
     public func readDataFromBLE(peripheral: CBPeripheral,characteristic:CBCharacteristic,edgeValue:String){
         switch stateNum {
+        case 1:
+            //read device certificate and write public key
+            if readDevCertDataInStr != ""{
+                readDevCertDataInStr! += edgeValue
+                    //debugPrint("[\(readDevCertDataInStr)] ] :Received Device Certificate data")
+
+                    if readDevCertDataInStr!.count < totalDevCertSize!{
+                     ReadFromBle(peripheral:peripheralMain!,service:serviceMain!, state:stateNum!)
+                    }else{
+                       state1Process(peripheral: peripheral)
+                    }
+            }else{
+                let dataReadLen = String(edgeValue.prefix(4))
+                let dataIntLen = Int(dataReadLen, radix: 16)
+                totalDevCertSize = dataIntLen!*2
+                readDevCertDataInStr! += edgeValue
+                //debugPrint("[\(readDevCertDataInStr)] ] :Received Device Certificate data")
+
+                if readDevCertDataInStr!.count < totalDevCertSize!{
+                    ReadFromBle(peripheral:peripheralMain!,service:serviceMain!, state:stateNum!)
+                }else{
+                     state1Process(peripheral: peripheral)
+                }
+            }
+            break
         case 2:
             //read public key and write for random number
             if readPublicKeyDataInStr != ""{
@@ -1880,12 +1946,57 @@ public func hex2ascii (example: String) -> String {
     return final
 }
 
+public func DeviceCertificateCertData(devCertStr:String)-> Data{
+    //get device certificate
+    let devFilePath = Bundle.main.path(forResource: devCertStr, ofType: "der")
+    let devCertData = NSData(contentsOfFile: devFilePath ?? "") as Data?
+    var devCert: SecCertificate?
+    if let data = devCertData as? CFData? {
+        devCert = SecCertificateCreateWithData(nil, data!)
+    }
+    assert(devCert != nil)
+    let certData = SecCertificateCopyData(devCert!) as Data
+    return certData
+}
+
+public func CertVerifyWithRootCa(caCertStr:String,devCertStr:String)->Bool{
+    //get ca certificate
+    let caFilePath = Bundle.main.path(forResource: caCertStr, ofType: "der")
+    let caCertData = NSData(contentsOfFile: caFilePath ?? "") as Data?
+
+    var caCert: SecCertificate?
+    if let data = caCertData as? CFData? {
+        caCert = SecCertificateCreateWithData(nil, data!)
+    }
+    assert(caCert != nil)
+    
+    //getting certificate from device data
+    //let devCertData1 =  Data(hexString: String(devCertDataStr))
+    let devFilePath = Bundle.main.path(forResource: devCertStr, ofType: "der")
+    var devCertData = NSData(contentsOfFile: devFilePath ?? "") as Data?
+    
+    var devCert: SecCertificate?
+    if let data = devCertData as? CFData? {
+        devCert = SecCertificateCreateWithData(nil, data!)
+    }
+    assert(devCert != nil)
+
+    var trust: SecTrust?
+    
+    let certArray:CFTypeRef? = [caCert, devCert] as CFTypeRef
+    let secPolicy = SecPolicyCreateBasicX509()
+
+    let statusTrust = SecTrustCreateWithCertificates(certArray!, secPolicy, &trust)
+    if statusTrust == errSecSuccess{
+        return true
+    }
+    return false;
+}
 public func VerifyRootCaWithDeviceCert(caCertStr:String,devCertStr:String)->Bool{
     //get ca certificate
     let caFilePath = Bundle.main.path(forResource: caCertStr, ofType: "der")
     let caCertData = NSData(contentsOfFile: caFilePath ?? "") as Data?
 
-    
     var caCert: SecCertificate?
     if let data = caCertData as? CFData? {
         caCert = SecCertificateCreateWithData(nil, data!)

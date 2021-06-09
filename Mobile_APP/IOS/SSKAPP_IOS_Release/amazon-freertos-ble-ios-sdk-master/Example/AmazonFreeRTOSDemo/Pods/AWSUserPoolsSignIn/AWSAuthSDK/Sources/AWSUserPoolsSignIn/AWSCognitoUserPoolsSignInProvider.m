@@ -41,7 +41,15 @@ typedef void (^AWSSignInManagerCompletionBlock)(id result, NSError *error);
 cognitoIdentityUserPoolAppClientId:(NSString *)cognitoIdentityUserPoolAppClientId
 cognitoIdentityUserPoolAppClientSecret:(NSString *)cognitoIdentityUserPoolAppClientSecret
                      region:(AWSRegionType)region{
+    //edited by alpesh
+//    NSString* strRegion = [[NSUserDefaults standardUserDefaults] stringForKey:@"cIRegion"];
+//    region = AWSRegionAPSouth1;
+//    cognitoIdentityUserPoolAppClientId = [[NSUserDefaults standardUserDefaults] stringForKey:@"cUPPoolId"];
+//    cognitoIdentityUserPoolAppClientSecret = [[NSUserDefaults standardUserDefaults] stringForKey:@"cUPAppClientSecret"];
+//    cognitoIdentityUserPoolAppClientId = [[NSUserDefaults standardUserDefaults] stringForKey:@"cUPAppClientId"];
+    
     AWSServiceConfiguration *serviceConfiguration = [[AWSServiceConfiguration alloc] initWithRegion:region credentialsProvider:nil];
+
     AWSCognitoIdentityUserPoolConfiguration *configuration = [[AWSCognitoIdentityUserPoolConfiguration alloc]
                                                               initWithClientId:cognitoIdentityUserPoolAppClientId
                                                               clientSecret:cognitoIdentityUserPoolAppClientSecret
@@ -142,4 +150,59 @@ didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     return YES;
 }
 
+//+ (AWSRegionType) getRegionName:(NSString *)cIReg{
+//    AWSRegionType reginSel;
+//    if(cIReg == @"ca-central-1") {
+//        reginSel = AWSRegionCACentral1;
+//    } else if (cIReg == @"cn-north-1") {
+//        reginSel = AWSRegionCNNorth1;
+//    } else if (cIReg == @"sa-east-1") {
+//        reginSel = AWSRegionSAEast1;
+//    } else if (cIReg == @"ap-southeast-2") {
+//        reginSel = AWSRegionAPSoutheast2;
+//    } else if (cIReg == @"ap-northeast-2") {
+//        reginSel = AWSRegionAPNortheast2;
+//    } else if (cIReg == @"ap-northeast-1") {
+//        reginSel = AWSRegionAPNortheast1;
+//    } else if (cIReg == @"ap-southeast-1") {
+//        reginSel = AWSRegionAPSoutheast1;
+//    } else if (cIReg == @"eu-central-1") {
+//        reginSel = AWSRegionEUCentral1;
+//    } else if (cIReg == @"eu-west-2") {
+//        reginSel = AWSRegionEUWest2;
+//    } else if (cIReg == @"eu-west-1") {
+//        reginSel = AWSRegionEUWest1;
+//    } else if (cIReg == @"us-west-2") {
+//        reginSel = AWSRegionUSWest2;
+//    } else if (cIReg == @"us-west-1") {
+//        reginSel = AWSRegionUSWest1;
+//    } else if (cIReg == @"us-east-2") {
+//        reginSel = AWSRegionUSEast2;
+//    } else if (cIReg == @"us-east-1") {
+//        reginSel = AWSRegionUSEast1;
+//    } else if (cIReg == @"unknown") {
+//        reginSel = AWSRegionUnknown;
+//    } else if (cIReg == @"us-govwest-1") {
+//        reginSel = AWSRegionUSGovWest1;
+//    } else if (cIReg == @"eu-west-3") {
+//        reginSel = AWSRegionEUWest3;
+//    } else if (cIReg == @"cn-northwest-1") {
+//        reginSel = AWSRegionCNNorthWest1;
+//    } else if (cIReg == @"me-south-1") {
+//        reginSel = AWSRegionMESouth1;
+//    } else if (cIReg == @"ap-east-1") {
+//        reginSel = AWSRegionAPEast1;
+//
+//    } else if (cIReg == @"eu-north-1") {
+//        reginSel = AWSRegionEUNorth1;
+//
+//    } else if (cIReg == @"us-goveast-1") {
+//        reginSel = AWSRegionUSGovEast1;
+//    } else if (cIReg == @"ap-south-1") {
+//        reginSel = AWSRegionAPSouth1;
+//    } else if (cIReg == @"ap-east-1") {
+//        reginSel = AWSRegionAPEast1;
+//    }
+//    return reginSel;
+//}
 @end

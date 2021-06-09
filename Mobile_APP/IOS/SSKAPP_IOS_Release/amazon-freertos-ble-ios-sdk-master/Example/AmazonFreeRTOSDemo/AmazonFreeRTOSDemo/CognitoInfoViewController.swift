@@ -46,6 +46,14 @@ class CognitoInfoViewController: UIViewController, UIDocumentPickerDelegate {
         } else {
             skip.isHidden = true
         }
+
+        tfRegion.isUserInteractionEnabled = false
+        tfIOTPolicyName.isUserInteractionEnabled = false
+        tfCIPoolId1.isUserInteractionEnabled = false
+        tfCUPoolId.isUserInteractionEnabled = false
+        tfCUACId.isUserInteractionEnabled = false
+        tfCUACS.isUserInteractionEnabled = false
+
         hideCognitoView(isHide: true)
     }
 }
@@ -151,6 +159,40 @@ extension CognitoInfoViewController {
         let story = UIStoryboard(name: "Main", bundle: nil)
         let objVC = story.instantiateViewController(withIdentifier: "DevicesViewController")
         let navCon = UINavigationController(rootViewController: objVC)
+
+        // edited by alpesh
+        let jsonString = "{\"UserAgent\": \"MobileHub/1.0\",\"Version\": \"1.0\",\"CredentialsProvider\": {\"CognitoIdentity\":{\"Default\": {\"PoolId\": \"" + cIPoolID + "\",\"Region\":\"" + cIRegion + "\"}}},\"IdentityManager\": {\"Default\":{}},\"CognitoUserPool\": {\"Default\": {\"PoolId\": \"" + cUPoolId + "\",\"AppClientId\":\"" + cUAppCId + "\",\"AppClientSecret\":\"" + cUAppSec + "\",\"Region\": \"" + cIRegion + "\"}}}"
+
+        // write to test file
+        do {
+            let fm = FileManager.default
+            let urls = fm.urls(for: .documentDirectory, in: .userDomainMask)
+            if let url = urls.first {
+                var fileURL = url.appendingPathComponent("awsconfiguration")
+                fileURL = fileURL.appendingPathExtension("json")
+                try jsonString.write(to: fileURL,
+                                     atomically: true,
+                                     encoding: .utf8)
+            }
+        } catch {
+            // Handle error
+        }
+
+        // read json file
+//        do {
+//            let fm = FileManager.default
+//            let urls = fm.urls(for: .documentDirectory, in: .userDomainMask)
+//            if let url = urls.first {
+//                var fileURL = url.appendingPathComponent("awsconfiguration")
+//                fileURL = fileURL.appendingPathExtension("json")
+//                let data = try Data(contentsOf: fileURL)
+//                let jsonObject = try JSONSerialization.jsonObject(with: data, options: [.mutableContainers, .mutableLeaves])
+//                print(jsonObject)
+//            }
+//        } catch {
+//            // Handle error
+//        }
+
         appDelegate!.window?.rootViewController = navCon
     }
 

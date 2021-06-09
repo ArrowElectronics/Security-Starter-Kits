@@ -233,10 +233,9 @@ extension DevicesViewController {
             AWSIoT.default().attachPrincipalPolicy(attachPrincipalPolicyRequest, completionHandler: { error in
                 if let error = error {
                     DispatchQueue.main.async {
-                        Alertift.alert(title: NSLocalizedString("Error", comment: String()), message: error.localizedDescription)
-                            .action(.default(NSLocalizedString("OK", comment: String())))
-                            .show(on: self)
-                        return
+//                        Alertift.alert(title: NSLocalizedString("Error", comment: String()), message: error.localizedDescription)
+//                            .action(.default(NSLocalizedString("OK", comment: String())))
+//                            .show(on: self)
                     }
                 }
             })

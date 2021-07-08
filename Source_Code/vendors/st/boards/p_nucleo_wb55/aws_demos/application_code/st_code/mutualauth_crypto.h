@@ -14,7 +14,6 @@
 typedef enum
 {
   DEVICE_CERTIFICATE = 1,
-  DEVICE_PUBKEY,
   TOKEN,
   SIGN_TOKEN,
   ECDH_PUBKEY,

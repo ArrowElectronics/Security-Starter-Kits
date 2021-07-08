@@ -294,6 +294,7 @@ static void MUTUALAUTH_Receive_Data(IotBleWriteEventParams_t *pxWriteParam)
 	static uint16_t data_length = 0;
 	static uint8_t *gateway_cert;
 	static MUTUALAUTH_Edge_Data_t frame;
+	uint16_t  pPubKeyLength=LENGTH_PUB_KEY_NISTP256;
 
 	int8_t crc_status;
 	IotBleAttributeData_t xAttrData = { 0 };
@@ -347,16 +348,33 @@ static void MUTUALAUTH_Receive_Data(IotBleWriteEventParams_t *pxWriteParam)
 					break;
 				}
 				else
+#endif
 				{
 					MUTUALAUTH_LOG_MESSAGE("RECEIVED: APP/GATEWAY CERTIFICATE verified");
-				}
-#endif
-				gw_status = (return_status == OPTIGA_LIB_SUCCESS) ? Certificate_Verify_Pass : Certificate_Verify_Fail;
-				if( xNotifyGatewayStatus == pdTRUE )
-				{
-					xAttrData.pData = ( uint8_t * ) &gw_status;
-					xAttrData.size = sizeof( gw_status );
-					( void ) IotBle_SendIndication( &xResp, usBLEConnectionID, false );
+					memcpy(gateway_pubkey.public_key, ecc_pubkey_header, PUBLIC_KEY_HEADER_SIZE);
+					/*Extract public key from gateway certificate */
+					return_status = pal_crypt_get_public_key(gateway_cert, data_length-4, gateway_pubkey.public_key + PUBLIC_KEY_HEADER_SIZE, &pPubKeyLength);
+					gw_status = (return_status == OPTIGA_LIB_SUCCESS) ? Pub_Key_Ext_Pass : Pub_Key_Ext_Fail;
+					if ( Pub_Key_Ext_Fail == gw_status )
+					{
+						if( xNotifyGatewayStatus == pdTRUE )
+						{
+							xAttrData.pData = ( uint8_t * ) &gw_status;
+							xAttrData.size = sizeof( gw_status );
+							( void ) IotBle_SendIndication( &xResp, usBLEConnectionID, false );
+							break;
+						}
+					}
+					else if (Pub_Key_Ext_Pass == gw_status)
+					{
+						if( xNotifyGatewayStatus == pdTRUE )
+						{
+							xAttrData.pData = ( uint8_t * ) &gw_status;
+							xAttrData.size = sizeof( gw_status );
+							( void ) IotBle_SendIndication( &xResp, usBLEConnectionID, false );
+							break;
+						}
+					}
 				}
 				recv_byte = 0;
 			}
@@ -370,45 +388,6 @@ static void MUTUALAUTH_Receive_Data(IotBleWriteEventParams_t *pxWriteParam)
 					xAttrData.size = sizeof( gw_status );
 					( void ) IotBle_SendIndication( &xResp, usBLEConnectionID, false );
 				}
-				recv_byte = 0;
-			}
-			break;
-
-		case DEVICE_PUBKEY:			/* Receive gateway public key */
-
-			if(recv_byte == 0)
-			{
-				ByteArrayToShort(pxWriteParam->pValue,0,&frame.Length);
-				frame.pPayload = pvPortMalloc(frame.Length);
-				data_length = frame.Length;
-				MUTUALAUTH_DEBUG("--DEVICE_PUBKEY length1 =%d\r\n",frame.Length);
-			}
-			if(frame.Length > 20)
-			{
-				MUTUALAUTH_DEBUG("--DEVICE_PUBKEY length2 =%d\r\n",frame.Length);
-				memcpy(frame.pPayload + recv_byte,pxWriteParam->pValue,pxWriteParam->length);
-				recv_byte = recv_byte + pxWriteParam->length;
-				frame.Length = frame.Length - pxWriteParam->length;
-
-				break;
-			}
-			MUTUALAUTH_DEBUG("--DEVICE_PUBKEY length3 =%d\r\n",frame.Length);
-			MUTUALAUTH_DEBUG("--DEVICE_PUBKEY pxWriteParam->length =%d\r\n",pxWriteParam->length);
-
-			memcpy(frame.pPayload + recv_byte,pxWriteParam->pValue,pxWriteParam->length);
-			crc_status = parse_and_validate_frame(frame.pPayload);
-			if (crc_status == CRC_VERIFIED_PASS)
-			{
-				MUTUALAUTH_LOG_MESSAGE("RECEIVED: APP/GATEWAY PUBKEY");
-				MUTUALAUTH_DEBUG("--DEVICE_PUBKEY CRC matched\r\n");
-				memcpy(gateway_pubkey.public_key,ecc_pubkey_header,PUBLIC_KEY_HEADER_SIZE);
-				memcpy(gateway_pubkey.public_key + PUBLIC_KEY_HEADER_SIZE,frame.pPayload + 2,data_length-4);
-
-				recv_byte = 0;
-			}
-			else
-			{
-				IotLogError("Error:CRC not match\r\n");
 				recv_byte = 0;
 			}
 			break;
@@ -751,58 +730,6 @@ static void MUTUALAUTH_Send_Data(IotBleReadEventParams_t *pxReadParam)
 			xResp.pAttrData->size = frame.Length;
 
 			MUTUALAUTH_LOG_MESSAGE("SEND: DEVICE CERTIFICATE");
-			IotBle_SendResponse( &xResp, pxReadParam->connId, pxReadParam->transId );
-			send_byte = 0;
-			break;
-
-		case DEVICE_PUBKEY:				/* Send edge device public key */
-
-			if (send_byte == 0)
-			{
-				if(chip_cert[0] == 0)
-				{
-					chip_cert_oid = 0xE0E0;
-					// Read security chip certificate
-					return_status = read_device_cert(chip_cert_oid, chip_cert, &chip_cert_size);
-					if(OPTIGA_LIB_SUCCESS != return_status)
-					{
-						IotLogError("Error: read chip cert failed (status=0x%x).\r\n", return_status);
-						break;
-					}
-				}
-				// Extract Public Key from the certificate
-				device_pubkey.Length = sizeof(device_pubkey.public_key);
-				return_status = pal_crypt_get_public_key(chip_cert, chip_cert_size, device_pubkey.public_key, &device_pubkey.Length);
-				if(OPTIGA_LIB_SUCCESS != return_status)
-				{
-					IotLogError("Error: extract public key failed.");
-					break;
-				}
-
-
-				/* from certi */
-				frame.Length = device_pubkey.Length + 4;
-				frame.pPayload = pvPortMalloc(frame.Length);
-				MUTUALAUTH_DEBUG("--DEVICE_PUBKEY 1 length =%d\r\n",frame.Length);
-				create_payload_frame(&frame,device_pubkey.public_key ,frame.Length-4);
-			}
-			if (frame.Length > 20)
-			{
-				MUTUALAUTH_DEBUG("--DEVICE_PUBKEY 2 length =%d\r\n",frame.Length);
-				xResp.pAttrData->pData = frame.pPayload + send_byte;
-				xResp.pAttrData->size = 20;
-
-				IotBle_SendResponse( &xResp, pxReadParam->connId, pxReadParam->transId );
-				frame.Length = frame.Length - 20;
-				send_byte = send_byte + 20;
-				break;
-			}
-			MUTUALAUTH_DEBUG("--DEVICE_PUBKEY 3 length =%d\r\n",frame.Length);
-			xResp.pAttrData->pData = frame.pPayload + send_byte;
-			xResp.pAttrData->size = frame.Length;
-
-
-			MUTUALAUTH_LOG_MESSAGE("SEND: DEVICE PUBKEY\r\n");
 			IotBle_SendResponse( &xResp, pxReadParam->connId, pxReadParam->transId );
 			send_byte = 0;
 			break;

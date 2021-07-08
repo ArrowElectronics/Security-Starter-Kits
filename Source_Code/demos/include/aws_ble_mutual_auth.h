@@ -73,6 +73,9 @@
 #define ECDSA_Signature_Fail			0x06
 #define ECDH_Secret_Match				0x07
 #define ECDH_Secret_Not_Match			0x08
+#define Pub_Key_Ext_Pass				0x09 /* public key extract pass*/
+#define Pub_Key_Ext_Fail				0x0A /* public key extract fail */
+
 
 // Logger levels
 #define IOT_EXAMPLE                     "[Mutual Auth]  : "

@@ -75,6 +75,12 @@
 #define ECDH_Secret_Not_Match			0x08
 #define Pub_Key_Ext_Pass				0x09 /* public key extract pass*/
 #define Pub_Key_Ext_Fail				0x0A /* public key extract fail */
+#define	Un_expected_state				0x0B /* Un expected state received */
+#define	Token_CRC_Match_Fail			0x0C /* Token crc mis-match */
+#define	Create_SHA256_Fail				0x0D /* Create SHA256 Fail */
+#define	Create_sha256_EDCH_Fail			0x0E /* Create sha256 EDCH fail */
+#define	Sha256_EDCH_Match_Fail			0x0F /* Sha256 EDCH fail */
+
 
 
 // Logger levels

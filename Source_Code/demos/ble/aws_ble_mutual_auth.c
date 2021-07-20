@@ -156,7 +156,9 @@ static const BTService_t xGattDemoService =
 };
 
 
-static MUTUALAUTH_param_t Cur_param = 0;				/* store current parameter */
+static MUTUALAUTH_param_t Cur_param = -1;				/* store current parameter */
+static MUTUALAUTH_param_t Nxt_param = DEVICE_CERTIFICATE;
+
 static uint8_t gw_status=0;				/* store gateway verification status */
 /* mutex for lock the critical section */
 SemaphoreHandle_t mutex;
@@ -261,6 +263,8 @@ static void _connectionCallback( BTStatus_t xStatus,
                                  uint16_t connId,
                                  bool bConnected,
                                  BTBdaddr_t * pxRemoteBdAddr );
+
+void Send_Gw_Status(void);
 /* ---------------------------------------------------------------------------------------*/
 
 void IotBle_AddCustomServicesCb( void )
@@ -318,7 +322,9 @@ static void MUTUALAUTH_Receive_Data(IotBleWriteEventParams_t *pxWriteParam)
 				ByteArrayToShort(pxWriteParam->pValue,0,&frame.Length);
 				MUTUALAUTH_DEBUG("--DEVICE_CERTIFICATE length1 =%d\r\n",frame.Length);
 				frame.pPayload = pvPortMalloc(frame.Length);
+				memset(frame.pPayload, 0x00, frame.Length);
 				gateway_cert = pvPortMalloc(frame.Length-4);
+				memset(gateway_cert, 0x00, frame.Length-4);
 				data_length = frame.Length;
 			}
 			if(frame.Length > 20)
@@ -345,36 +351,23 @@ static void MUTUALAUTH_Receive_Data(IotBleWriteEventParams_t *pxWriteParam)
 				if(OPTIGA_LIB_SUCCESS != return_status)
 				{
 					IotLogError("Error:certificate verification failed. (status=0x%x)\r\r\n", return_status);
+					gw_status = Certificate_Verify_Fail;
+					Send_Gw_Status();
 					break;
 				}
 				else
 #endif
 				{
+					gw_status = Certificate_Verify_Pass;
+					Send_Gw_Status();
+
 					MUTUALAUTH_LOG_MESSAGE("RECEIVED: APP/GATEWAY CERTIFICATE verified");
+					memset(gateway_pubkey.public_key, 0x00, PUBLIC_KEY_HEADER_SIZE);
 					memcpy(gateway_pubkey.public_key, ecc_pubkey_header, PUBLIC_KEY_HEADER_SIZE);
 					/*Extract public key from gateway certificate */
 					return_status = pal_crypt_get_public_key(gateway_cert, data_length-4, gateway_pubkey.public_key + PUBLIC_KEY_HEADER_SIZE, &pPubKeyLength);
 					gw_status = (return_status == OPTIGA_LIB_SUCCESS) ? Pub_Key_Ext_Pass : Pub_Key_Ext_Fail;
-					if ( Pub_Key_Ext_Fail == gw_status )
-					{
-						if( xNotifyGatewayStatus == pdTRUE )
-						{
-							xAttrData.pData = ( uint8_t * ) &gw_status;
-							xAttrData.size = sizeof( gw_status );
-							( void ) IotBle_SendIndication( &xResp, usBLEConnectionID, false );
-							break;
-						}
-					}
-					else if (Pub_Key_Ext_Pass == gw_status)
-					{
-						if( xNotifyGatewayStatus == pdTRUE )
-						{
-							xAttrData.pData = ( uint8_t * ) &gw_status;
-							xAttrData.size = sizeof( gw_status );
-							( void ) IotBle_SendIndication( &xResp, usBLEConnectionID, false );
-							break;
-						}
-					}
+					Send_Gw_Status();
 				}
 				recv_byte = 0;
 			}
@@ -382,12 +375,7 @@ static void MUTUALAUTH_Receive_Data(IotBleWriteEventParams_t *pxWriteParam)
 			{
 				IotLogError("Error DEVICE_CERTIFICATE:CRC not match\r\n");
 				gw_status = Certificate_Verify_Fail;
-				if( xNotifyGatewayStatus == pdTRUE )
-				{
-					xAttrData.pData = ( uint8_t * ) &gw_status;
-					xAttrData.size = sizeof( gw_status );
-					( void ) IotBle_SendIndication( &xResp, usBLEConnectionID, false );
-				}
+				Send_Gw_Status();
 				recv_byte = 0;
 			}
 			break;
@@ -419,6 +407,8 @@ static void MUTUALAUTH_Receive_Data(IotBleWriteEventParams_t *pxWriteParam)
 			{
 				MUTUALAUTH_LOG_MESSAGE("RECEIVED: APP/GATEWAY RANDOM NUMBER");
 				MUTUALAUTH_DEBUG("--TOKEN CRC matched\r\n");
+
+				memset(gateway_token.random_data_buffer, 0x00, data_length-4);
 				memcpy(gateway_token.random_data_buffer,frame.pPayload+2,data_length-4);
 				recv_byte = 0;
 				/* Create hash sha256 of the gateway token */
@@ -428,12 +418,16 @@ static void MUTUALAUTH_Receive_Data(IotBleWriteEventParams_t *pxWriteParam)
 				return_status = mutualauth_optiga_crypt_hash(&gwtoken_digest);
 				if (OPTIGA_LIB_SUCCESS != return_status)
 				{
-					MUTUALAUTH_DEBUG("Failed to create sha256 hash of the GW token\r\n");
+					gw_status = Token_CRC_Match_Fail;
+					Send_Gw_Status();
+					IotLogError("Failed to create sha256 hash of the GW token\r\n");
 				}
 			}
 			else
 			{
 				IotLogError("Error: TOKEN CRC not match\r\n");
+				gw_status = Token_CRC_Match_Fail;
+				Send_Gw_Status();
 				recv_byte = 0;
 			}
 			break;
@@ -465,6 +459,11 @@ static void MUTUALAUTH_Receive_Data(IotBleWriteEventParams_t *pxWriteParam)
 			{
 				MUTUALAUTH_LOG_MESSAGE("RECEIVED: SIGN RANDOM NUMBER");
 				MUTUALAUTH_DEBUG("--SIGN_TOKEN CRC matched\r\n");
+
+				memset(verify_token.signature, 0x00, data_length-4);
+				memset(verify_token.digest, 0x00, sizeof(devicetoken_digest.digest));
+				memset(verify_token.public_key, 0x00, sizeof(gateway_pubkey.public_key));
+
 				memcpy(verify_token.signature,frame.pPayload+2,data_length-4);
 				memcpy(verify_token.digest,devicetoken_digest.digest,sizeof(devicetoken_digest.digest));
 				memcpy(verify_token.public_key,gateway_pubkey.public_key,sizeof(gateway_pubkey.public_key));
@@ -473,24 +472,15 @@ static void MUTUALAUTH_Receive_Data(IotBleWriteEventParams_t *pxWriteParam)
 				MUTUALAUTH_LOG_MESSAGE("VERIFY RECEIVED SIGN RANDOM NUMBER");
 				return_status = mutualauth_optiga_crypt_ecdsa_verify(&verify_token);
 				gw_status = (return_status == OPTIGA_LIB_SUCCESS) ? Sign_Token_Verify_Pass : Sign_Token_Verify_Fail;
-				if( xNotifyGatewayStatus == pdTRUE )
-				{
-					xAttrData.pData = ( uint8_t * ) &gw_status;
-					xAttrData.size = sizeof( gw_status );
-					( void ) IotBle_SendIndication( &xResp, usBLEConnectionID, false );
-				}
+				Send_Gw_Status();
+
 				recv_byte = 0;
 			}
 			else
 			{
 				IotLogError("Error: SIGN_TOKEN CRC not match\r\n");
 				gw_status = Sign_Token_Verify_Fail;
-				if( xNotifyGatewayStatus == pdTRUE )
-				{
-					xAttrData.pData = ( uint8_t * ) &gw_status;
-					xAttrData.size = sizeof( gw_status );
-					( void ) IotBle_SendIndication( &xResp, usBLEConnectionID, false );
-				}
+				Send_Gw_Status();
 				recv_byte = 0;
 			}
 			break;
@@ -502,6 +492,7 @@ static void MUTUALAUTH_Receive_Data(IotBleWriteEventParams_t *pxWriteParam)
 				MUTUALAUTH_DEBUG("--ECDH_PUBKEY length1 =%d\r\n",frame.Length);
 				ByteArrayToShort(pxWriteParam->pValue,0,&frame.Length);
 				frame.pPayload = pvPortMalloc(frame.Length);
+				memset(frame.pPayload, 0x00, frame.Length);
 				data_length = frame.Length;
 			}
 			if(frame.Length > 20)
@@ -523,6 +514,7 @@ static void MUTUALAUTH_Receive_Data(IotBleWriteEventParams_t *pxWriteParam)
 				MUTUALAUTH_LOG_MESSAGE("RECEIVED: ECDH PUBLIC KEY");
 				MUTUALAUTH_DEBUG("--ECDH_PUBKEY CRC matched\r\n");
 
+				memset(ECDH_pubkey.public_key, 0x00, PUBLIC_KEY_HEADER_SIZE);
 				memcpy(ECDH_pubkey.public_key,ecc_pubkey_header,PUBLIC_KEY_HEADER_SIZE);
 				memcpy(ECDH_pubkey.public_key + PUBLIC_KEY_HEADER_SIZE,frame.pPayload+2,data_length-4);
 				recv_byte = 0;
@@ -534,11 +526,15 @@ static void MUTUALAUTH_Receive_Data(IotBleWriteEventParams_t *pxWriteParam)
 				if (OPTIGA_LIB_SUCCESS != return_status)
 				{
 					MUTUALAUTH_DEBUG("Failed to create sha256 hash of the ECDH Pubkey\r\n");
+					gw_status = Create_sha256_EDCH_Fail;
+					Send_Gw_Status();
 				}
 			}
 			else
 			{
 				IotLogError("Error: ECDH_PUBKEY CRC not match\r\n");
+				gw_status = Sha256_EDCH_Match_Fail;
+				Send_Gw_Status();
 				recv_byte = 0;
 			}
 			break;
@@ -551,6 +547,7 @@ static void MUTUALAUTH_Receive_Data(IotBleWriteEventParams_t *pxWriteParam)
 
 				ByteArrayToShort(pxWriteParam->pValue,0,&frame.Length);
 				frame.pPayload = pvPortMalloc(frame.Length);
+				memset(frame.pPayload, 0x00, frame.Length);
 				data_length = frame.Length;
 			}
 			if(frame.Length > 20)
@@ -571,6 +568,9 @@ static void MUTUALAUTH_Receive_Data(IotBleWriteEventParams_t *pxWriteParam)
 			{
 				MUTUALAUTH_LOG_MESSAGE("RECEIVED: ECDH SIGN PUBLIC KEY");
 				MUTUALAUTH_DEBUG("--ECDH_SIGN CRC matched\r\n");
+				memset(ECDSA_verify.signature, 0x00, (data_length-4));
+				memset(ECDSA_verify.digest, 0x00, sizeof(ECDH_key_digest.digest));
+				memset(ECDSA_verify.public_key, 0x00, sizeof(gateway_pubkey.public_key));
 				memcpy(ECDSA_verify.signature,frame.pPayload+2,data_length-4);
 				memcpy(ECDSA_verify.digest,ECDH_key_digest.digest,sizeof(ECDH_key_digest.digest));
 				memcpy(ECDSA_verify.public_key,gateway_pubkey.public_key,sizeof(gateway_pubkey.public_key));
@@ -578,24 +578,14 @@ static void MUTUALAUTH_Receive_Data(IotBleWriteEventParams_t *pxWriteParam)
 				MUTUALAUTH_LOG_MESSAGE("VERIFY ECDH SIGN PUBLIC KEY");
 				return_status = mutualauth_optiga_crypt_ecdsa_verify(&ECDSA_verify);
 				gw_status = (return_status == OPTIGA_LIB_SUCCESS) ? ECDSA_Signature_Pass : ECDSA_Signature_Fail;
-				if( xNotifyGatewayStatus == pdTRUE )
-				{
-					xAttrData.pData = ( uint8_t * ) &gw_status;
-					xAttrData.size = sizeof( gw_status );
-					( void ) IotBle_SendIndication( &xResp, usBLEConnectionID, false );
-				}
+				Send_Gw_Status();
 				recv_byte = 0;
 			}
 			else
 			{
 				IotLogError("Error: ECDH_SIGN CRC not match\r\n");
 				gw_status = ECDSA_Signature_Fail;
-				if( xNotifyGatewayStatus == pdTRUE )
-				{
-					xAttrData.pData = ( uint8_t * ) &gw_status;
-					xAttrData.size = sizeof( gw_status );
-					( void ) IotBle_SendIndication( &xResp, usBLEConnectionID, false );
-				}
+				Send_Gw_Status();
 				recv_byte = 0;
 			}
 			break;
@@ -606,6 +596,7 @@ static void MUTUALAUTH_Receive_Data(IotBleWriteEventParams_t *pxWriteParam)
 			{
 				ByteArrayToShort(pxWriteParam->pValue,0,&frame.Length);
 				frame.pPayload = pvPortMalloc(frame.Length);
+				memset(frame.pPayload, 0x00, frame.Length);
 				data_length = frame.Length;
 				MUTUALAUTH_DEBUG("--ECDH_SECRET length1 =%d\r\n",frame.Length);
 			}
@@ -629,24 +620,14 @@ static void MUTUALAUTH_Receive_Data(IotBleWriteEventParams_t *pxWriteParam)
 				MUTUALAUTH_DEBUG("--ECDH_SECRET CRC matched\r\n");
 				return_status = memcmp(frame.pPayload+2,hash_secret.digest,sizeof(hash_secret.digest));
 				gw_status = (return_status == 0) ? ECDH_Secret_Match : ECDH_Secret_Not_Match;
-				if( xNotifyGatewayStatus == pdTRUE )
-				{
-					xAttrData.pData = ( uint8_t * ) &gw_status;
-					xAttrData.size = sizeof( gw_status );
-					( void ) IotBle_SendIndication( &xResp, usBLEConnectionID, false );
-				}
+				Send_Gw_Status();
 				recv_byte = 0;
 			}
 			else
 			{
 				IotLogError("Error: ECDH_SECRET  CRC not match\r\n");
 				gw_status = ECDH_Secret_Not_Match;
-				if( xNotifyGatewayStatus == pdTRUE )
-				{
-					xAttrData.pData = ( uint8_t * ) &gw_status;
-					xAttrData.size = sizeof( gw_status );
-					( void ) IotBle_SendIndication( &xResp, usBLEConnectionID, false );
-				}
+				Send_Gw_Status();
 				recv_byte = 0;
 			}
 			break;
@@ -711,6 +692,7 @@ static void MUTUALAUTH_Send_Data(IotBleReadEventParams_t *pxReadParam)
 
 				frame.Length = chip_cert_size + 4;
 				frame.pPayload = pvPortMalloc(frame.Length);
+				memset(frame.pPayload, 0x00, frame.Length);
 				MUTUALAUTH_DEBUG("--DEVICE_CERTIFICATE 1 length =%d\r\n",frame.Length);
 				create_payload_frame(&frame,chip_cert,frame.Length-4);
 			}
@@ -732,6 +714,8 @@ static void MUTUALAUTH_Send_Data(IotBleReadEventParams_t *pxReadParam)
 			MUTUALAUTH_LOG_MESSAGE("SEND: DEVICE CERTIFICATE");
 			IotBle_SendResponse( &xResp, pxReadParam->connId, pxReadParam->transId );
 			send_byte = 0;
+			/* Update next state */
+			Nxt_param = TOKEN;
 			break;
 
 		case TOKEN:						/* Send token/random number */
@@ -747,6 +731,7 @@ static void MUTUALAUTH_Send_Data(IotBleReadEventParams_t *pxReadParam)
 
 				frame.Length = sizeof(device_token.random_data_buffer) + 4;
 				frame.pPayload = pvPortMalloc(frame.Length);
+				memset(frame.pPayload, 0x00, frame.Length);
 				MUTUALAUTH_DEBUG("--TOKEN 1 length =%d\r\n",frame.Length);
 				create_payload_frame(&frame,device_token.random_data_buffer,frame.Length-4);
 
@@ -779,7 +764,8 @@ static void MUTUALAUTH_Send_Data(IotBleReadEventParams_t *pxReadParam)
 			MUTUALAUTH_LOG_MESSAGE("SEND: RANDOM NUMBER");
 			IotBle_SendResponse( &xResp, pxReadParam->connId, pxReadParam->transId );
 			send_byte = 0;
-
+			/* Update next state */
+			Nxt_param = SIGN_TOKEN;
 			break;
 
 		case SIGN_TOKEN:				/* send sign token */
@@ -787,6 +773,7 @@ static void MUTUALAUTH_Send_Data(IotBleReadEventParams_t *pxReadParam)
 			if (send_byte == 0)
 			{
 				sign_token.optiga_key_id = OPTIGA_KEY_ID_E0F0;
+				memset(sign_token.digest, 0x00, sizeof(gwtoken_digest.digest));
 				memcpy(sign_token.digest,gwtoken_digest.digest,sizeof(gwtoken_digest.digest));
 				sign_token.signature_length = sizeof(sign_token.signature);
 				MUTUALAUTH_LOG_MESSAGE("CREATE SIGNATURE OF THE RANDOM NUMBER");
@@ -797,6 +784,7 @@ static void MUTUALAUTH_Send_Data(IotBleReadEventParams_t *pxReadParam)
 				}
 				frame.Length = sign_token.signature_length + 4;
 				frame.pPayload = pvPortMalloc(frame.Length);
+				memset(frame.pPayload, 0x00, frame.Length);
 				MUTUALAUTH_DEBUG("--SIGN_TOKEN 1 length =%d\r\n",frame.Length);
 				create_payload_frame(&frame,sign_token.signature,frame.Length-4);
 			}
@@ -819,6 +807,8 @@ static void MUTUALAUTH_Send_Data(IotBleReadEventParams_t *pxReadParam)
 			MUTUALAUTH_LOG_MESSAGE("SEND: SIGN RANDOM NUMBER");
 			IotBle_SendResponse( &xResp, pxReadParam->connId, pxReadParam->transId );
 			send_byte = 0;
+			/* Update next state */
+			Nxt_param = ECDH_PUBKEY;
 			break;
 
 		case ECDH_PUBKEY:				/* Send ECDH Public key */
@@ -837,6 +827,7 @@ static void MUTUALAUTH_Send_Data(IotBleReadEventParams_t *pxReadParam)
 
 				frame.Length = ecdh_pubkey.Length - PUBLIC_KEY_HEADER_SIZE + 4;
 				frame.pPayload = pvPortMalloc(frame.Length);
+				memset(frame.pPayload, 0x00, frame.Length);
 				MUTUALAUTH_DEBUG("--ECDH_PUBKEY 1 length =%d\r\n",frame.Length);
 				create_payload_frame(&frame,ecdh_pubkey.public_key + PUBLIC_KEY_HEADER_SIZE,frame.Length-4);
 
@@ -869,6 +860,8 @@ static void MUTUALAUTH_Send_Data(IotBleReadEventParams_t *pxReadParam)
 			MUTUALAUTH_LOG_MESSAGE("SEND: ECDH PUBLIC KEY");
 			IotBle_SendResponse( &xResp, pxReadParam->connId, pxReadParam->transId );
 			send_byte = 0;
+			/* Update next state */
+			Nxt_param = ECDH_SIGN;
 			break;
 
 		case ECDH_SIGN:					/* Send sign ecdh public key */
@@ -876,6 +869,7 @@ static void MUTUALAUTH_Send_Data(IotBleReadEventParams_t *pxReadParam)
 			if (send_byte == 0)
 			{
 				ecdsa_sign.optiga_key_id = OPTIGA_KEY_ID_E0F0;
+				memset(ecdsa_sign.digest, 0x00, sizeof(ecdh_key_digest.digest));
 				memcpy(ecdsa_sign.digest,ecdh_key_digest.digest,sizeof(ecdh_key_digest.digest));
 				ecdsa_sign.signature_length = sizeof(ecdsa_sign.signature);
 				MUTUALAUTH_LOG_MESSAGE("CREATE ECDH SIGNATURE OF THE ECDH PUBLIC KEY");
@@ -887,6 +881,7 @@ static void MUTUALAUTH_Send_Data(IotBleReadEventParams_t *pxReadParam)
 
 				frame.Length = ecdsa_sign.signature_length + 4;
 				frame.pPayload = pvPortMalloc(frame.Length);
+				memset(frame.pPayload, 0x00, frame.Length);
 				MUTUALAUTH_DEBUG("--ECDH_SIGN 1 length =%d\r\n",frame.Length);
 				create_payload_frame(&frame,ecdsa_sign.signature,frame.Length-4);
 			}
@@ -912,6 +907,7 @@ static void MUTUALAUTH_Send_Data(IotBleReadEventParams_t *pxReadParam)
 			send_byte = 0;
 
 			MUTUALAUTH_LOG_MESSAGE("GENERATE ECDH SECRET");
+			memset(secret.peer_public_key, 0x00, sizeof(ECDH_pubkey.public_key));
 			memcpy(secret.peer_public_key,ECDH_pubkey.public_key,sizeof(ECDH_pubkey.public_key));
 			secret.key_type = OPTIGA_ECC_CURVE_NIST_P_256;
 			secret.optiga_key_id = OPTIGA_KEY_ID_E0F2;/*TODO need to check */
@@ -929,6 +925,9 @@ static void MUTUALAUTH_Send_Data(IotBleReadEventParams_t *pxReadParam)
 			{
 				IotLogError("Failed to create sha256 hash of secret\r\n");
 			}
+			/* Update next state */
+			Nxt_param = ECDH_SECRET;
+
 			for(i=0; i<sizeof(secret.shared_secret);i++)
 				MUTUALAUTH_DEBUG("ECDH_SECRET[%d]=%x\r\n",i,secret.shared_secret[i]);
 			break;
@@ -938,6 +937,7 @@ static void MUTUALAUTH_Send_Data(IotBleReadEventParams_t *pxReadParam)
 			{
 				frame.Length = sizeof(hash_secret.digest) + 4;
 				frame.pPayload = pvPortMalloc(frame.Length);
+				memset(frame.pPayload, 0x00, frame.Length);
 				MUTUALAUTH_DEBUG("--ECDH_SECRET_HASH 1 length =%d\r\n",frame.Length);
 				create_payload_frame(&frame,hash_secret.digest,frame.Length-4);
 			}
@@ -1099,20 +1099,33 @@ void vParam( IotBleAttributeEvent_t * pEventParam )
     {
         pxWriteParam = pEventParam->pParamWrite;
         xResp.pAttrData->handle = pxWriteParam->attrHandle;
-
-        if( pxWriteParam->length == 1 )	/* Check length if it is 1 byte then assigned it to cur_param */
-        {
-        	Cur_param = pxWriteParam->pValue[ 0 ];
-        	MUTUALAUTH_DEBUG("Cur_param=%d",Cur_param );
-            xResp.eventStatus = eBTStatusSuccess;
-        }
+		if( pxWriteParam->length == 1 )	/* Check length if it is 1 byte then assigned it to cur_param */
+		{
+			Cur_param = pxWriteParam->pValue[ 0 ];
+			MUTUALAUTH_DEBUG("Cur_param=%d",Cur_param );
+			if ( Nxt_param != Cur_param )
+			{
+				xResp.eventStatus = eBTStatusParamInvalid;
+				/* validate current state and update next state */
+				IotLogError("Error:unexpected state \r\r\n");
+				gw_status = Un_expected_state;
+				Send_Gw_Status();
+			}
+			else
+			{
+				xResp.eventStatus = eBTStatusSuccess;
+			}
+		}
 
         if( pEventParam->xEventType == eBLEWrite )
         {
             xResp.pAttrData->pData = pxWriteParam->pValue;
             xResp.attrDataOffset = pxWriteParam->offset;
             xResp.pAttrData->size = pxWriteParam->length;
-            IotBle_SendResponse( &xResp, pxWriteParam->connId, pxWriteParam->transId );
+            if(xResp.eventStatus == eBTStatusSuccess)
+            {
+				IotBle_SendResponse( &xResp, pxWriteParam->connId, pxWriteParam->transId );
+            }
         }
     }
 }
@@ -1287,4 +1300,22 @@ static void _connectionCallback( BTStatus_t xStatus,
             MUTUALAUTH_LOG_MESSAGE( " Disconnected from BLE device.\r\n" );
         }
     }
+}
+/*-----------------------------------------------------------*/
+void Send_Gw_Status(void)
+{
+	IotBleAttributeData_t xAttrData = { 0 };
+	IotBleEventResponse_t xResp;
+
+	xAttrData.handle = CHAR_HANDLE( &xGattDemoService, egattGatewayStatus );
+	xAttrData.uuid = CHAR_UUID( &xGattDemoService, egattGatewayStatus );
+
+	xResp.pAttrData = &xAttrData;
+	xResp.attrDataOffset = 0;
+	xResp.eventStatus = eBTStatusSuccess;
+	xResp.rspErrorStatus = eBTRspErrorNone;
+
+	xAttrData.pData = ( uint8_t * ) &gw_status;
+	xAttrData.size = sizeof( gw_status );
+	( void ) IotBle_SendIndication( &xResp, usBLEConnectionID, false );
 }

@@ -10,9 +10,7 @@ open class BleCommandTransfer {
 
     companion object {
         var TAG = "BleCommandTransfer"
-        fun writeRandomNumber(): ByteArray? {
-            return byteArrayOf(0x03)
-        }
+
 
         fun generateSecureRandom(): ByteArray? {
             val random = SecureRandom()
@@ -26,10 +24,54 @@ open class BleCommandTransfer {
         fun indicateCertificate(): ByteArray? {
             return byteArrayOf(0x01)
         }
+        fun writeRandomNumber(): ByteArray? {
+            return byteArrayOf(0x02)
+        }
+        fun indicateSignatureRandom(): ByteArray? {
+            return byteArrayOf(0x03)
+        }
+        fun indicateECDHPublicKey(): ByteArray? {
+            return byteArrayOf(0x04)
+        }
+        fun indicateECDHSignature(): ByteArray? {
+            return byteArrayOf(0x05)
+        }
+
+        fun ecdhSessionKeyGenrated(): ByteArray? {
+            return byteArrayOf(0x07)
+        }
+
+        fun signatureRandomNumberPass(): ByteArray? {
+            return byteArrayOf(0x03)
+        }
+        fun signatureRandomNumberFail(): ByteArray? {
+            return byteArrayOf(0x04)
+        }
+
+
+
+
+
+        fun certificationVerificationPass(): ByteArray? {
+            return byteArrayOf(0x01)
+        }
+
+        fun certificationVerificationFail(): ByteArray? {
+            return byteArrayOf(0x02)
+        }
 
         fun generateCertificate(): ByteArray? {
             return byteArrayOf(0x03)
         }
+
+        fun ecdhSignatureVerificationPass(): ByteArray? {
+            return byteArrayOf(0x05)
+        }
+
+        fun ecdhSignatureVerificationFail(): ByteArray? {
+            return byteArrayOf(0x06)
+        }
+
 
         fun indicatePublicKey(): ByteArray? {
             return byteArrayOf(0x02)
@@ -40,38 +82,25 @@ open class BleCommandTransfer {
         }
 
 
-        fun indicateSignatureRandom(): ByteArray? {
-            return byteArrayOf(0x04)
+        fun indicateECDHSecretKey(): ByteArray? {
+            return byteArrayOf(0x06)
         }
 
-        fun generateSignatureRandomNumber(): ByteArray? {
-            return byteArrayOf(0x04)
-        }
 
-        fun indicateECDHPublicKey(): ByteArray? {
-            return byteArrayOf(0x05)
-        }
+
+
+
+
         fun indicateSharedSecret(): ByteArray? {
             return byteArrayOf(0x07)
         }
 
-        
-
-        fun indicateECDHSignature(): ByteArray? {
-            return byteArrayOf(0x06)
-        }
 
         fun generateECDHSignature(): ByteArray? {
             return byteArrayOf(0x06)
         }
 
-        fun certificationVerificationPass(): ByteArray? {
-            return byteArrayOf(0x01)
-        }
 
-        fun certificationVerificationFail(): ByteArray? {
-            return byteArrayOf(0x02)
-        }
 
         fun signatureVerificationPass(): ByteArray? {
             return byteArrayOf(0x03)
@@ -81,13 +110,9 @@ open class BleCommandTransfer {
             return byteArrayOf(0x04)
         }
 
-        fun ecdhSignatureVerificationPass(): ByteArray? {
-            return byteArrayOf(0x05)
-        }
 
-        fun ecdhSignatureVerificationFail(): ByteArray? {
-            return byteArrayOf(0x06)
-        }
+
+
         fun gatewaySecreMatch(): ByteArray? {
             return byteArrayOf(0x07)
         }
@@ -96,10 +121,10 @@ open class BleCommandTransfer {
             return byteArrayOf(0x08)
         }
 
-        fun ecdhSessionKeyGenrated(): ByteArray? {
-            return byteArrayOf(0x07)
-        }
 
+        fun crcNotMatch(): ByteArray? {
+            return byteArrayOf(0x0C)
+        }
         fun convertSecretToSHA256(text: ByteArray): String? {
             val md: MessageDigest = MessageDigest.getInstance("SHA-256")
             md.update(text)

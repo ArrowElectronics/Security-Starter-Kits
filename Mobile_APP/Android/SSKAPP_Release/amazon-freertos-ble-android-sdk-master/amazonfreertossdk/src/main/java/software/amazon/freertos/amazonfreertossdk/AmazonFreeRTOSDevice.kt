@@ -21,7 +21,6 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.Handler
 import android.os.HandlerThread
-import android.os.Looper
 import android.os.Looper.*
 import android.util.Log
 import android.widget.Toast
@@ -37,8 +36,10 @@ import org.bouncycastle.util.encoders.DecoderException
 import software.amazon.freertos.amazonfreertossdk.AmazonFreeRTOSConstants.*
 import software.amazon.freertos.amazonfreertossdk.BleCommand.CommandType.READ_CHARACTERISTIC
 import software.amazon.freertos.amazonfreertossdk.BleCommandTransfer.Companion.byteArrayToHex
+import software.amazon.freertos.amazonfreertossdk.BleCommandTransfer.Companion.certificationVerificationFail
 import software.amazon.freertos.amazonfreertossdk.BleCommandTransfer.Companion.convertHexToChunk
 import software.amazon.freertos.amazonfreertossdk.BleCommandTransfer.Companion.convertSecretToSHA256
+import software.amazon.freertos.amazonfreertossdk.BleCommandTransfer.Companion.crcNotMatch
 import software.amazon.freertos.amazonfreertossdk.BleCommandTransfer.Companion.ecdhSessionKeyGenrated
 import software.amazon.freertos.amazonfreertossdk.BleCommandTransfer.Companion.ecdhSignatureVerificationFail
 import software.amazon.freertos.amazonfreertossdk.BleCommandTransfer.Companion.ecdhSignatureVerificationPass
@@ -52,10 +53,12 @@ import software.amazon.freertos.amazonfreertossdk.BleCommandTransfer.Companion.h
 import software.amazon.freertos.amazonfreertossdk.BleCommandTransfer.Companion.hexToInteger
 import software.amazon.freertos.amazonfreertossdk.BleCommandTransfer.Companion.indicateCertificate
 import software.amazon.freertos.amazonfreertossdk.BleCommandTransfer.Companion.indicateECDHPublicKey
+import software.amazon.freertos.amazonfreertossdk.BleCommandTransfer.Companion.indicateECDHSecretKey
 import software.amazon.freertos.amazonfreertossdk.BleCommandTransfer.Companion.indicateECDHSignature
-import software.amazon.freertos.amazonfreertossdk.BleCommandTransfer.Companion.indicatePublicKey
 import software.amazon.freertos.amazonfreertossdk.BleCommandTransfer.Companion.indicateSignatureRandom
 import software.amazon.freertos.amazonfreertossdk.BleCommandTransfer.Companion.integerToHex
+import software.amazon.freertos.amazonfreertossdk.BleCommandTransfer.Companion.signatureRandomNumberFail
+import software.amazon.freertos.amazonfreertossdk.BleCommandTransfer.Companion.signatureRandomNumberPass
 import software.amazon.freertos.amazonfreertossdk.BleCommandTransfer.Companion.signatureVerificationFail
 import software.amazon.freertos.amazonfreertossdk.BleCommandTransfer.Companion.signatureVerificationPass
 import software.amazon.freertos.amazonfreertossdk.BleCommandTransfer.Companion.writeRandomNumber
@@ -70,7 +73,6 @@ import java.nio.charset.StandardCharsets
 import java.security.*
 import java.security.cert.Certificate
 import java.security.cert.CertificateFactory
-import java.security.spec.ECGenParameterSpec
 import java.security.spec.InvalidKeySpecException
 import java.security.spec.PKCS8EncodedKeySpec
 import java.security.spec.X509EncodedKeySpec
@@ -333,12 +335,38 @@ class AmazonFreeRTOSDevice private constructor(@field:Getter private val mBlueto
      */
     private fun initialize() {
         //startMQTTProcess()
+        resetParam()
         resetVariables()
         //createECDSAKeyPairs()
-        GetPrivatePublicKey("AndroidAppCert.der","AndroidApp_private.ecc.pem")
+        GetPrivatePublicKey("AndroidAppCert.der", "AndroidApp_private.ecc.pem")
         generateECDHPublicKey()
+
         startMutualAuthenticationProcess()
 
+    }
+
+    private fun resetParam(){
+        deviceCertificate = ""
+        devicePublicKey = ""
+        bleECDHPublicKey = ""
+        deviceRandomNumber = ""
+        gateWayStatus = ""
+        signatureFromBle = ""
+        ecdhSignatureFromBle = ""
+        gatewayECDHSecreat = ""
+        bleECDHSecreat = ""
+
+        privateKeyObj = null
+        publicKeyObj = null
+        gateWayECDHPrivateKey = null
+        gatewayRandom = null
+        gatewaySignature = null
+        gatewayECDHSignature = null
+        gateWayECDHPublicKey = null
+        devicePublicKeyByteArray = null
+        bleECDHPublicKeyByteArray = null
+        gatewayECDHSecreatWithoutSHA = null
+        isStart = true
     }
 
     var isStart = true
@@ -347,8 +375,10 @@ class AmazonFreeRTOSDevice private constructor(@field:Getter private val mBlueto
             Handler(getMainLooper()).post {
                 Toast.makeText(mContext, "Mutual authentication start", Toast.LENGTH_LONG).show()
             }
-
+            val isNotify = writeDescriptor(MUTUAL_AUTH_SERVICE, UUID_CHAR_GATE_WAY_STATUS)
+            Log.d(TAG, "isNotify: "+isNotify)
             sendBleCommand(BleCommand(BleCommand.CommandType.WRITE_DESCRIPTOR, UUID_CHAR_GATE_WAY_STATUS, MUTUAL_AUTH_SERVICE))
+
             currentParam = 1
             if (indicateParamValue(1)) { //Indication success for device certificate
                 if (createAndSendParamValue(1)) {  //Write success for certificate
@@ -383,8 +413,12 @@ class AmazonFreeRTOSDevice private constructor(@field:Getter private val mBlueto
                         //Log.e(TAG, "Send data full frame public key ${bytesToHexString(publicKeyFrame!!)} " + "Frame bytes ${getFrameLengthForLog(publicKeyFrame)}")
                         if (certFrame.size == 20) {
                             //Log.e(TAG, "calculateData Process all $remainingLength")
+                            //getStatusofGatewayCharacterstic()
                             sendBleCommand(BleCommand(BleCommand.CommandType.WRITE_CHARACTERISTIC, UUID_WRITE_DATA_PARAM_VALUE_SERVICE, MUTUAL_AUTH_SERVICE, certificateFrame))
+                            currentParam = 1
+                            readParamValue(1)
                         } else {
+                            //getStatusofGatewayCharacterstic()
                             while (remainingLength > 0) {
                                 sendPublicKeyInChunks(certificateFrame)
                             }
@@ -394,6 +428,7 @@ class AmazonFreeRTOSDevice private constructor(@field:Getter private val mBlueto
                                 receivedData = 2
                                 totalDataSize = 0
                                 readParamValue(1)
+                                //sendBleCommand(BleCommand(BleCommand.CommandType.READ_CHARACTERISTIC, UUID_CHAR_GATE_WAY_STATUS, MUTUAL_AUTH_SERVICE))
                             }
                         }
                         Log.e(TAG, "[Mutual Auth] : Send Certificate")
@@ -405,7 +440,7 @@ class AmazonFreeRTOSDevice private constructor(@field:Getter private val mBlueto
                     false
                 }
             }
-            2 -> {
+            /*2 -> {
                 if (isBLEConnected && mBluetoothGatt != null) {
 
                     val publicKeyHeader = bytesToHexString(publicKeyObj!!.encoded!!)
@@ -430,24 +465,23 @@ class AmazonFreeRTOSDevice private constructor(@field:Getter private val mBlueto
                     Log.e(TAG, "Bluetooth is not connected.")
                     false
                 }
-            }
-            3 -> {
+            }*/
+            2 -> {
                 if (isBLEConnected && mBluetoothGatt != null) {
                     gatewayRandom = generateSecureRandom()
                     val randomNumberFrame = BleCommandTransfer.generateDataFrame(gatewayRandom!!)
-                    //val randomNumberFrame = hexToByteArray("0014010203040506070809010203040506077ea7")
-                    //Log.e(TAG, "Send data full frame message " + "0014010203040506070809010203040506077ea7")
-                    //Log.e(TAG, "Send data full frame message " + BleCommandTransfer.generateDataFrameInHEX(messageBytes!!))
+                    //getStatusofGatewayCharacterstic()
+                    //Log.e(TAG, "Send random number  ${byteArrayToHex(randomNumberFrame)} ")
+
                     sendBleCommand(BleCommand(BleCommand.CommandType.WRITE_CHARACTERISTIC, UUID_WRITE_DATA_PARAM_VALUE_SERVICE, MUTUAL_AUTH_SERVICE, randomNumberFrame))
                     Log.e(TAG, "[Mutual Auth] : Send random number")
-
                     true
                 } else {
                     Log.e(TAG, "Bluetooth is not connected.")
                     false
                 }
             }
-            4 -> {
+            3 -> {
                 if (isBLEConnected && mBluetoothGatt != null) {
                     //Send signature
                     val signatureData = BleCommandTransfer.byteArrayToHex(gatewaySignature!!)
@@ -462,18 +496,22 @@ class AmazonFreeRTOSDevice private constructor(@field:Getter private val mBlueto
                     remainingLength = signatureInChunk.size
                     if (signatureInChunk.size == 20) {
                         //Log.e(TAG, "Send signature Process all $remainingLength")
+                        //getStatusofGatewayCharacterstic()
                         sendBleCommand(BleCommand(BleCommand.CommandType.WRITE_CHARACTERISTIC, UUID_WRITE_DATA_PARAM_VALUE_SERVICE, MUTUAL_AUTH_SERVICE, hexToByteArray(removeArrayData(signatureInChunk))))
+                        currentParam = 3
+                        readParamValue(3)
                     } else {
+                        //getStatusofGatewayCharacterstic()
                         while (remainingLength > 0) {
                             sendSignatureInChunk(BleCommandTransfer.convertHexToChunk(signatureFrame, 2))
                         }
-
                         if (remainingLength <= 0) { //Loop end
-                            currentParam = 4
+                            currentParam = 3
                             publicKeyPass = 0
                             receivedData = 2
                             totalDataSize = 0
-                            readParamValue(4)
+                            readParamValue(3)
+                            //sendBleCommand(BleCommand(BleCommand.CommandType.READ_CHARACTERISTIC, UUID_CHAR_GATE_WAY_STATUS, MUTUAL_AUTH_SERVICE))
                         }
                     }
                     Log.e(TAG, "[Mutual Auth] : Send signature")
@@ -484,7 +522,7 @@ class AmazonFreeRTOSDevice private constructor(@field:Getter private val mBlueto
                     false
                 }
             }
-            5 -> {
+            4 -> {
                 if (isBLEConnected && mBluetoothGatt != null) {
                     var ecdhPublicKeyWithHeader = gateWayECDHPublicKey
                     val chunks = convertHexToChunk(bytesToHexString(ecdhPublicKeyWithHeader!!), 2)
@@ -497,17 +535,21 @@ class AmazonFreeRTOSDevice private constructor(@field:Getter private val mBlueto
                     endLimit = 20
                     remainingLength = ecdhFrameChunks.size
                     if (ecdhFrameChunks.size == 20) {
+                        //getStatusofGatewayCharacterstic()
                         sendBleCommand(BleCommand(BleCommand.CommandType.WRITE_CHARACTERISTIC, UUID_WRITE_DATA_PARAM_VALUE_SERVICE, MUTUAL_AUTH_SERVICE, ecdhByteArray))
+                        currentParam = 4
+                        readParamValue(4)
                     } else {
+                        //getStatusofGatewayCharacterstic()
                         while (remainingLength > 0) {
                             sendECDHPublicKeyInChunks(ecdhByteArray)
                         }
                         if (remainingLength <= 0) { //Loop end
-                            currentParam = 5
+                            currentParam = 4
                             publicKeyPass = 0
                             receivedData = 2
                             totalDataSize = 0
-                            readParamValue(5)
+                            readParamValue(4)
                         }
                     }
                     Log.e(TAG, "[Mutual Auth] : Send ECDH public key")
@@ -518,7 +560,7 @@ class AmazonFreeRTOSDevice private constructor(@field:Getter private val mBlueto
                     false
                 }
             }
-            6 -> {
+            5 -> {
                 if (isBLEConnected && mBluetoothGatt != null) {
                     //Send signature
                     gatewayECDHSignature = generateECDHSignature()
@@ -534,19 +576,23 @@ class AmazonFreeRTOSDevice private constructor(@field:Getter private val mBlueto
                     remainingLength = ecdhSignatureInChunk.size
                     if (ecdhSignatureInChunk.size == 20) {
                         //Log.e(TAG, "Send signature Process all $remainingLength")
+                        //getStatusofGatewayCharacterstic()
                         sendBleCommand(BleCommand(BleCommand.CommandType.WRITE_CHARACTERISTIC, UUID_WRITE_DATA_PARAM_VALUE_SERVICE, MUTUAL_AUTH_SERVICE, hexToByteArray(removeArrayData(ecdhSignatureInChunk))))
+                        currentParam = 5
+                        readParamValue(5)
                     } else {
+                        //getStatusofGatewayCharacterstic()
                         while (remainingLength > 0) {
                             sendECDHSignatureInChunk(BleCommandTransfer.convertHexToChunk(signatureFrame, 2))
                         }
                         if (remainingLength <= 0) { //Loop end
                             if (remainingLength <= 0) { //Loop end
-                                currentParam = 6
+                                currentParam = 5
                                 publicKeyPass = 0
                                 receivedData = 2
                                 totalDataSize = 0
                                 dataToSendInChunks.clear()
-                                readParamValue(6)
+                                readParamValue(5)
                             }
                         }
                     }
@@ -633,7 +679,7 @@ class AmazonFreeRTOSDevice private constructor(@field:Getter private val mBlueto
                     false
                 }
             }
-            2 -> { //Public key process
+           /* 2 -> { //Public key process
                 if (isBLEConnected && mBluetoothGatt != null) {
                     sendBleCommand(BleCommand(BleCommand.CommandType.WRITE_CHARACTERISTIC, UUID_WRITE_DATA_INDICATION_SERVICE, MUTUAL_AUTH_SERVICE, indicatePublicKey()))
                     true
@@ -641,8 +687,8 @@ class AmazonFreeRTOSDevice private constructor(@field:Getter private val mBlueto
                     Log.e(TAG, "Bluetooth is not connected.")
                     false
                 }
-            }
-            3 -> {
+            }*/
+            2 -> {
                 //Read valur first
                 if (isBLEConnected && mBluetoothGatt != null) {
                     sendBleCommand(BleCommand(BleCommand.CommandType.WRITE_CHARACTERISTIC, UUID_WRITE_DATA_INDICATION_SERVICE, MUTUAL_AUTH_SERVICE, writeRandomNumber()))
@@ -652,7 +698,7 @@ class AmazonFreeRTOSDevice private constructor(@field:Getter private val mBlueto
                     false
                 }
             }
-            4 -> {
+            3 -> {
                 if (isBLEConnected && mBluetoothGatt != null) {
                     sendBleCommand(BleCommand(BleCommand.CommandType.WRITE_CHARACTERISTIC, UUID_WRITE_DATA_INDICATION_SERVICE, MUTUAL_AUTH_SERVICE, indicateSignatureRandom()))
                     true
@@ -661,7 +707,7 @@ class AmazonFreeRTOSDevice private constructor(@field:Getter private val mBlueto
                     false
                 }
             }
-            5 -> {
+            4 -> {
                 if (isBLEConnected && mBluetoothGatt != null) {
                     sendBleCommand(BleCommand(BleCommand.CommandType.WRITE_CHARACTERISTIC, UUID_WRITE_DATA_INDICATION_SERVICE, MUTUAL_AUTH_SERVICE, indicateECDHPublicKey()))
                     true
@@ -670,7 +716,7 @@ class AmazonFreeRTOSDevice private constructor(@field:Getter private val mBlueto
                     false
                 }
             }
-            6 -> {
+            5 -> {
                 if (isBLEConnected && mBluetoothGatt != null) {
                     Log.e(TAG, "Getting device cert id...")
                     sendBleCommand(BleCommand(BleCommand.CommandType.WRITE_CHARACTERISTIC, UUID_WRITE_DATA_INDICATION_SERVICE, MUTUAL_AUTH_SERVICE, indicateECDHSignature()))
@@ -680,10 +726,10 @@ class AmazonFreeRTOSDevice private constructor(@field:Getter private val mBlueto
                     false
                 }
             }
-            7 -> {
+            6 -> {
                 if (isBLEConnected && mBluetoothGatt != null) {
                     Log.e(TAG, "Getting device cert id...")
-                    sendBleCommand(BleCommand(BleCommand.CommandType.WRITE_CHARACTERISTIC, UUID_WRITE_DATA_INDICATION_SERVICE, MUTUAL_AUTH_SERVICE, ecdhSessionKeyGenrated()))
+                    sendBleCommand(BleCommand(BleCommand.CommandType.WRITE_CHARACTERISTIC, UUID_WRITE_DATA_INDICATION_SERVICE, MUTUAL_AUTH_SERVICE, indicateECDHSecretKey()))
                     true
                 } else {
                     Log.e(TAG, "Bluetooth is not connected.")
@@ -883,12 +929,53 @@ class AmazonFreeRTOSDevice private constructor(@field:Getter private val mBlueto
         }
 
         override fun onCharacteristicChanged(gatt: BluetoothGatt, characteristic: BluetoothGattCharacteristic) {
+            Log.d(TAG, "onCharacteristicChanged: "+characteristic.uuid)
             val responseBytes = characteristic.value
+
+            //val responseBytes = characteristic.value
             //Log.e(TAG, "->->-> Characteristic changed for: " + uuidToName[characteristic.uuid.toString()] + " with data: " + bytesToHexString(responseBytes))
             val incomingCommand = BleCommand(BleCommand.CommandType.NOTIFICATION, characteristic.uuid.toString(), characteristic.service.uuid.toString(), responseBytes)
             mIncomingQueue.add(incomingCommand)
             if (!mRWinProgress) {
                 processIncomingQueue()
+            }
+
+            if(characteristic.uuid.toString() == UUID_CHAR_GATE_WAY_STATUS){
+                gateWayStatus = byteArrayToHex(responseBytes)
+                Log.e(TAG, "onCharacteristicChanged Param $currentParam gateWayStatus : $gateWayStatus ")
+                var errorState = hexToInteger(gateWayStatus)
+                when (errorState) {
+                    ERROR_CODE_CERTIFICATE_FAIL -> {
+                        mBleConnectionStatusCallback!!.onFail("[Device] Certificate verification fail", ERROR_CODE_CERTIFICATE_FAIL)
+                    }
+                    ERROR_CODE_RANDOMNUM_FAIL -> {
+                        mBleConnectionStatusCallback!!.onFail("[Device] Random number fail", ERROR_CODE_RANDOMNUM_FAIL)
+                    }
+                    ERROR_CODE_ECDH_SIGN_FAIL -> {
+                        mBleConnectionStatusCallback!!.onFail("[Device] ECDH signature verification fail", ERROR_CODE_ECDH_SIGN_FAIL)
+                    }
+                    ERROR_CODE_ECDH_SECRET_FAIL -> {
+                        mBleConnectionStatusCallback!!.onFail("[Device] ECDH secret fail", ERROR_CODE_ECDH_SECRET_FAIL)
+                    }
+                    ERROR_CODE_PUBLIC_KEY_FAIL -> {
+                        mBleConnectionStatusCallback!!.onFail("[Device] Public key fail", ERROR_CODE_PUBLIC_KEY_FAIL)
+                    }
+                    ERROR_CODE_UNESPECTED_STATE -> {
+                        mBleConnectionStatusCallback!!.onFail("[Device] Unexpected state", ERROR_CODE_UNESPECTED_STATE)
+                    }
+                    ERROR_CODE_CRC_FAIL -> {
+                        mBleConnectionStatusCallback!!.onFail("[Device] CRC fail]", ERROR_CODE_CRC_FAIL)
+                    }
+                    ERROR_CODE_SHA256_FAIL -> {
+                        mBleConnectionStatusCallback!!.onFail("[Device] SHA256 fail", ERROR_CODE_SHA256_FAIL)
+                    }
+                    ERROR_CODE_ECDH_SHA256_FAIL -> {
+                        mBleConnectionStatusCallback!!.onFail("[Device] ECDH SHA256 fail", ERROR_CODE_ECDH_SHA256_FAIL)
+                    }
+                    ERROR_CODE_ECDH_SHA256_MATCH_FAIL -> {
+                        mBleConnectionStatusCallback!!.onFail("[Device] ECDH SHA256 Match fail", ERROR_CODE_ECDH_SHA256_MATCH_FAIL)
+                    }
+                }
             }
         }
 
@@ -1005,28 +1092,8 @@ class AmazonFreeRTOSDevice private constructor(@field:Getter private val mBlueto
 
                     }
                     UUID_CHAR_GATE_WAY_STATUS -> {
-                        gateWayStatus = byteArrayToHex(responseBytes)
-                        Log.e(TAG, "Param $currentParam gateWayStatus : $gateWayStatus ")
-                        when (currentParam) {
-                            4 -> {
-                                if (hexToInteger(gateWayStatus) == ERROR_CODE_BLE_SIGNATURE_RANDOM_PASS) {
-                                    if (indicateParamValue(5)) { //Indication success for device certificate
-                                        currentParam = 5
-                                        createAndSendParamValue(5)
-                                    }
-                                } else { //Failure cases
-                                    mBleConnectionStatusCallback!!.onFail("ECDSA Signature verification fail from ble", ERROR_CODE_BLE_SIGNATURE_RANDOM_FAIL)
-                                }
-                            }
-                            6 -> {
-                                if (hexToInteger(gateWayStatus) == ERROR_CODE_ECDH_BLE_SIGNATURE_PASS) {
-                                    sendBleCommand(BleCommand(BleCommand.CommandType.WRITE_CHARACTERISTIC, UUID_CHAR_EDGE_STATUS, MUTUAL_AUTH_SERVICE, ecdhSignatureVerificationPass()))
-                                    generateECDHSecreat(bleECDHPublicKeyByteArray!!)
-                                } else { //Failure cases
-                                    mBleConnectionStatusCallback!!.onFail("ECDSA Signature verification fail from ble", ERROR_CODE_ECDH_BLE_SIGNATURE_FAIL)
-                                }
-                            }
-                        }
+                        //gateWayStatus = byteArrayToHex(responseBytes)
+                        //Log.e(TAG, "Param $currentParam gateWayStatus : $gateWayStatus ")
                     }
                     else -> Log.e(TAG, "Unknown characteristic read. ")
                 }
@@ -1066,15 +1133,13 @@ class AmazonFreeRTOSDevice private constructor(@field:Getter private val mBlueto
                 }
 
             }
-            2 -> {
-
+            /*2 -> {
                 devicePublicKey = receivedDataFromChar
                 if (publicKeyPass >= 0) {
                     appendPublicKey(devicePublicKey)
                 }
-
-            }
-            3 -> {
+            }*/
+            2 -> {
                 //Log.e(TAG, "Reading random number when received $receivedDataFromChar")
                 deviceRandomNumber = receivedDataFromChar.substring(4, receivedDataFromChar.length)
                 val isCheck = isCRCValid(hexToByteArray(deviceRandomNumber), currentParam)  //Remove length bytes
@@ -1084,14 +1149,17 @@ class AmazonFreeRTOSDevice private constructor(@field:Getter private val mBlueto
                     Log.e(TAG, "[Mutual Auth] : Received random number")
 
                     gatewaySignature = signRandomNumber(hexToByteArray(deviceRandomNumber))
+                    sendBleCommand(BleCommand(BleCommand.CommandType.WRITE_CHARACTERISTIC, UUID_WRITE_DATA_INDICATION_SERVICE, MUTUAL_AUTH_SERVICE, signatureRandomNumberPass()))
+
                 } else {
                     mBleConnectionStatusCallback!!.onFail("Random number crc fail", ERROR_CODE_CRC_FAIL)
+                    sendBleCommand(BleCommand(BleCommand.CommandType.WRITE_CHARACTERISTIC, UUID_CHAR_EDGE_STATUS, MUTUAL_AUTH_SERVICE, crcNotMatch()))
                 }
-                if (indicateParamValue(4)) { //Indication success for device certificate
-                    createAndSendParamValue(4)
+                if (indicateParamValue(3)) { //Indication success for device certificate
+                    createAndSendParamValue(3)
                 }
             }
-            4 -> {
+            3 -> {
                 signatureFromBle = receivedDataFromChar
                 ///Log.e(TAG, "Reading Signature $signatureFromBle")
 
@@ -1099,14 +1167,14 @@ class AmazonFreeRTOSDevice private constructor(@field:Getter private val mBlueto
                     readSignature(signatureFromBle, 4)
                 }
             }
-            5 -> {
+            4 -> {
                 //Log.e(TAG, "Reading ecdh public key ")
                 bleECDHPublicKey = receivedDataFromChar
                 if (publicKeyPass >= 0) {
                     appendECDHPublicKey(bleECDHPublicKey)
                 }
             }
-            6 -> {
+            5 -> {
                 ecdhSignatureFromBle = receivedDataFromChar
                 //Log.e(TAG, "Reading ECDH Signature $ecdhSignatureFromBle")
 
@@ -1114,7 +1182,7 @@ class AmazonFreeRTOSDevice private constructor(@field:Getter private val mBlueto
                     readECDHSignature(ecdhSignatureFromBle, 6)
                 }
             }
-            7 -> {
+            6 -> {
 
                 //Log.e(TAG, "Reading ECDH shared secret $receivedDataFromChar")
                 if (secreatReadCounter >= 0) {  //If counter = -1 don't read
@@ -1135,7 +1203,7 @@ class AmazonFreeRTOSDevice private constructor(@field:Getter private val mBlueto
                 receivedData += hexData.size
                 val length = BleCommandTransfer.hexToInteger(hexData[0] + hexData[1]) //100
                 totalDataSize = length - 2   //100-2 = 98
-                Log.e(TAG, "Total data append certificate  $totalDataSize")
+                //Log.e(TAG, "Total data append certificate  $totalDataSize")
                 if (hexData.size >= 20) {
                     receivedCertificateData.addAll(hexData.subList(2, hexData.size))
                     //Log.e(TAG, "Device public key $devicePrivateKey")
@@ -1174,10 +1242,19 @@ class AmazonFreeRTOSDevice private constructor(@field:Getter private val mBlueto
         if (crc16Data.equals(crc16Check, true)) {
             Log.e(TAG, "[Mutual Auth] : Certificete CRC matched")
             //Edited by alpesh : certificate verify here
-            val isVerifyCertificate = CertificateVerifyUsingByteArray(deviceCertificeByteArray,"optiga_RootCa.der")
+
+            //edited by alpesh : for certificate from public and private key
+            val cf = CertificateFactory.getInstance("X.509")
+            val certificate = cf.generateCertificate(ByteArrayInputStream(deviceCertificeByteArray))
+            publicKeyObj = certificate.publicKey
+            devicePublicKeyByteArray = publicKeyObj?.encoded
+            //////////////////////////////
+
+            val isVerifyCertificate = CertificateVerifyUsingByteArray(deviceCertificeByteArray, "optiga_RootCa.der")
             if(isVerifyCertificate!!){
                 Log.e(TAG, "[Mutual Auth] : Certificate verification successful")
                 resetVariables()
+                //edited by alpesh : public key is bypass
                 if (indicateParamValue(2)) { //Indication success for device certificate
                     if (createAndSendParamValue(2)) {  //Write success for certificate
                         currentParam = 2
@@ -1186,11 +1263,13 @@ class AmazonFreeRTOSDevice private constructor(@field:Getter private val mBlueto
                 }
             }else{
                 Log.e(TAG, "[Mutual Auth] : Certificate verification fail")
-                mBleConnectionStatusCallback!!.onFail("Certificate verification fail", ERROR_CODE_CRC_FAIL)
+                sendBleCommand(BleCommand(BleCommand.CommandType.WRITE_CHARACTERISTIC, UUID_CHAR_EDGE_STATUS, MUTUAL_AUTH_SERVICE, certificationVerificationFail()))
+                mBleConnectionStatusCallback!!.onFail("Certificate verification fail", ERROR_CODE_CERTIFICATE_FAIL)
             }
 
         } else {
             Log.e(TAG, "[Mutual Auth] : Certificate CRC not matched")
+            sendBleCommand(BleCommand(BleCommand.CommandType.WRITE_CHARACTERISTIC, UUID_CHAR_EDGE_STATUS, MUTUAL_AUTH_SERVICE, crcNotMatch()))
             mBleConnectionStatusCallback!!.onFail("Certificate CRC not matched", ERROR_CODE_CRC_FAIL)
 
         }
@@ -1206,13 +1285,12 @@ class AmazonFreeRTOSDevice private constructor(@field:Getter private val mBlueto
         if (secreatReadCounter == 1) { //First time
             val dataWithoutLength = hexData.subList(2, hexData.size)
             bleECDHSecreat = removeArrayData(dataWithoutLength)
-            readParamValue(7)
+            readParamValue(6)
         }
         if (secreatReadCounter == 2) {
             val dataWithoutCRC = hexData.subList(0, hexData.size - 2)
             bleECDHSecreat += removeArrayData(dataWithoutCRC)
             Log.e(TAG, "[Mutual Auth] : Received Hash of secret key")
-
             if (bleECDHSecreat.equals(gatewayECDHSecreat, true)) {
                 Log.e(TAG, "[Mutual Auth] : ECDH Hashed verified successfully")
                 mBleConnectionStatusCallback!!.onSecreteGenerated(bleECDHSecreat)
@@ -1220,10 +1298,9 @@ class AmazonFreeRTOSDevice private constructor(@field:Getter private val mBlueto
                 startMQTTProcess()
             } else {
                 Log.e(TAG, "[Mutual Auth] : ECDH Hashed verification fail")
-
-                //Log.e(TAG, "Auth fail $bleECDHSecreat $gatewayECDHSecreat")
-                mBleConnectionStatusCallback!!.onFail("ECDSA HashedECDH signature verified successfully verification fail", ERROR_CODE_ECDSA_SIGN_FAIL)
                 sendBleCommand(BleCommand(BleCommand.CommandType.WRITE_CHARACTERISTIC, UUID_CHAR_EDGE_STATUS, MUTUAL_AUTH_SERVICE, gatewaySecretFail()))
+                //Log.e(TAG, "Auth fail $bleECDHSecreat $gatewayECDHSecreat")
+                mBleConnectionStatusCallback!!.onFail("ECDH Hashed verification fail", ERROR_CODE_ECDH_BLE_SIGNATURE_FAIL)
             }
             secreatReadCounter = -1
         }
@@ -1251,6 +1328,7 @@ class AmazonFreeRTOSDevice private constructor(@field:Getter private val mBlueto
                         // Log.e(TAG, "readDataInLoop finish with crc ${bytesToHexString(dataInBytes)} without crc ${removeCRCBytes(bytesToHexString(dataInBytes))}")
                         appendECDHSignatureHeaderAndVerify(dataWithoutCRC)
                     } else {
+                        sendBleCommand(BleCommand(BleCommand.CommandType.WRITE_CHARACTERISTIC, UUID_CHAR_EDGE_STATUS, MUTUAL_AUTH_SERVICE, crcNotMatch()))
                         mBleConnectionStatusCallback!!.onFail("ECDH crc fail", ERROR_CODE_CRC_FAIL)
                     }
                 }
@@ -1267,6 +1345,7 @@ class AmazonFreeRTOSDevice private constructor(@field:Getter private val mBlueto
                         //Log.e(TAG, "readDataInLoop finish with crc ${bytesToHexString(dataInBytes)} without crc ${removeCRCBytes(bytesToHexString(dataInBytes))}")
                         appendECDHSignatureHeaderAndVerify(dataWithoutCRC)
                     } else {
+                        sendBleCommand(BleCommand(BleCommand.CommandType.WRITE_CHARACTERISTIC, UUID_CHAR_EDGE_STATUS, MUTUAL_AUTH_SERVICE, crcNotMatch()))
                         mBleConnectionStatusCallback!!.onFail("ECDH number crc fail", ERROR_CODE_CRC_FAIL)
                     }
                 } else {
@@ -1343,18 +1422,20 @@ class AmazonFreeRTOSDevice private constructor(@field:Getter private val mBlueto
         val isVerified = verifyData(gatewayRandom!!, hexToByteArray(signatureWithHeader), devicePublicKeyByteArray!!)
         if (isVerified) {
             sendBleCommand(BleCommand(BleCommand.CommandType.WRITE_CHARACTERISTIC, UUID_CHAR_EDGE_STATUS, MUTUAL_AUTH_SERVICE, signatureVerificationPass()))
-            //Check status from gateway
-            sendBleCommand(BleCommand(BleCommand.CommandType.READ_CHARACTERISTIC, UUID_CHAR_GATE_WAY_STATUS, MUTUAL_AUTH_SERVICE))
+            //getStatusofGatewayCharacterstic()
             /* if (indicateParamValue(5)) { //Indication success for device certificate
                 currentParam = 5
                 createAndSendParamValue(5)
             }*/
             Log.e(TAG, "[Mutual Auth] : ECDSA Signature verified successfully");
-
+            sendBleCommand(BleCommand(BleCommand.CommandType.WRITE_CHARACTERISTIC, UUID_CHAR_EDGE_STATUS, MUTUAL_AUTH_SERVICE, ecdhSignatureVerificationPass()))
+            if (indicateParamValue(4)) { //Indication success for device certificate
+              createAndSendParamValue(4)
+            }
         } else {
             Log.e(TAG, "[Mutual Auth] : ECDSA Signature verification fail");
             sendBleCommand(BleCommand(BleCommand.CommandType.WRITE_CHARACTERISTIC, UUID_CHAR_EDGE_STATUS, MUTUAL_AUTH_SERVICE, signatureVerificationFail()))
-            mBleConnectionStatusCallback!!.onFail("ECDSA Signature verification fail", ERROR_CODE_ECDSA_SIGN_FAIL)
+            mBleConnectionStatusCallback!!.onFail("ECDSA Signature verification fail", ERROR_CODE_ECDH_SIGN_FAIL)
 
         }
         //mBleConnectionStatusCallback!!.onFail("ECDSA Signature verification fail")
@@ -1439,12 +1520,13 @@ class AmazonFreeRTOSDevice private constructor(@field:Getter private val mBlueto
 
         if (crc16Data.equals(crc16Check, true)) {
             Log.e(TAG, "[Mutual Auth] : ECDH public key CRC matched")
-            if (indicateParamValue(6)) { //Indication success for device certificate
-                createAndSendParamValue(6)
+            if (indicateParamValue(5)) { //Indication success for device certificate
+                createAndSendParamValue(5)
             }
         } else {
             Log.e(TAG, "[Mutual Auth] : ECDH public key CRC not matched")
-
+            sendBleCommand(BleCommand(BleCommand.CommandType.WRITE_CHARACTERISTIC, UUID_CHAR_EDGE_STATUS, MUTUAL_AUTH_SERVICE, crcNotMatch()))
+            mBleConnectionStatusCallback!!.onFail("ECDH public key CRC not matched", ERROR_CODE_CRC_FAIL)
             // Log.e(TAG, "CRC ECDHṢCRC Fail")
         }
         bleECDHPublicKeyByteArray = hexToByteArray(getPublicKeyHeaderInHEX() + removeArrayData(privateKeyWithoutCRC))
@@ -1467,6 +1549,8 @@ class AmazonFreeRTOSDevice private constructor(@field:Getter private val mBlueto
             }
         } else {
             Log.e(TAG, "[Mutual Auth] : Public key CRC not matched")
+            sendBleCommand(BleCommand(BleCommand.CommandType.WRITE_CHARACTERISTIC, UUID_CHAR_EDGE_STATUS, MUTUAL_AUTH_SERVICE, crcNotMatch()))
+            mBleConnectionStatusCallback!!.onFail("Public key CRC not matched", ERROR_CODE_CRC_FAIL)
         }
         devicePublicKeyByteArray = hexToByteArray(getPublicKeyHeaderInHEX() + removeArrayData(privateKeyWithoutCRC))
         //Log.e(TAG, "Reading public key  ${getPublicKeyHeaderInHEX()}${removeArrayData(privateKeyWithoutCRC)}")
@@ -1507,86 +1591,91 @@ class AmazonFreeRTOSDevice private constructor(@field:Getter private val mBlueto
 
     // private fun handleMqttTxMessage(message: ByteArray) {
     private fun handleMqttTxMessage(encrypetedData: ByteArray) {
-        //Log.e(TAG, "Handling Mqtt Message type before decrypt: " + bytesToHexString(encrypetedData!!))
-        /* var hexArray = bytesToHexString(encrypetedData!!)
-         var orignalChunks = convertHexToChunk(hexArray, 2)
-         var chunks = convertHexToChunk(hexArray, 2)
-         chunks = chunks.subList(17, chunks.size)
-         Log.e(TAG, "Handling Mqtt +16 : " + removeArrayData(chunks))
-         var dataToDecrypt = hexToByteArray(removeArrayData(chunks))
+        try{
+            //Log.e(TAG, "Handling Mqtt Message type before decrypt: " + bytesToHexString(encrypetedData!!))
+            /* var hexArray = bytesToHexString(encrypetedData!!)
+             var orignalChunks = convertHexToChunk(hexArray, 2)
+             var chunks = convertHexToChunk(hexArray, 2)
+             chunks = chunks.subList(17, chunks.size)
+             Log.e(TAG, "Handling Mqtt +16 : " + removeArrayData(chunks))
+             var dataToDecrypt = hexToByteArray(removeArrayData(chunks))
 
-         //Appended data
-         var appendedData = orignalChunks.subList(0, 16)
-         var hexArrayOrignalMessage = removeArrayData(appendedData!!)
-         var message = hexToByteArray(hexArrayOrignalMessage + bytesToHexString(dataDecrypt!!))
-         Log.e(TAG, "Handling Mqtt Message type : " + bytesToHexStringForLog(message!!) +
-                 " String " + String(message) + " Size " + message.size)*/
-        Log.e(TAG, "[SECURITY] : [RECEIVED] : CIPHER TEXT : " + String(encrypetedData!!))
-        val message = decrypt(encrypetedData)
-        Log.e(TAG, "[SECURITY] : [RECEIVED] : PLAIN TEXT : " + String(message!!))
-        val messageType = MessageType()
-        if (!messageType.decode(message)) {
-            return
-        }
-        //Log.e(TAG, "Handling Mqtt Message type : " + messageType.type + " message " + String(message!!))
-        when (messageType.type) {
-            MQTT_MSG_CONNECT -> { //�awadistm32wb55aax/a3vwfgdm06d0xb-ats.iot.ap-south-1.amazonaws.comac�
-                val connect = Connect()
-                if (connect.decode(message)) {
-                    connectToIoT(connect)
-                }
+             //Appended data
+             var appendedData = orignalChunks.subList(0, 16)
+             var hexArrayOrignalMessage = removeArrayData(appendedData!!)
+             var message = hexToByteArray(hexArrayOrignalMessage + bytesToHexString(dataDecrypt!!))
+             Log.e(TAG, "Handling Mqtt Message type : " + bytesToHexStringForLog(message!!) +
+                     " String " + String(message) + " Size " + message.size)*/
+            Log.e(TAG, "[SECURITY] : [RECEIVED] : CIPHER TEXT : " + String(encrypetedData!!))
+            val message = decrypt(encrypetedData)
+            Log.e(TAG, "[SECURITY] : [RECEIVED] : PLAIN TEXT : " + String(message!!))
+            val messageType = MessageType()
+            if (!messageType.decode(message)) {
+                return
             }
+            //Log.e(TAG, "Handling Mqtt Message type : " + messageType.type + " message " + String(message!!))
+            when (messageType.type) {
+                MQTT_MSG_CONNECT -> { //�awadistm32wb55aax/a3vwfgdm06d0xb-ats.iot.ap-south-1.amazonaws.comac�
+                    val connect = Connect()
+                    if (connect.decode(message)) {
+                        connectToIoT(connect)
+                    }
+                }
 
-            MQTT_MSG_SUBSCRIBE -> {  //�aav�oiotdemo/topic/1oiotdemo/topic/2oiotdemo/topic/3oiotdemo/topic/4ao�ai
-                val subscribe = Subscribe()
-                if (subscribe.decode(message)) {
-                    Log.e(TAG, subscribe.toString())
-                    subscribeToIoT(subscribe)
+                MQTT_MSG_SUBSCRIBE -> {  //�aav�oiotdemo/topic/1oiotdemo/topic/2oiotdemo/topic/3oiotdemo/topic/4ao�ai
+                    val subscribe = Subscribe()
+                    if (subscribe.decode(message)) {
+                        Log.e(TAG, subscribe.toString())
+                        subscribeToIoT(subscribe)
+                        /*
+                      Currently, because the IoT part of aws mobile sdk for Android
+                      does not provide suback callback when subscribe is successful,
+                      we create a fake suback message and send to device as a workaround.
+                      Wait for 0.5 sec so that the subscribe is complete. Potential bug:
+                      Message is received from the subscribed topic before suback
+                      is sent to device.
+                     */mHandler!!.postDelayed({ sendSubAck(subscribe) }, 500)
+                    }
+                }
+                MQTT_MSG_UNSUBSCRIBE -> {
+                    val unsubscribe = Unsubscribe()
+                    if (unsubscribe.decode(message)) {
+                        unsubscribeToIoT(unsubscribe)
+                        /*
+                      TODO: add unsuback support in Aws Mobile sdk
+                     */sendUnsubAck(unsubscribe)
+                    }
+                }
+                MQTT_MSG_PUBLISH -> {  //�awauoiotdemo/topic/1anakNHello world 0!ai
+                    val publish = Publish()
+                    if (publish.decode(message)) {
+                        mMessageId = publish.msgID
+                        publishToIoT(publish)
+                    }
+                }
+                MQTT_MSG_DISCONNECT -> disconnectFromIot()
+                MQTT_MSG_PUBACK -> {
                     /*
-                  Currently, because the IoT part of aws mobile sdk for Android
-                  does not provide suback callback when subscribe is successful,
-                  we create a fake suback message and send to device as a workaround.
-                  Wait for 0.5 sec so that the subscribe is complete. Potential bug:
-                  Message is received from the subscribed topic before suback
-                  is sent to device.
-                 */mHandler!!.postDelayed({ sendSubAck(subscribe) }, 500)
+                     AWS Iot SDK currently sends pub ack back to cloud without waiting
+                     for pub ack from device.
+                     */
+                    val puback = Puback()
+                    if (puback.decode(message)) {
+                        //Log.e(TAG, "Received mqtt pub ack from device. MsgID: " + puback.msgID)
+                    }
                 }
-            }
-            MQTT_MSG_UNSUBSCRIBE -> {
-                val unsubscribe = Unsubscribe()
-                if (unsubscribe.decode(message)) {
-                    unsubscribeToIoT(unsubscribe)
-                    /*
-                  TODO: add unsuback support in Aws Mobile sdk
-                 */sendUnsubAck(unsubscribe)
+                MQTT_MSG_PINGREQ -> {
+                    val pingResp = PingResp()
+                    val pingRespBytes = pingResp.encode()
+                    //val pingRespBytes = encryptMessage(pingResp.encode())
+                    sendDataToDevice(UUID_MQTT_PROXY_SERVICE, UUID_MQTT_PROXY_RX, UUID_MQTT_PROXY_RXLARGE, pingRespBytes)
                 }
+                else -> Log.e(TAG, ":[MQTT] Unknown mqtt message type: " + messageType.type)
             }
-            MQTT_MSG_PUBLISH -> {  //�awauoiotdemo/topic/1anakNHello world 0!ai
-                val publish = Publish()
-                if (publish.decode(message)) {
-                    mMessageId = publish.msgID
-                    publishToIoT(publish)
-                }
-            }
-            MQTT_MSG_DISCONNECT -> disconnectFromIot()
-            MQTT_MSG_PUBACK -> {
-                /*
-                 AWS Iot SDK currently sends pub ack back to cloud without waiting
-                 for pub ack from device.
-                 */
-                val puback = Puback()
-                if (puback.decode(message)) {
-                    //Log.e(TAG, "Received mqtt pub ack from device. MsgID: " + puback.msgID)
-                }
-            }
-            MQTT_MSG_PINGREQ -> {
-                val pingResp = PingResp()
-                val pingRespBytes = pingResp.encode()
-                //val pingRespBytes = encryptMessage(pingResp.encode())
-                sendDataToDevice(UUID_MQTT_PROXY_SERVICE, UUID_MQTT_PROXY_RX, UUID_MQTT_PROXY_RXLARGE, pingRespBytes)
-            }
-            else -> Log.e(TAG, ":[MQTT] Unknown mqtt message type: " + messageType.type)
+        }catch (e:Exception){
+            e.printStackTrace()
         }
+
     }
 
     private fun sendSignatureInChunk(completeData: List<String>) {
@@ -1629,7 +1718,7 @@ class AmazonFreeRTOSDevice private constructor(@field:Getter private val mBlueto
         if (remainingLength >= 20) {
             //Log.e(TAG, "ECDH Public key calculateData start $startLimit end $endLimit")
             val data = Arrays.copyOfRange(completeData, startLimit, endLimit)
-            //Log.e(TAG, "ECDH Public key  calculateData start $startLimit end $endLimit  data ${bytesToHexString(data)}")
+            Log.e(TAG, "ECDH Public key  calculateData start $startLimit end $endLimit  data ${bytesToHexString(data)}")
             sendBleCommand(BleCommand(BleCommand.CommandType.WRITE_CHARACTERISTIC, UUID_WRITE_DATA_PARAM_VALUE_SERVICE, MUTUAL_AUTH_SERVICE, data))
             remainingLength = completeData.size - (endLimit)
             startLimit = endLimit
@@ -1637,7 +1726,7 @@ class AmazonFreeRTOSDevice private constructor(@field:Getter private val mBlueto
         } else {
             startLimit = completeData.size - remainingLength
             val data = Arrays.copyOfRange(completeData, startLimit, completeData.size)
-            //Log.e(TAG, "ECDH Public key calculateData start $startLimit end $endLimit  data ${bytesToHexString(data)}")
+            Log.e(TAG, "ECDH Public key calculateData start $startLimit end $endLimit  data ${bytesToHexString(data)}")
             sendBleCommand(BleCommand(BleCommand.CommandType.WRITE_CHARACTERISTIC, UUID_WRITE_DATA_PARAM_VALUE_SERVICE, MUTUAL_AUTH_SERVICE, data))
             remainingLength = 0
         }
@@ -2102,17 +2191,21 @@ class AmazonFreeRTOSDevice private constructor(@field:Getter private val mBlueto
     }
 
     private fun getCharacteristic(serviceUuid: String, characteristicUuid: String): BluetoothGattCharacteristic? {
-        val service = mBluetoothGatt!!.getService(UUID.fromString(serviceUuid))
-        if (service == null) {
-            Log.e(TAG, "There's no such service found with uuid: $serviceUuid")
+        try {
+            val service = mBluetoothGatt!!.getService(UUID.fromString(serviceUuid))
+            if (service == null) {
+                Log.e(TAG, "There's no such service found with uuid: $serviceUuid")
+                return null
+            }
+            val characteristic = service.getCharacteristic(UUID.fromString(characteristicUuid))
+            if (characteristic == null) {
+                Log.e(TAG, "There's no such characteristic with uuid: $characteristicUuid")
+                return null
+            }
+            return characteristic
+        }catch(ex:java.lang.Exception){
             return null
         }
-        val characteristic = service.getCharacteristic(UUID.fromString(characteristicUuid))
-        if (characteristic == null) {
-            Log.e(TAG, "There's no such characteristic with uuid: $characteristicUuid")
-            return null
-        }
-        return characteristic
     }
 
     private fun readCharacteristic(serviceUuid: String, characteristicUuid: String): Boolean {
@@ -2138,7 +2231,7 @@ class AmazonFreeRTOSDevice private constructor(@field:Getter private val mBlueto
     }
 
 
-    private fun createECDSAKeyPairs() {
+    /*private fun createECDSAKeyPairs() {
         try {
             val generator = KeyPairGenerator.getInstance("EC")
             generator.initialize(ECGenParameterSpec("prime256v1"))
@@ -2148,7 +2241,7 @@ class AmazonFreeRTOSDevice private constructor(@field:Getter private val mBlueto
         } catch (e: Exception) {
             e.printStackTrace()
         }
-    }
+    }*/
 /*
     private fun createKeyPairs() {
         try {
@@ -2218,6 +2311,7 @@ class AmazonFreeRTOSDevice private constructor(@field:Getter private val mBlueto
 
             return gatewaySignature
         } catch (e: Exception) {
+            sendBleCommand(BleCommand(BleCommand.CommandType.WRITE_CHARACTERISTIC, UUID_WRITE_DATA_INDICATION_SERVICE, MUTUAL_AUTH_SERVICE, signatureRandomNumberFail()))
             e.printStackTrace()
             return null
         }
@@ -2255,13 +2349,13 @@ class AmazonFreeRTOSDevice private constructor(@field:Getter private val mBlueto
             if (isVerified) {
                 Log.e(TAG, "[Mutual Auth] : ECDH Signature verified successfully")
 
-                sendBleCommand(BleCommand(BleCommand.CommandType.READ_CHARACTERISTIC, UUID_CHAR_GATE_WAY_STATUS, MUTUAL_AUTH_SERVICE))
-                /*sendBleCommand(BleCommand(BleCommand.CommandType.WRITE_CHARACTERISTIC, UUID_CHAR_EDGE_STATUS, MUTUAL_AUTH_SERVICE, ecdhSignatureVerificationPass()))
-                generateECDHSecreat(bleECDHPublicKeyByteArray!!)*/
+                //sendBleCommand(BleCommand(BleCommand.CommandType.READ_CHARACTERISTIC, UUID_CHAR_GATE_WAY_STATUS, MUTUAL_AUTH_SERVICE, ecdhSignatureVerificationPass()))
+                sendBleCommand(BleCommand(BleCommand.CommandType.WRITE_CHARACTERISTIC, UUID_CHAR_EDGE_STATUS, MUTUAL_AUTH_SERVICE, ecdhSignatureVerificationPass()))
+                generateECDHSecreat(bleECDHPublicKeyByteArray!!)
             } else {
                 Log.e(TAG, "[Mutual Auth] : ECDH Signature verification fail")
-                mBleConnectionStatusCallback!!.onFail("ECDH Signature verification fail", ERROR_CODE_ECDH_FAIL)
                 sendBleCommand(BleCommand(BleCommand.CommandType.WRITE_CHARACTERISTIC, UUID_CHAR_EDGE_STATUS, MUTUAL_AUTH_SERVICE, ecdhSignatureVerificationFail()))
+                mBleConnectionStatusCallback!!.onFail("ECDH Signature verification fail", ERROR_CODE_ECDH_FAIL)
             }
             return isVerified
         } catch (e: Exception) {
@@ -2270,8 +2364,7 @@ class AmazonFreeRTOSDevice private constructor(@field:Getter private val mBlueto
         }
     }
 
-    private fun generateECDHSecreat(bleECDHPublicKey: ByteArray) { //Ble ECDH public key with header
-        //https://neilmadden.blog/2016/05/20/ephemeral-elliptic-curve-diffie-hellman-key-agreement-in-java/
+    private fun generateECDHSecreat(bleECDHPublicKey: ByteArray) { //Ble ECDH Secret Key with header
         try {
             val kf = KeyFactory.getInstance("EC")
             val pkSpec = X509EncodedKeySpec(bleECDHPublicKey)
@@ -2281,12 +2374,16 @@ class AmazonFreeRTOSDevice private constructor(@field:Getter private val mBlueto
             ka.doPhase(otherPublicKey, true)
             val sharedSecret = ka.generateSecret()
             gatewayECDHSecreatWithoutSHA = sharedSecret
+            //getStatusofGatewayCharacterstic()
             sendBleCommand(BleCommand(BleCommand.CommandType.WRITE_CHARACTERISTIC, UUID_CHAR_EDGE_STATUS, MUTUAL_AUTH_SERVICE, ecdhSessionKeyGenrated()))
             resetVariables()
-            currentParam = 7
-            indicateParamValue(7)
+            if(indicateParamValue(6)){
+                currentParam = 6
+                readParamValue(6)
+            }
             gatewayECDHSecreat = convertSecretToSHA256(sharedSecret)!!
             sendSecretInFrame(gatewayECDHSecreat)
+
             //startMQTTProcess()
             //Log.e(TAG, "ECDH Secret ${bytesToHexString(sharedSecret)} SHA256 $" + convertSecretToSHA256(sharedSecret))
         } catch (e: Exception) {
@@ -2301,10 +2398,10 @@ class AmazonFreeRTOSDevice private constructor(@field:Getter private val mBlueto
         val secretDataChunks = BleCommandTransfer.convertHexToChunk(secretFrame, 2)
         val firstPassData = removeArrayData(secretDataChunks.subList(0, 20))
         val secondPassData = removeArrayData(secretDataChunks.subList(20, secretDataChunks.size))
-        //Log.e(TAG, "First pass data $firstPassData} \nSecond pass data $secondPassData")
+        Log.e(TAG, "First pass data $firstPassData} \nSecond pass data $secondPassData")
         sendBleCommand(BleCommand(BleCommand.CommandType.WRITE_CHARACTERISTIC, UUID_WRITE_DATA_PARAM_VALUE_SERVICE, MUTUAL_AUTH_SERVICE, hexToByteArray(firstPassData)))
         sendBleCommand(BleCommand(BleCommand.CommandType.WRITE_CHARACTERISTIC, UUID_WRITE_DATA_PARAM_VALUE_SERVICE, MUTUAL_AUTH_SERVICE, hexToByteArray(secondPassData)))
-        readParamValue(7)
+        Log.e(TAG, "[Mutual Auth] : Send ECDH Secret")
     }
 
     private fun startMQTTProcess() {
@@ -2465,7 +2562,7 @@ class AmazonFreeRTOSDevice private constructor(@field:Getter private val mBlueto
         return byteArr
     }
     @Throws(IOException::class)
-    fun CertificateVerifyUsingByteArray(array: ByteArray?,rootCAStr:String?): Boolean? {
+    fun CertificateVerifyUsingByteArray(array: ByteArray?, rootCAStr: String?): Boolean? {
         // Load CAs from an InputStream
         var cf: CertificateFactory? = null
         cf = try {
@@ -2509,7 +2606,7 @@ class AmazonFreeRTOSDevice private constructor(@field:Getter private val mBlueto
                 try{
                     receivedCert.verify(caCert.publicKey)
                     return true
-                }catch (e:Exception){
+                }catch (e: Exception){
                     e.printStackTrace()
                     return false
                 }
@@ -2521,9 +2618,9 @@ class AmazonFreeRTOSDevice private constructor(@field:Getter private val mBlueto
         return false
     }
     @Throws(IOException::class)
-    fun GetPrivatePublicKey(devCertStr: String?,privateKeyStr:String?) {
+    fun GetPrivatePublicKey(devCertStr: String?, privateKeyStr: String?) {
         // Load CAs from an InputStream
-        var cf: CertificateFactory? = null
+        /*var cf: CertificateFactory? = null
         cf = try {
             CertificateFactory.getInstance("X.509")
         } catch (e: CertificateException) {
@@ -2545,7 +2642,7 @@ class AmazonFreeRTOSDevice private constructor(@field:Getter private val mBlueto
             devCertInput.close()
         }
         //get public key from device certificate
-        publicKeyObj = devCert?.publicKey
+        publicKeyObj = devCert?.publicKey*/
 
         //get private key from private key certificate
         val priKeyInput: InputStream = mContext.getAssets().open(privateKeyStr)
@@ -2579,13 +2676,16 @@ class AmazonFreeRTOSDevice private constructor(@field:Getter private val mBlueto
             val keySpec = PKCS8EncodedKeySpec(pkcs8EncodedBytes)
             val kf = KeyFactory.getInstance("EC")
             privKey = kf.generatePrivate(keySpec)
-        }catch (e:java.lang.Exception){
-            Log.e("ERROR",e.message.toString())
+        }catch (e: java.lang.Exception){
+            Log.e("ERROR", e.message.toString())
         }
         return privKey
     }
 
-
+    //Check status from gateway
+    fun getStatusofGatewayCharacterstic(){
+        //sendBleCommand(BleCommand(BleCommand.CommandType.READ_CHARACTERISTIC, UUID_CHAR_GATE_WAY_STATUS, MUTUAL_AUTH_SERVICE))
+    }
 
 }
 

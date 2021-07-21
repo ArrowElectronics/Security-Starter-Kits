@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
-    <bytecodeTargetLevel>
+    <bytecodeTargetLevel target="1.7">
+      <module name="amazon-freertos-ble-android-sdk-master.amazonfreertossdk" target="1.8" />
+      <module name="amazon-freertos-ble-android-sdk-master.app" target="1.8" />
       <module name="ecdsa-java-master" target="1.7" />
     </bytecodeTargetLevel>
   </component>

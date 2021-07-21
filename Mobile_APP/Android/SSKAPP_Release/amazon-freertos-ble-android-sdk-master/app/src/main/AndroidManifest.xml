@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="software.amazon.freertos.demo">
+    package="com.eic.sskwb55">
 
     <uses-permission android:name="android.permission.BLUETOOTH" /> <!-- initiate device discovery and manipulate bluetooth settings -->
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" /> <!-- allow scan BLE -->

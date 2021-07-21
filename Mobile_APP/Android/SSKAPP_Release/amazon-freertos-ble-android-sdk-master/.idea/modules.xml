@@ -2,10 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/amazon-freertos-ble-android-sdk-master.iml" filepath="$PROJECT_DIR$/.idea/modules/amazon-freertos-ble-android-sdk-master.iml" group="amazon-freertos-ble-android-sdk-master" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/amazonfreertossdk/amazonfreertossdk.iml" filepath="$PROJECT_DIR$/.idea/modules/amazonfreertossdk/amazonfreertossdk.iml" group="amazon-freertos-ble-android-sdk-master/amazonfreertossdk" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/app.iml" group="amazon-freertos-ble-android-sdk-master/app" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ecdsa-java-master/ecdsa-java-master.iml" filepath="$PROJECT_DIR$/.idea/modules/ecdsa-java-master/ecdsa-java-master.iml" group="amazon-freertos-ble-android-sdk-master/ecdsa-java-master" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/amazon-freertos-ble-android-sdk-master.iml" filepath="$PROJECT_DIR$/.idea/modules/amazon-freertos-ble-android-sdk-master.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/amazonfreertossdk/amazon-freertos-ble-android-sdk-master.amazonfreertossdk.iml" filepath="$PROJECT_DIR$/.idea/modules/amazonfreertossdk/amazon-freertos-ble-android-sdk-master.amazonfreertossdk.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/amazon-freertos-ble-android-sdk-master.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/amazon-freertos-ble-android-sdk-master.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ecdsa-java-master/amazon-freertos-ble-android-sdk-master.ecdsa-java-master.iml" filepath="$PROJECT_DIR$/.idea/modules/ecdsa-java-master/amazon-freertos-ble-android-sdk-master.ecdsa-java-master.iml" />
     </modules>
   </component>
 </project>

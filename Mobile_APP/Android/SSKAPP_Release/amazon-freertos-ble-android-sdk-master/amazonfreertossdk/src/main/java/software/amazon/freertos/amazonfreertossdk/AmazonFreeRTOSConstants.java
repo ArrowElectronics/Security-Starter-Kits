@@ -144,7 +144,18 @@ public class AmazonFreeRTOSConstants {
     public static final int ERROR_CODE_BLE_SIGNATURE_RANDOM_FAIL = 4;
     public static final int ERROR_CODE_ECDH_BLE_SIGNATURE_PASS = 5;
     public static final int ERROR_CODE_ECDH_BLE_SIGNATURE_FAIL = 6;
-    public static final int ERROR_CODE_CRC_FAIL = 7;
+
+    public static final int ERROR_CODE_CERTIFICATE_FAIL = 2;
+    public static final int ERROR_CODE_RANDOMNUM_FAIL = 4;
+    public static final int ERROR_CODE_ECDH_SIGN_FAIL = 6;
+    public static final int ERROR_CODE_ECDH_SECRET_FAIL = 8;
+    public static final int ERROR_CODE_PUBLIC_KEY_FAIL = 10;
+    public static final int ERROR_CODE_UNESPECTED_STATE = 11;
+    public static final int ERROR_CODE_CRC_FAIL = 12;
+    public static final int ERROR_CODE_SHA256_FAIL = 13;
+    public static final int ERROR_CODE_ECDH_SHA256_FAIL = 14;
+    public static final int ERROR_CODE_ECDH_SHA256_MATCH_FAIL = 15;
+
 
 
 

@@ -419,8 +419,8 @@ static void MUTUALAUTH_Receive_Data(IotBleWriteEventParams_t *pxWriteParam)
 				if (OPTIGA_LIB_SUCCESS != return_status)
 				{
 					gw_status = Token_CRC_Match_Fail;
-					Send_Gw_Status();
 					IotLogError("Failed to create sha256 hash of the GW token\r\n");
+					Send_Gw_Status();
 				}
 			}
 			else
@@ -473,7 +473,6 @@ static void MUTUALAUTH_Receive_Data(IotBleWriteEventParams_t *pxWriteParam)
 				return_status = mutualauth_optiga_crypt_ecdsa_verify(&verify_token);
 				gw_status = (return_status == OPTIGA_LIB_SUCCESS) ? Sign_Token_Verify_Pass : Sign_Token_Verify_Fail;
 				Send_Gw_Status();
-
 				recv_byte = 0;
 			}
 			else
@@ -1301,6 +1300,7 @@ static void _connectionCallback( BTStatus_t xStatus,
         }
     }
 }
+
 /*-----------------------------------------------------------*/
 void Send_Gw_Status(void)
 {
@@ -1318,4 +1318,16 @@ void Send_Gw_Status(void)
 	xAttrData.pData = ( uint8_t * ) &gw_status;
 	xAttrData.size = sizeof( gw_status );
 	( void ) IotBle_SendIndication( &xResp, usBLEConnectionID, false );
+
+	if( (gw_status == Certificate_Verify_Fail) ||  (gw_status == Sign_Token_Verify_Fail)
+			|| (gw_status == ECDSA_Signature_Fail) ||  (gw_status == ECDH_Secret_Not_Match)
+			|| (gw_status == Pub_Key_Ext_Fail) ||  (gw_status == Un_expected_state)
+			|| (gw_status == Token_CRC_Match_Fail) ||  (gw_status == Create_SHA256_Fail)
+			|| (gw_status == Create_sha256_EDCH_Fail) ||  (gw_status == Sha256_EDCH_Match_Fail))
+	{
+		IotLogError("Error:BLE disconnected \r\r\n");
+		Nxt_param = DEVICE_CERTIFICATE;
+		vTaskDelay(2000/portTICK_PERIOD_MS);
+		AwsIotNetworkManager_DisableNetwork(AWSIOT_NETWORK_TYPE_BLE);
+	}
 }
